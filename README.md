@@ -1,3 +1,3 @@
 # Our Home's Web Remote Gate
 
-Nice
+Currently still down. Please stay tuned for further updates ;-)
