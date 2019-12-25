@@ -108,6 +108,7 @@ button {
 	position: relative;
 	display: flex;
 	margin: 10px;
+	height: 60vh;
 	padding: 20px;
 	justify-content: center;
 	align-items: center;
