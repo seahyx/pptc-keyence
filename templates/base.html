@@ -14,11 +14,11 @@
 	<link rel='stylesheet' type='text/css'
 		href="{{ url_for('static', filename='styles/default-style.css') }}" />
 
-	<!-- jQuery from Google AJAX Libraries (faster load from cache) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/d3js/5.14.2/d3.min.js"></script>
-
-	<!-- jQuery fallback -->
-	<script src="{{ url_for('static', filename='dependencies/jq-loader.js') }}"></script>
+	<!-- Script -->
+	<script type = text/javascript>
+		// Gets site location
+		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	</script>
 </head>
 
 <body>
