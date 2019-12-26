@@ -21,9 +21,9 @@ def api():
 
 
 def open_door():
-	wiringpi.digitalWrite(4, 1)
+	wiringpi.digitalWrite(5, 1)
 	time.sleep(500)
-	wiringpi.digitalWrite(4, 0)
+	wiringpi.digitalWrite(5, 0)
 
 
 # If we're running this script directly, this portion executes. The Flask
