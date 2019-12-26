@@ -15,6 +15,7 @@ def index():
 
 @app.route('/open-door/')
 def api():
+	print('API request received')
 	open_door()
 	return jsonify(result='success')
 

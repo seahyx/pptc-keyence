@@ -14,3 +14,4 @@ function getHttp(url) {
 }
 
 document.querySelector("#button-open").addEventListener('click', () => getHttp('/open-door/'))
+document.querySelector("#button-open").addEventListener('click', () => console.log('Button Pressed'))
