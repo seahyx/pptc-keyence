@@ -9,8 +9,16 @@
 	{% endif %}
 	<meta name='viewport'
 		content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height' />
+	
+	<!-- CSS -->
 	<link rel='stylesheet' type='text/css'
 		href="{{ url_for('static', filename='styles/default-style.css') }}" />
+
+	<!-- jQuery from Google AJAX Libraries (faster load from cache) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/d3js/5.14.2/d3.min.js"></script>
+
+	<!-- jQuery fallback -->
+	<script src="{{ url_for('static', filename='dependencies/jq-loader.js') }}"></script>
 </head>
 
 <body>
