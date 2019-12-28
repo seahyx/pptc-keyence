@@ -196,7 +196,7 @@ button:active::after {
 .btn-small {
 	width: min-content;
 	margin: 10px;
-	padding: 10px 20px;
+	padding: 7.5px 20px;
 }
 .red {
 	background-color: var(--red);
@@ -220,7 +220,7 @@ button:active::after {
 input {
 	padding: 10px;
 	margin: 10px;
-	border-color: transparent transparent var(--green) transparent;
+	border-color: transparent transparent var(--teal) transparent;
 	border-style: solid;
 
 	font-family: var(--secondaryFont);
@@ -232,10 +232,30 @@ input {
 	transition: all 0.15s;
 }
 input:hover {
-	border-color: var(--green);
+	border-color: var(--teal);
 }
 input:active {
-	border-color: var(--green);
+	border-color: var(--teal);
+}
+
+.checkbox {
+	-webkit-appearance: none;
+	display: inline-block;
+	position: relative;
+	border: 2px solid var(--teal);
+	padding: 6px;
+}
+.checkbox:checked {
+	border: 2px solid var(--teal);
+}
+.checkbox:checked::after {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 8px;
+	height: 8px;
+	background-color: var(--teal);
 }
 
 
