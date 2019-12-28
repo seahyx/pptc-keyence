@@ -7,16 +7,20 @@
 	{% else %}
 	<title>Home Gate</title>
 	{% endif %}
+
 	<meta name='viewport'
-		content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height' />
+	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height' />
+	
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Heebo:400,700|Raleway:400,700&display=swap" rel="stylesheet">
 	
 	<!-- CSS -->
 	<link rel='stylesheet' type='text/css'
-		href="{{ url_for('static', filename='styles/default-style.css') }}" />
-
+	href="{{ url_for('static', filename='styles/default-style.css') }}" />
+		
 	<!-- Script -->
 	<script type = text/javascript>
-		// Gets site location
+		// Base site url
 		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	</script>
 </head>
@@ -25,7 +29,7 @@
 	<header>
 		<ul>
 			<li><a href='/'>Home</a></li>
-			<li><a href='/info'>Info</a></li>
+			<li><a href='/login/'>Login</a></li>
 		</ul>
 	</header>
 

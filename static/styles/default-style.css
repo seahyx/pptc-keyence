@@ -1,5 +1,9 @@
 /* --- Header --- */
 
+body {
+	font-family: 'Heebo', sans-serif;
+}
+
 header {
 	width: 100%;
 
@@ -42,6 +46,7 @@ header ul li a {
 
 	margin: 0 10px;
 	color: black;
+	font-family: 'Raleway', sans-serif;
 	font-weight: bold;
 	text-decoration: none;
 	white-space: nowrap;
@@ -73,6 +78,8 @@ header ul li a:hover {
 	text-shadow: 0 1px 0 white;
 }
 header ul li a:hover::after {
+	box-shadow: 0 1px 0 white;
+	
 	visibility: visible;
 	
 	width: 100%;
@@ -118,6 +125,7 @@ button {
 
 	/* Button text style */
 	color: black;
+	font-family: 'Heebo', sans-serif;
 	font-weight: bold;
 
 	-webkit-transition: all 0.15s ease;
