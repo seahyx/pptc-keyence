@@ -220,8 +220,22 @@ button:active::after {
 input {
 	padding: 10px;
 	margin: 10px;
+	border-color: transparent transparent var(--green) transparent;
+	border-style: solid;
+
+	font-family: var(--secondaryFont);
+
+	-webkit-transition: all 0.15s;
+	-moz-transition: all 0.15s;
+	-ms-transition: all 0.15s;
+	-o-transition: all 0.15s;
+	transition: all 0.15s;
+}
+input:hover {
 	border-color: var(--green);
-	border-style: none none solid solid;
+}
+input:active {
+	border-color: var(--green);
 }
 
 
@@ -238,4 +252,5 @@ p, label {
 h1 {
 	margin: 30px 10px 20px 10px;
 	font-family: var(--primaryFont);
+	font-weight: normal;
 }
