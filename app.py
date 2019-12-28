@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request, jsonify
-import wiringpi
+# import wiringpi
 import time
 
 app = Flask(__name__)
 
 # Wiring pi setup
-wiringpi.wiringPiSetup()
+# wiringpi.wiringPiSetup()
 
-wiringpi.pinMode(4, 1)
+# wiringpi.pinMode(4, 1)
 
 @app.route('/')
 def index():
-	return render_template('home.html')
+	return render_template('home.html', title = 'Home')
+
+@app.route('/login/')
+def login():
+	return render_template('login.html', title = 'Login')
 
 @app.route('/open-door/')
 def api():
@@ -21,9 +25,10 @@ def api():
 
 
 def open_door():
-	wiringpi.digitalWrite(5, 1)
-	time.sleep(500)
-	wiringpi.digitalWrite(5, 0)
+	# wiringpi.digitalWrite(5, 1)
+	# time.sleep(500)
+	# wiringpi.digitalWrite(5, 0)
+	return True
 
 
 # If we're running this script directly, this portion executes. The Flask
