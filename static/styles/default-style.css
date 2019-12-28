@@ -196,7 +196,7 @@ button:active::after {
 .btn-small {
 	width: min-content;
 	margin: 10px;
-	padding: 5px 20px;
+	padding: 10px 20px;
 }
 .red {
 	background-color: var(--red);
@@ -220,12 +220,14 @@ button:active::after {
 input {
 	padding: 10px;
 	margin: 10px;
+	border-color: var(--green);
+	border-style: none none solid solid;
 }
 
 
 /* --- P --- */
 
-p {
+p, label {
 	margin: 5px 10px;
 	font-family: var(--secondaryFont);
 }
