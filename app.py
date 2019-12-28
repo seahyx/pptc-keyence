@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
+# TODO: remove comments when merging
 # import wiringpi
 import time
 
 app = Flask(__name__)
 
 # Wiring pi setup
+# TODO: remove comments when merging
 # wiringpi.wiringPiSetup()
 
 # wiringpi.pinMode(4, 1)
@@ -25,6 +27,7 @@ def api():
 
 
 def open_door():
+	# TODO: remove comments when merging
 	# wiringpi.digitalWrite(5, 1)
 	# time.sleep(500)
 	# wiringpi.digitalWrite(5, 0)
