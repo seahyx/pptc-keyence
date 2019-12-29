@@ -142,6 +142,9 @@ button {
 	font-family: var(--secondaryFont);
 	font-weight: bold;
 
+	/* Button press outline */
+	outline: none;
+
 	-webkit-transition: all 0.15s ease;
 	-moz-transition: all 0.15s ease;
 	-ms-transition: all 0.15s ease;
@@ -225,6 +228,8 @@ input {
 
 	font-family: var(--secondaryFont);
 
+	outline: none;
+
 	-webkit-transition: all 0.15s;
 	-moz-transition: all 0.15s;
 	-ms-transition: all 0.15s;
@@ -256,6 +261,17 @@ input:active {
 	width: 8px;
 	height: 8px;
 	background-color: var(--teal);
+}
+
+/* --- select --- */
+
+select {
+	padding: 5px;
+	font-family: var(--secondaryFont);
+
+	border: 2px solid var(--teal);
+	
+	outline: none;
 }
 
 
