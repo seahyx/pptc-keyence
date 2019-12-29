@@ -249,6 +249,7 @@ input:active {
 	position: relative;
 	border: 2px solid var(--teal);
 	padding: 6px;
+	margin-top: 12px;
 }
 .checkbox:checked {
 	border: 2px solid var(--teal);
