@@ -11,15 +11,15 @@
 			<!-- Form security protection -->
 			{{ form.hidden_tag() }}
 
-			<label for='username'>Username: </label>
-			<input id='username' type='text' placeholder='username' autofocus required>
+			{{ form.username.label }}
+			{{ form.username(required=true, autofocus=true, placeholder='username') }}
 
-			<label for='password'>Password: </label>
-			<input id='password' type='password' placeholder='password' required>
+			{{ form.password.label }}
+			{{ form.password(required=true, placeholder='password') }}
 
 			<div class='flex-horizontal' style='align-items:center'>
-				<input id='remember' type='checkbox' class='checkbox'>
-				<label for='remember'>Remember me</label>
+				{{ form.rmb_me(class='checkbox') }}
+				{{ form.rmb_me.label(style='margin-left:5px') }}
 			</div>
 
 			<button id='submit' type='submit' class='btn-small teal'>Enter</button>
