@@ -3,21 +3,28 @@
 {% block content %}
 
 	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+		
 		<h1>Welcome Home!</h1>
 		
-		<label for='username'>Username: </label>
-		<input id='username' type='text' placeholder='username'>
-		<label for='password'>Password: </label>
-		<input id='password' type='password' placeholder='password'>
+		<form>
 
-		<div class='flex-horizontal' style='align-items:center'>
-			<input id='remember' type='checkbox' class='checkbox'>
-			<label for='remember'>Remember me</label>
-		</div>
+			<label for='username'>Username: </label>
+			<input id='username' type='text' placeholder='username' autofocus required>
 
-		<button type='submit' class='btn-small teal'>Enter</button>
+			<label for='password'>Password: </label>
+			<input id='password' type='password' placeholder='password' required>
+
+			<div class='flex-horizontal' style='align-items:center'>
+				<input id='remember' type='checkbox' class='checkbox'>
+				<label for='remember'>Remember me</label>
+			</div>
+
+			<button id='submit' type='submit' class='btn-small teal'>Enter</button>
+
+		</form>
+
 	</div>
 
-	<script src="{{ url_for('static', filename='stc/build/home.js') }}"></script>
+	<script src="{{ url_for('static', filename='stc/build/login.js') }}"></script>
 
 {% endblock %}
