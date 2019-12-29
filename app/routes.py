@@ -1,5 +1,6 @@
-from flask import render_template, jsonify
+from flask import render_template, jsonify, flash, redirect
 from app import app
+from app.forms import LoginForm
 import time
 # TODO: remove comments when merging
 # import wiringpi
@@ -14,9 +15,16 @@ import time
 def index():
 	return render_template('home.html', title = 'Home')
 
-@app.route('/login/')
+@app.route('/login/', methods = ['GET', 'POST'])
 def login():
-	return render_template('login.html', title = 'Login')
+	form = LoginForm()
+
+	if form.validate_on_submit():
+		flash('Login required for user {}, remember me = {}'.format(form.username.data, form.rmb_me.data))
+		return redirect('/')
+	
+	flash('Login required for user {}, remember me = {}'.format(form.username.data, form.rmb_me.data))
+	return render_template('login.html', title = 'Login', form = form)
 
 @app.route('/registration/')
 def registration():
