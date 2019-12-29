@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+
+		<h1>Register account</h1>
+
+		<form class='flex-vertical'>
+
+			<label for='username'>Username: </label>
+			<input id='username' type='text' placeholder='username' autofocus required>
+
+			<label for='password'>Password: </label>
+			<input id='password' type='password' placeholder='password' required>
+	
+			<label for='cfm-password'>Confirm Password: </label>
+			<input id='cfm-password' type='password' placeholder='password' required>
+
+			<div class='flex-horizontal' style='align-items:baseline; padding-bottom: 10px'>
+				<label for='rights'>Account type: </label>
+				<select id='rights' required>
+					<option value='user'>User</option>
+					<option value='admin'>Admin</option>
+				</select>
+			</div>
+	
+			<button id='submit' type='submit' class='btn-small teal'>Submit</button>
+
+		</form>
+
+	</div>
+
+	<script src="{{ url_for('static', filename='src/js/registration.js') }}"></script>
+
+{% endblock %}
