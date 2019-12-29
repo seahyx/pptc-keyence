@@ -3,10 +3,13 @@
 {% block content %}
 
 	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
-		
+
 		<h1>Welcome Home!</h1>
 		
-		<form>
+		<form action='' method='POST' class='flex-vertical' novalidate>
+			
+			<!-- Form security protection -->
+			{{ form.hidden_tag() }}
 
 			<label for='username'>Username: </label>
 			<input id='username' type='text' placeholder='username' autofocus required>
@@ -25,6 +28,6 @@
 
 	</div>
 
-	<script src="{{ url_for('static', filename='stc/build/login.js') }}"></script>
+	<script src="{{ url_for('static', filename='src/js/login.js') }}"></script>
 
 {% endblock %}
