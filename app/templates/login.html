@@ -11,12 +11,32 @@
 			<!-- Form security protection -->
 			{{ form.hidden_tag() }}
 
-			{{ form.username.label }}
+
+			<!-- Username -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.username.label }}
+
+				{% for error in form.username.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
 			{{ form.username(required=true, autofocus=true, placeholder='username') }}
 
-			{{ form.password.label }}
+
+			<!-- Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password.label }}
+
+				{% for error in form.password.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
 			{{ form.password(required=true, placeholder='password') }}
 
+
+			<!-- Remember me -->
 			<div class='flex-horizontal' style='align-items:center'>
 				{{ form.rmb_me(class='checkbox') }}
 				{{ form.rmb_me.label(style='margin-left:5px') }}
