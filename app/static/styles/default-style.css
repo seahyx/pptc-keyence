@@ -284,10 +284,18 @@ p, label {
 }
 
 
-/* H1 */
+/* --- H1 --- */
 
 h1 {
 	margin: 30px 10px 20px 10px;
 	font-family: var(--primaryFont);
 	font-weight: normal;
+}
+
+
+/* --- Span --- */
+
+span.error {
+	color: red;
+	font-family: var(--secondaryFont);
 }
