@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, flash, redirect
+from flask import render_template, jsonify, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
 import time
@@ -21,7 +21,7 @@ def login():
 
 	if form.validate_on_submit():
 		flash('Login required for user {}, remember me = {}'.format(form.username.data, form.rmb_me.data))
-		return redirect('/')
+		return redirect(url_for('index'))
 	
 	flash('Login required for user {}, remember me = {}'.format(form.username.data, form.rmb_me.data))
 	return render_template('login.html', title = 'Login', form = form)
