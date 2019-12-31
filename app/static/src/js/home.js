@@ -1,4 +1,3 @@
-"use strict";
 function getHttp(url) {
     return new Promise((resolve) => {
         let xhttp = new XMLHttpRequest();
