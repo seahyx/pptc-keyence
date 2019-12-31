@@ -134,7 +134,6 @@ def change_pass(username):
 	return
 
 
-
 @app.route('/open-door/')
 @login_required
 def api():
