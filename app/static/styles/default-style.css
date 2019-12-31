@@ -299,3 +299,12 @@ span.error {
 	color: red;
 	font-family: var(--secondaryFont);
 }
+
+
+/* --- img --- */
+
+img {
+	max-width: 100%;
+	height: auto;
+	margin: 10px;
+}
