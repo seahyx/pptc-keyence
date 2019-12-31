@@ -28,7 +28,7 @@
 			<li><a href="{{ url_for('login') }}">Login</a></li>
 			{% else %}
 			<li><a href="{{ url_for('index') }}">Home</a></li>
-			{% if user.account_type == 1 or user.account_type == 2 %}
+			{% if current_user.is_authenticated and current_user.has_admin_rights() %}
 			<li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
 			{% endif %}
 			<li><a href="{{ url_for('logout') }}">Logout</a></li>
