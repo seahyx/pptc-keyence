@@ -125,6 +125,10 @@ header ul li a:active::after {
 	display: flex;
 	flex-direction: row;
 }
+.flex-center {
+	justify-content: center;
+	align-items: center;
+}
 
 /* --- Button --- */
 
@@ -197,7 +201,7 @@ button:active::after {
 	flex-grow: 1;
 }
 .btn-small {
-	width: min-content;
+	width: auto;
 	margin: 10px;
 	padding: 7.5px 20px;
 }
@@ -313,4 +317,22 @@ img {
 	max-width: 100%;
 	height: auto;
 	margin: 10px;
+}
+
+
+/* --- Table --- */
+
+table, th, td {
+	margin: 10px;
+	padding: 10px;
+
+	border-bottom: 2px solid black;
+	border-collapse: collapse;
+
+	text-align: center;
+	font-family: var(--secondaryFont);
+}
+
+table {
+	border-top: 2px solid black;
 }
