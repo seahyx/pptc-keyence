@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
-from app import app
-from app.forms import LoginForm
+from app import app, db
+from app.forms import LoginForm, RegistrationForm
 from app.models import User
 from werkzeug.urls import url_parse
 import time
@@ -34,7 +34,7 @@ def login():
 	if form.validate_on_submit():
 
 		# Find a user by username from the User db table
-		user = User.query.filter_by(username = form.username.data).first()
+		user = User.query.filter_by(username=form.username.data).first()
 
 		if user is None or not user.check_password(form.password.data):
 			# Wrong username or password
@@ -43,7 +43,7 @@ def login():
 
 		# Correct username and password
 		flash('Logged in successfully')
-		login_user(user, remember = form.rmb_me.data)
+		login_user(user, remember=form.rmb_me.data)
 
 		next_page = request.args.get('next')
 		# Netloc tests if next is pointed towards other site, which can link to malicious sites. Thus not accepting the redirect if it has value.
@@ -52,7 +52,7 @@ def login():
 
 		return redirect(next_page)
 	
-	return render_template('login.html', title = 'Login', form = form)
+	return render_template('login.html', title='Login', form=form)
 
 
 @app.route('/logout')
@@ -61,14 +61,25 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/registration/')
+@app.route('/registration/', methods = ['GET', 'POST'])
 def registration():
-	return render_template('registration.html', title = 'Registration')
+
+	form = RegistrationForm()
+
+	if form.validate_on_submit():
+		user = User(username=form.username.data, account_type=form.account_type.data)
+		user.set_password(form.password.data)
+		db.session.add(user)
+		db.session.commit()
+		flash('{} {} has been created'.format('Account', user.username))
+		return redirect(url_for('index'))
+
+	return render_template('registration.html', title='Registration', form=form)
 
 
 @app.route('/open-door/')
 def api():
-	print('API request received')
+	print('Open door request received')
 	open_door()
 	return jsonify(result='success')
 
