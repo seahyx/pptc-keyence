@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class='container'>
+		<h1>Dashboard</h1>
+
+		{% if current_user.is_authenticated %}
+		<p>Logged in as <strong>{{ current_user.username }}</strong></p>
+		{% endif %}
+
+		<h2>Account List</h2>
+		
+		<table>
+			<tr>
+				<th>Username</th>
+				<th>Account Type</th>
+				<th>Actions</th>
+			</tr>
+
+			{% for account in users %}
+			<tr>
+				<td>{{ account.username }}</td>
+				<td>{{ account.get_account_type_name() }}</td>
+				<td>
+					<div class='flex-horizontal flex-center'>
+						<button id='account_remove' type='button' class='red' style='margin-right:10px;'>Remove</button>
+						<button id='account_edit' type='button'>Edit</button>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
+
+			<tr>
+				<th colspan='99'>
+					<div class='flex-horizontal flex-center'>
+						<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new account</button>
+					</div>
+				</th>
+			</tr>
+
+		</table>
+
+		
+	</divclas>
+
+	<script src="{{ url_for('static', filename='src/js/dashboard.js') }}"></script>
+
+{% endblock %}
