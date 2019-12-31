@@ -107,6 +107,24 @@ header ul li a:active::after {
 	height: 0;
 }
 
+
+/* --- Flash --- */
+
+ul.flash {
+	display: flex;
+	flex-flow: column nowrap;
+
+	overflow: scroll hidden;
+
+	margin: 0;
+	padding: 20px;
+}
+
+ul.flash li {
+	font-family: var(--secondaryFont);
+}
+
+
 /* --- Div --- */
 
 .container {
@@ -207,9 +225,11 @@ button:disabled::after{
 .btn-big {
 	width: 100%;
 	margin: 10px;
-	height: 60vh;
+	height: 50vh;
 	padding: 20px;
 	flex-grow: 1;
+	
+	font-size: x-large;
 }
 .btn-small {
 	width: auto;
