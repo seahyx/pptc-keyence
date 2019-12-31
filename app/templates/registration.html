@@ -6,26 +6,59 @@
 
 		<h1>Register account</h1>
 
-		<form class='flex-vertical'>
+		<form action='' method='POST' class='flex-vertical' novalidate>
+			
+			<!-- Form security protection -->
+			{{ form.hidden_tag() }}
 
-			<label for='username'>Username: </label>
-			<input id='username' type='text' placeholder='username' autofocus required>
 
-			<label for='password'>Password: </label>
-			<input id='password' type='password' placeholder='password' required>
-	
-			<label for='cfm-password'>Confirm Password: </label>
-			<input id='cfm-password' type='password' placeholder='password' required>
+			<!-- Username -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.username.label }}
+
+				{% for error in form.username.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.username(autofocus=true, placeholder='username') }}
+
+
+			<!-- Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password.label }}
+
+				{% for error in form.password.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.password(placeholder='password') }}
+
+
+			<!-- Confirm Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password2.label }}
+
+				{% for error in form.password2.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.password2(placeholder='password') }}
+
 
 			<div class='flex-horizontal' style='align-items:baseline; padding-bottom: 10px'>
-				<label for='rights'>Account type: </label>
-				<select id='rights' required>
-					<option value='user'>User</option>
-					<option value='admin'>Admin</option>
-				</select>
+				{{ form.account_type.label }}
+
+				{{ form.account_type }}
+				
+				{% for error in form.account_type.errors %}
+				<span class='error', style='margin-left: 10px'>*{{ error }}</span>
+				{% endfor %}
 			</div>
 	
-			<button id='submit' type='submit' class='btn-small teal'>Submit</button>
+			<button id='submit' type='submit' class='btn-small teal'>Register</button>
 
 		</form>
 
