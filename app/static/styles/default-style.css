@@ -284,12 +284,18 @@ p, label {
 }
 
 
-/* --- H1 --- */
+/* --- Header text --- */
 
 h1 {
 	margin: 30px 10px 20px 10px;
 	font-family: var(--primaryFont);
 	font-weight: normal;
+}
+
+h2 {
+	margin: 20px 10px 10px 10px;
+	font-family: var(--secondaryFont);
+	font-weight: bold;
 }
 
 
