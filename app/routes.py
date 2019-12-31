@@ -3,6 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm
 from app.models import User
+from app.permissions import PermissionsManager
 from werkzeug.urls import url_parse
 import time
 # TODO: remove comments when merging
@@ -15,13 +16,8 @@ import time
 # wiringpi.pinMode(4, 1)
 
 
-# Loads user account into template context if logged in, else None
-@app.context_processor
-def inject_user():
-	if (current_user.is_authenticated):
-		return dict(user=current_user)
-	else:
-		return dict(user=None)
+permissions = PermissionsManager()
+permissions.redirect_view = 'index'
 
 
 @app.route('/')
@@ -65,13 +61,15 @@ def login():
 	return render_template('login.html', title='Login', form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/registration/', methods=['GET', 'POST'])
+@login_required
+@permissions.admin_required
 def registration():
 
 	form = RegistrationForm()
@@ -81,18 +79,26 @@ def registration():
 		user.set_password(form.password.data)
 		db.session.add(user)
 		db.session.commit()
-		flash('{} {} has been created'.format(form.account_type.choices[form.account_type.data][1], user.username))
-		return redirect(url_for('index'))
+		flash('{} {} has been created'.format(user.get_account_type_name(), user.username))
 
-	return render_template('registration.html', title='Registration', form=form)
+		next_page = request.args.get('next')
+		# Netloc tests if next is pointed towards other site, which can link to malicious sites. Thus not accepting the redirect if it has value.
+		if not next_page or url_parse(next_page).netloc != '':
+			next_page = url_for('index')
+			
+		return redirect(next_page)
+
+	return render_template('registration.html', title='Create new account', form=form)
 
 
 @app.route('/dashboard/')
 @login_required
+@permissions.admin_required
 def dashboard():
-	return render_template('dashboard.html', title='Admin Dashboard')
+	return render_template('dashboard.html', title='Admin Dashboard', users=User.query.all())
 
 @app.route('/open-door/')
+@login_required
 def api():
 	print('Open door request received')
 	open_door()
