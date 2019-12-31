@@ -24,3 +24,10 @@ class RegistrationForm(FlaskForm):
 		user = User.query.filter_by(username=username.data).first()
 		if user is not None:
 			raise ValidationError('This username chosen already lah')
+
+class ChangePasswordForm(FlaskForm):
+	password = PasswordField('Password', validators=[DataRequired('Password also required lah'), Length(min=4, message='Password must be at least %(min)d characters long eh')])
+
+	password2 = PasswordField('Confirm Password', validators=[DataRequired('Confirm the password leh'), EqualTo('password', 'Password type second time must be same eh')])
+
+	submit = SubmitField('Register')

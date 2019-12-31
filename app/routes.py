@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
 from werkzeug.urls import url_parse
@@ -119,6 +119,27 @@ def dashboard():
 			flash('Error: User with id of {} does not exist'.format(removal_id))
 
 	return render_template('dashboard.html', title='Admin Dashboard', users=User.query.order_by(User.account_type).order_by(User.username).all())
+
+
+@app.route('/dashboard/change-pass/<username>/', methods=['GET', 'POST'])
+@login_required
+@permissions.admin_required
+def change_pass(username):
+	user = User.query.filter_by(username=username).first_or_404()
+
+	form = ChangePasswordForm()
+
+	if form.validate_on_submit():
+		user.set_password(form.password.data)
+		db.session.commit()
+		flash('Success: Password for {} {} has been changed'.format(user.get_account_type_name(), user.username))
+		return(redirect(url_for('dashboard')))
+	
+	return(render_template('change-pass.html', title='Change password', form=form, user=user))
+
+	return
+
+
 
 @app.route('/open-door/')
 @login_required

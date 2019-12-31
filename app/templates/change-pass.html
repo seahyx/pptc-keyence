@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+
+		<h1>Change password for {{ user.get_account_type_name() }} {{ user.username }}</h1>
+
+		<form action='' method='POST' class='flex-vertical' novalidate>
+			
+			<!-- Form security protection -->
+			{{ form.hidden_tag() }}
+
+
+			<!-- Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password.label }}
+
+				{% for error in form.password.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.password(placeholder='password') }}
+
+
+			<!-- Confirm Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password2.label }}
+
+				{% for error in form.password2.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.password2(placeholder='password') }}
+
+	
+			<button id='submit' type='submit' class='btn-small teal'>Register</button>
+
+		</form>
+
+	</div>
+
+{% endblock %}
