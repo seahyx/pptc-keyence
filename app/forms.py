@@ -16,11 +16,11 @@ class RegistrationForm(FlaskForm):
 
 	password2 = PasswordField('Confirm Password', validators=[DataRequired('Confirm the password leh'), EqualTo('password', 'Password type second time must be same eh')])
 
-	account_type = SelectField('Account Type', choices=[('2', 'User'), ('1', 'Admin')], validators=[DataRequired()])
+	account_type = SelectField('Account Type', choices=[(0, 'User'), (1, 'Admin')], coerce=int, default=0)
 
 	submit = SubmitField('Register')
 
 	def validate_username(self, username):
 		user = User.query.filter_by(username=username.data).first()
-		if User is not None:
+		if user is not None:
 			raise ValidationError('This username chosen already lah')
