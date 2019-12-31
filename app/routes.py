@@ -18,10 +18,10 @@ import time
 @app.route('/home/')
 @login_required
 def index():
-	return render_template('home.html', title = 'Home')
+	return render_template('home.html', title='Home')
 
 
-@app.route('/login/', methods = ['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
 	
 	# If user is logged in and navigates to this page somehow
@@ -61,7 +61,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/registration/', methods = ['GET', 'POST'])
+@app.route('/registration/', methods=['GET', 'POST'])
 def registration():
 
 	form = RegistrationForm()
@@ -71,11 +71,16 @@ def registration():
 		user.set_password(form.password.data)
 		db.session.add(user)
 		db.session.commit()
-		flash('{} {} has been created'.format('Account', user.username))
+		flash('{} {} has been created'.format(form.account_type.choices[form.account_type.data][1], user.username))
 		return redirect(url_for('index'))
 
 	return render_template('registration.html', title='Registration', form=form)
 
+
+@app.route('/dashboard/')
+@login_required
+def dashboard():
+	return render_template('dashboard.html', title='Admin Dashboard')
 
 @app.route('/open-door/')
 def api():
@@ -92,7 +97,7 @@ def open_door():
 	return True
 
 
-# If we're running this script directly, this portion executes. The Flask
+#  If we're running this script directly, this portion executes. The Flask
 #  instance runs with the given parameters. Note that the "host=0.0.0.0" part
 #  is essential to telling the system that we want the app visible to the 
 #  outside world.
