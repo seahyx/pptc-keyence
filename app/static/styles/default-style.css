@@ -141,6 +141,8 @@ button {
 	background-color: var(--green);
 	border: 2px solid black;
 
+	cursor: pointer;
+
 	/* Button text style */
 	color: black;
 	font-family: var(--secondaryFont);
@@ -192,6 +194,15 @@ button:active::after {
 	visibility: visible;
 
 	height: 0;
+}
+button:disabled {
+	background-color: #bbb;
+	color: #666;
+
+	cursor: default;
+}
+button:disabled::after{
+	display: none;
 }
 .btn-big {
 	width: 100%;
