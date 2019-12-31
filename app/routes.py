@@ -4,17 +4,11 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
+from app.gate import GateManager
 from werkzeug.urls import url_parse
 import time
-# TODO: remove comments when merging
-# import wiringpi
 
-# Wiring pi setup
-# TODO: remove comments when merging
-# wiringpi.wiringPiSetup()
-
-# wiringpi.pinMode(4, 1)
-
+gate = GateManager()
 
 permissions = PermissionsManager()
 permissions.redirect_view = 'index'
@@ -144,18 +138,24 @@ def change_pass(username):
 @app.route('/open-door/')
 @login_required
 def api():
-	print('Open door request received')
-	open_door()
-	return jsonify(result='success')
+	print('Open door request received, gateFree = {}'.format(gate.gate_free()))
 
+	isForced = request.args.get('forced');
 
-def open_door():
-	# TODO: remove comments when merging
-	# wiringpi.digitalWrite(5, 1)
-	# time.sleep(500)
-	# wiringpi.digitalWrite(5, 0)
-	return True
+	print(isForced)
 
+	if not gate.gate_free() and not isForced == 'true':
+		print('Gate is currently in operation, please wait {} second(s)'.format(gate.gate_time_left_to_free()))
+		return jsonify(message='fail', time_left=gate.gate_time_left_to_free())
+	
+	if request.args.get('args') and request.args.get('args').isdigit():
+		# If there another button pressed
+		args = int(request.args.get('args'))
+		gate.open_gate(args)
+		return jsonify(message='success')
+	else:
+		return jsonify(message='none')
+	
 
 #  If we're running this script directly, this portion executes. The Flask
 #  instance runs with the given parameters. Note that the "host=0.0.0.0" part

@@ -10,9 +10,35 @@ function getHttp(url) {
         xhttp.send();
     });
 }
-let btn_open = document.getElementById('btn_open');
+
+let btn_open = document.getElementById('btn-open');
 let btn_open_hold = document.getElementById('btn-open-hold');
-btn_open.addEventListener('click', () => getHttp('/open-door/'));
-btn_open.addEventListener('click', () => console.log('Button Pressed'));
-btn_open_hold.addEventListener('click', () => getHttp('/open-door/'));
-btn_open_hold.addEventListener('click', () => console.log('Button Pressed'));
+
+btn_open.addEventListener('click', () => {
+	let promise = getHttp('/open-door/?args=0');
+	promise.then((fulfilled) => {
+		let reply = JSON.parse(fulfilled)
+		console.log(reply.message);
+		if (reply.message == 'fail') {
+			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
+				getHttp('/open-door/?args=0&forced=true');
+			}
+		}
+	}).catch((error) => {
+		console.log(error.message);
+	})
+});
+btn_open_hold.addEventListener('click', () => {
+	let promise = getHttp('/open-door/?args=1');
+	promise.then((fulfilled) => {
+		let reply = JSON.parse(fulfilled);
+		console.log(reply.message);
+		if (reply.message == 'fail') {
+			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
+				getHttp('/open-door/?args=1&forced=true');
+			}
+		}
+	}).catch((error) => {
+		console.log(error.message);
+	})
+});

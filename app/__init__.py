@@ -15,7 +15,7 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
-from app import routes, models, errors, permissions
+from app import routes, models, errors, permissions, gate
 
 if not app.debug:
 	# Send email to admins when server encounter errors in production
