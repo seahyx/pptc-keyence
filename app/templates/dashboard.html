@@ -20,12 +20,20 @@
 
 			{% for account in users %}
 			<tr>
+				{% if account.id == current_user.id %}
+				<td><strong>{{ account.username }}</strong><em>(Current user)</em></td>
+				{% else %}
 				<td>{{ account.username }}</td>
+				{% endif %}
 				<td>{{ account.get_account_type_name() }}</td>
 				<td>
 					<div class='flex-horizontal flex-center'>
-						<button type='button' class='red button-remove' style='margin-right:10px;'>Remove</button>
-						<button type='button' class='button-edit'>Edit</button>
+						<button id='{{ account.id }}' type='button' class='red button-remove' style='margin-right:10px;'
+						{% if account.account_type == 0 or account.id == current_user.id %}
+						disabled
+						{% endif %}
+						>Remove</button>
+						<button type='button' class='button-reset'>Reset Password</button>
 					</div>
 				</td>
 			</tr>
@@ -44,7 +52,6 @@
 		
 	</divclas>
 
-	<script src="{{ url_for('static', filename='src/js/tools.js') }}"></script>
 	<script src="{{ url_for('static', filename='src/js/dashboard.js') }}"></script>
 
 {% endblock %}
