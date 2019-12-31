@@ -14,6 +14,16 @@ import time
 
 # wiringpi.pinMode(4, 1)
 
+
+# Loads user account into template context if logged in, else None
+@app.context_processor
+def inject_user():
+	if (current_user.is_authenticated):
+		return dict(user=current_user)
+	else:
+		return dict(user=None)
+
+
 @app.route('/')
 @app.route('/home/')
 @login_required
