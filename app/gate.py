@@ -56,10 +56,10 @@ class GateManager:
 
 	def trigger_gate(self):
 		# TODO: remove comments when merging
-		# wiringpi.digitalWrite(5, 1)
+		# wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
 		self.set_gate_busy(0.5)
 		time.sleep(0.5)
-		# wiringpi.digitalWrite(5, 0)
+		# wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
 		return True
