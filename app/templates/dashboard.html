@@ -24,8 +24,8 @@
 				<td>{{ account.get_account_type_name() }}</td>
 				<td>
 					<div class='flex-horizontal flex-center'>
-						<button id='account_remove' type='button' class='red' style='margin-right:10px;'>Remove</button>
-						<button id='account_edit' type='button'>Edit</button>
+						<button type='button' class='red button-remove' style='margin-right:10px;'>Remove</button>
+						<button type='button' class='button-edit'>Edit</button>
 					</div>
 				</td>
 			</tr>
@@ -44,6 +44,7 @@
 		
 	</divclas>
 
+	<script src="{{ url_for('static', filename='src/js/tools.js') }}"></script>
 	<script src="{{ url_for('static', filename='src/js/dashboard.js') }}"></script>
 
 {% endblock %}
