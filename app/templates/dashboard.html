@@ -10,44 +10,49 @@
 		{% endif %}
 
 		<h2>Account List</h2>
-		
-		<table>
-			<tr>
-				<th>Username</th>
-				<th>Account Type</th>
-				<th>Actions</th>
-			</tr>
 
-			{% for account in users %}
-			<tr>
-				{% if account.id == current_user.id %}
-				<td><strong>{{ account.username }}</strong><em>(Current user)</em></td>
-				{% else %}
-				<td>{{ account.username }}</td>
-				{% endif %}
-				<td>{{ account.get_account_type_name() }}</td>
-				<td>
-					<div class='flex-horizontal flex-center'>
-						<button id='{{ account.id }}' type='button' class='red button-remove' style='margin-right:10px;'
-						{% if account.account_type == 0 or account.id == current_user.id %}
-						disabled
-						{% endif %}
-						>Remove</button>
-						<button id='{{ account.username }}' type='button' class='button-reset'>Reset Password</button>
-					</div>
-				</td>
-			</tr>
-			{% endfor %}
+		<div style='overflow:auto;'>
 
-			<tr>
-				<th colspan='99'>
-					<div class='flex-horizontal flex-center'>
-						<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new account</button>
-					</div>
-				</th>
-			</tr>
+			<table>
 
-		</table>
+				<tr>
+					<th>Username</th>
+					<th>Account Type</th>
+					<th>Actions</th>
+				</tr>
+	
+				{% for account in users %}
+				<tr>
+					{% if account.id == current_user.id %}
+					<td><strong>{{ account.username }}</strong><em>(Current user)</em></td>
+					{% else %}
+					<td>{{ account.username }}</td>
+					{% endif %}
+					<td>{{ account.get_account_type_name() }}</td>
+					<td>
+						<div class='flex-horizontal flex-center'>
+							<button id='{{ account.id }}' type='button' class='red button-remove' style='margin-right:10px;'
+							{% if account.account_type == 0 or account.id == current_user.id %}
+							disabled
+							{% endif %}
+							>Remove</button>
+							<button id='{{ account.username }}' type='button' class='button-reset'>Reset Password</button>
+						</div>
+					</td>
+				</tr>
+				{% endfor %}
+	
+				<tr>
+					<th colspan='99'>
+						<div class='flex-horizontal flex-center'>
+							<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new account</button>
+						</div>
+					</th>
+				</tr>
+	
+			</table>
+
+		</div>
 
 		
 	</divclas>
