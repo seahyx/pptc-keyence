@@ -7,7 +7,15 @@ from app.permissions import PermissionsManager
 from app.gate import GateManager
 from werkzeug.urls import url_parse
 import time
+import socket
 
+# Function to get ip address of host
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
+host_ip = get_ip_address()
 gate = GateManager()
 
 permissions = PermissionsManager()
@@ -143,10 +151,10 @@ def api():
 	if (current_user.account_type == 3):
 		target_ip = request.remote_addr.split('.')
 		print(target_ip)
-		host_ip = request.environ['REMOTE_ADDR'].split('.')
-		print(host_ip)
+		host_ip_split = host_ip.split('.')
+		print(host_ip_split)
 		# If user is accessing from another network, first two arguments will not match
-		if (target_ip[0:1] != host_ip[0:1]):
+		if (target_ip[0:1] != host_ip_split[0:1]):
 			print('Remote user does not have permission to open the gate')
 			return(jsonify(message='unauthorized'))
 
