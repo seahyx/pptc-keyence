@@ -67,8 +67,7 @@ class GateManager:
 	def trigger_gate(self):
 		wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
-		self.set_gate_busy(0.8)
-		time.sleep(0.5)
+		self.set_gate_busy(1.2)
+		time.sleep(1.0)
 		wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
-		return True
