@@ -12,9 +12,6 @@ function getHttp(url) {
 }
 
 let btn_open = document.getElementById('btn-open');
-let btn_open_slightly = document.getElementById('btn-open-slightly');
-let btn_open_hold = document.getElementById('btn-open-hold');
-
 btn_open.addEventListener('click', () => {
 	let promise = getHttp('/open-door/?args=2');
 	promise.then((fulfilled) => {
@@ -31,35 +28,43 @@ btn_open.addEventListener('click', () => {
 		console.log(error.message);
 	})
 });
-btn_open_slightly.addEventListener('click', () => {
-	let promise = getHttp('/open-door/?args=3');
-	promise.then((fulfilled) => {
-		let reply = JSON.parse(fulfilled);
-		console.log(reply.message);
-		if (reply.message == 'fail') {
-			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
-				getHttp('/open-door/?args=1&forced=true');
+
+try {
+	let btn_open_slightly = document.getElementById('btn-open-slightly');
+	let btn_open_hold = document.getElementById('btn-open-hold');
+	btn_open_slightly.addEventListener('click', () => {
+		let promise = getHttp('/open-door/?args=3');
+		promise.then((fulfilled) => {
+			let reply = JSON.parse(fulfilled);
+			console.log(reply.message);
+			if (reply.message == 'fail') {
+				if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
+					getHttp('/open-door/?args=1&forced=true');
+				}
+			} else if (reply.message == 'unauthorized') {
+				alert('Please connect to our wifi network to open the gate.')
 			}
-		} else if (reply.message == 'unauthorized') {
-			alert('Please connect to our wifi network to open the gate.')
-		}
-	}).catch((error) => {
-		console.log(error.message);
-	})
-});
-btn_open_hold.addEventListener('click', () => {
-	let promise = getHttp('/open-door/?args=4');
-	promise.then((fulfilled) => {
-		let reply = JSON.parse(fulfilled);
-		console.log(reply.message);
-		if (reply.message == 'fail') {
-			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
-				getHttp('/open-door/?args=1&forced=true');
+		}).catch((error) => {
+			console.log(error.message);
+		})
+	});
+	btn_open_hold.addEventListener('click', () => {
+		let promise = getHttp('/open-door/?args=4');
+		promise.then((fulfilled) => {
+			let reply = JSON.parse(fulfilled);
+			console.log(reply.message);
+			if (reply.message == 'fail') {
+				if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
+					getHttp('/open-door/?args=1&forced=true');
+				}
+			} else if (reply.message == 'unauthorized') {
+				alert('Please connect to our wifi network to open the gate.')
 			}
-		} else if (reply.message == 'unauthorized') {
-			alert('Please connect to our wifi network to open the gate.')
-		}
-	}).catch((error) => {
-		console.log(error.message);
-	})
-});
+		}).catch((error) => {
+			console.log(error.message);
+		})
+	});
+
+} catch(exception) {
+	console.log('Error thrown: ' + exception.message);
+}
