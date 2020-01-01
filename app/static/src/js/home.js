@@ -15,7 +15,7 @@ let btn_open = document.getElementById('btn-open');
 let btn_open_hold = document.getElementById('btn-open-hold');
 
 btn_open.addEventListener('click', () => {
-	let promise = getHttp('/open-door/?args=0');
+	let promise = getHttp('/open-door/?args=2');
 	promise.then((fulfilled) => {
 		let reply = JSON.parse(fulfilled)
 		console.log(reply.message);
@@ -32,7 +32,7 @@ btn_open.addEventListener('click', () => {
 });
 
 btn_open_hold.addEventListener('click', () => {
-	let promise = getHttp('/open-door/?args=1');
+	let promise = getHttp('/open-door/?args=3');
 	promise.then((fulfilled) => {
 		let reply = JSON.parse(fulfilled);
 		console.log(reply.message);
