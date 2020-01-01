@@ -24,7 +24,7 @@ btn_open.addEventListener('click', () => {
 				getHttp('/open-door/?args=0&forced=true');
 			}
 		} else if (reply.message == 'unauthorized') {
-			alert('Connect to our wifi network to open the gate.')
+			alert('Please connect to our wifi network to open the gate.')
 		}
 	}).catch((error) => {
 		console.log(error.message);
