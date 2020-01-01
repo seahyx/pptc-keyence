@@ -42,24 +42,33 @@ class GateManager:
 			thread = Thread(target=self.open_once)
 			thread.start()
 		elif args == 3:
-			thread = Thread(target=self.open_and_hold)
+			thread = Thread(target=self.open_slightly, args=(6,))
+			thread.start()
+		elif args == 4:
+			thread = Thread(target=self.open_and_hold, args=(6,10,))
 			thread.start()
 
 	# Gate opening mechanism
 	def open_once(self):
 		self.trigger_gate()
 	
-	def open_and_hold(self):
+	def open_slightly(self, open_duration):
 		self.trigger_gate()
-		self.set_gate_busy(15)
-		time.sleep(15)
+		self.set_gate_busy(open_duration)
+		time.sleep(open_duration)
+		self.trigger_gate()
+
+	def open_and_hold(self, open_duration, hold_duration):
+		self.open_slightly(open_duration)
+		self.set_gate_busy(hold_duration)
+		time.sleep(hold_duration)
 		self.trigger_gate()
 
 	def trigger_gate(self):
 		wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
 		self.set_gate_busy(0.8)
-		time.sleep(0.4)
+		time.sleep(0.5)
 		wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
 		return True

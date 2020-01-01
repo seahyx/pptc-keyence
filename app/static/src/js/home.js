@@ -12,6 +12,7 @@ function getHttp(url) {
 }
 
 let btn_open = document.getElementById('btn-open');
+let btn_open_slightly = document.getElementById('btn-open-slightly');
 let btn_open_hold = document.getElementById('btn-open-hold');
 
 btn_open.addEventListener('click', () => {
