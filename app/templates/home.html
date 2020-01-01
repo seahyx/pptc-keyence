@@ -3,14 +3,20 @@
 {% block content %}
 
 	<div class='container'>
+		{% if current_user.username != 'seahyx' %}
+		<div class='flex-horizontal'>
+			<button id='btn-open' type='button' class='btn-big' style='height:60vh;'>OPEN GATE</button>
+		</div>
+		{% else %}
 		<div class='flex-horizontal'>
 			<button id='btn-open' type='button' class='btn-big'>OPEN GATE</button>
-			<button id='btn-slightly' type='button' class='btn-big yellow'>OPEN GATE SLIGHTLY</button>
+			<button id='btn-open-slightly' type='button' class='btn-big yellow'>OPEN GATE SLIGHTLY</button>
 		</div>
 		<div class='flex-horizontal'>
 			<button id='btn-open-hold' type='button' class='btn-big blue'>OPEN GATE AND AUTO CLOSE</button>
 			<button type='button' class='btn-big teal'>THIS DOES NOTHING</button>
 		</div>
+		{% endif %}
 	</div>
 	
 	<script src="{{ url_for('static', filename='src/js/home.js') }}"></script>
