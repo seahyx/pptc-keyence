@@ -40,14 +40,11 @@ class GateManager:
 		if args == 0:
 			self.open_once()
 		elif args == 1:
-			self.open_the_hold()
+			self.open_and_hold()
 
 	# Gate opening mechanism
 	def open_once(self):
 		self.trigger_gate()
-	
-	def open_the_hold(self):
-		self.open_and_hold()
 	
 	def open_and_hold(self):
 		self.trigger_gate()
