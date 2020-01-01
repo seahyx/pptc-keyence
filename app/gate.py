@@ -38,10 +38,10 @@ class GateManager:
 
 	# Gate opening manager
 	def open_gate(self, args):
-		if args == 0:
+		if args == 2:
 			thread = Thread(target=self.open_once)
 			thread.start()
-		elif args == 1:
+		elif args == 3:
 			thread = Thread(target=self.open_and_hold)
 			thread.start()
 
@@ -58,10 +58,8 @@ class GateManager:
 	def trigger_gate(self):
 		# wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
-		# self.set_gate_busy(0.8)
-		# time.sleep(0.4)
-		self.set_gate_busy(15)
-		time.sleep(15)
+		self.set_gate_busy(0.8)
+		time.sleep(0.4)
 		# wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
 		return True
