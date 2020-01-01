@@ -143,13 +143,12 @@ def api():
 	if (current_user.account_type == 3):
 		target_ip = request.remote_addr.split('.')
 		print(target_ip)
-		host_ip = request.host.split('.')
+		host_ip = request.environ['REMOTE_ADDR'].split('.')
 		print(host_ip)
 		# If user is accessing from another network, first two arguments will not match
 		if (target_ip[0:1] != host_ip[0:1]):
 			print('Remote user does not have permission to open the gate')
 			return(jsonify(message='unauthorized'))
-	
 
 	is_forced = request.args.get('forced');
 
