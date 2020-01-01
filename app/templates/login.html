@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+
+		<h1>Welcome Home!</h1>
+		
+		<form action='' method='POST' class='flex-vertical' novalidate>
+			
+			<!-- Form security protection -->
+			{{ form.hidden_tag() }}
+
+
+			<!-- Username -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.username.label }}
+
+				{% for error in form.username.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.username(autofocus=true, placeholder='username', autocorrect='off', autocapitalize='none') }}
+
+
+			<!-- Password -->
+			<div class='flex-horizontal' style='align-items: baseline;'>
+				{{ form.password.label }}
+
+				{% for error in form.password.errors %}
+				<span class='error'>*{{ error }}</span>
+				{% endfor %}
+			</div>
+			
+			{{ form.password(placeholder='password') }}
+
+
+			<!-- Remember me -->
+			<div class='flex-horizontal' style='align-items:center'>
+				{{ form.rmb_me(class='checkbox') }}
+				{{ form.rmb_me.label(style='margin-left:5px') }}
+			</div>
+
+			<button id='submit' type='submit' class='btn-small teal'>Enter</button>
+
+		</form>
+
+	</div>
+
+{% endblock %}
