@@ -1,11 +1,11 @@
 import time
 
-import wiringpi
+# import wiringpi
 
 # Wiring pi setup
-wiringpi.wiringPiSetup()
+# wiringpi.wiringPiSetup()
 
-wiringpi.pinMode(4, 1)
+# wiringpi.pinMode(4, 1)
 
 
 # Creates a singleton class to manage remote control operations
@@ -53,10 +53,10 @@ class GateManager:
 		self.trigger_gate()
 
 	def trigger_gate(self):
-		wiringpi.digitalWrite(4, 1)
+		# wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
-		self.set_gate_busy(0.3)
-		time.sleep(0.3)
-		wiringpi.digitalWrite(4, 0)
+		self.set_gate_busy(0.8)
+		time.sleep(0.4)
+		# wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
 		return True

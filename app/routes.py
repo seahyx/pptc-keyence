@@ -139,11 +139,23 @@ def change_pass(username):
 def api():
 	print('Open door request received, gateFree = {}'.format(gate.gate_free()))
 
-	isForced = request.args.get('forced');
+	# Prevent temp users from accessing (not allowed to query from external network)
+	if (current_user.account_type == 3):
+		target_ip = request.remote_addr.split('.')
+		print(target_ip)
+		host_ip = request.host.split('.')
+		print(host_ip)
+		# If user is accessing from another network, first two arguments will not match
+		if (target_ip[0:1] != host_ip[0:1]):
+			print('Remote user does not have permission to open the gate')
+			return(jsonify(message='unauthorized'))
+	
 
-	print(isForced)
+	is_forced = request.args.get('forced');
 
-	if not gate.gate_free() and not isForced == 'true':
+	print(is_forced)
+
+	if not gate.gate_free() and not is_forced == 'true':
 		print('Gate is currently in operation, please wait {} second(s)'.format(gate.gate_time_left_to_free()))
 		return jsonify(message='fail', time_left=gate.gate_time_left_to_free())
 	

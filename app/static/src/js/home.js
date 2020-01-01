@@ -23,6 +23,8 @@ btn_open.addEventListener('click', () => {
 			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
 				getHttp('/open-door/?args=0&forced=true');
 			}
+		} else if (reply.message == 'unauthorized') {
+			alert('Connect to our wifi network to open the gate.')
 		}
 	}).catch((error) => {
 		console.log(error.message);
@@ -37,6 +39,8 @@ btn_open_hold.addEventListener('click', () => {
 			if (confirm('The gate is still moving. It is going to stop in ' + reply.time_left + ' seconds. Are you sure you want to proceed?')) {
 				getHttp('/open-door/?args=1&forced=true');
 			}
+		} else if (reply.message == 'unauthorized') {
+			alert('Please connect to our wifi network to open the gate.')
 		}
 	}).catch((error) => {
 		console.log(error.message);

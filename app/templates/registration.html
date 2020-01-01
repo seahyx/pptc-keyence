@@ -48,6 +48,7 @@
 			{{ form.password2(placeholder='password') }}
 
 
+			<!-- Select account type -->
 			<div class='flex-horizontal' style='align-items:baseline; padding-bottom: 10px'>
 				{{ form.account_type.label }}
 
@@ -57,6 +58,14 @@
 				<span class='error', style='margin-left: 10px'>*{{ error }}</span>
 				{% endfor %}
 			</div>
+
+
+			<!-- Additional info -->
+			<p>
+				<strong>Admin</strong> - Access to gate, dashboard, and change password, delete, and add users<br>
+				<strong>Trusted user</strong> - Can open gate from home and external networks (everywhere)<br>
+				<strong>Temp user</strong> - Can only open gate from home network (stingray)
+			</p>
 	
 			<button id='submit' type='submit' class='btn-small teal'>Register</button>
 

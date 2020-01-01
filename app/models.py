@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	account_type = db.Column(db.Integer, index = True)
 
-	ACCOUNT_TYPES = [(0, 'Root'), (1, 'Admin'), (2, 'User')]
+	ACCOUNT_TYPES = [(0, 'Root'), (1, 'Admin'), (2, 'Trusted User'), (3, 'Temp User')]
 
 	def set_password(self, password):
 		self.password_hash = generate_password_hash(password)

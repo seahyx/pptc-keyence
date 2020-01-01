@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
 
 	password2 = PasswordField('Confirm Password', validators=[DataRequired('Confirm the password leh'), EqualTo('password', 'Password type second time must be same eh')])
 
-	account_type = SelectField('Account Type', choices=User.ACCOUNT_TYPES[1:len(User.ACCOUNT_TYPES)], coerce=int, default=2)
+	account_type = SelectField('Account Type', choices=User.ACCOUNT_TYPES[1:len(User.ACCOUNT_TYPES)], coerce=int, default=3)
 
 	submit = SubmitField('Register')
 
