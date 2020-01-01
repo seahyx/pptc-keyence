@@ -1,13 +1,11 @@
 import time
 
-# TODO: remove comments when merging
-# import wiringpi
+import wiringpi
 
 # Wiring pi setup
-# TODO: remove comments when merging
-# wiringpi.wiringPiSetup()
+wiringpi.wiringPiSetup()
 
-# wiringpi.pinMode(4, 1)
+wiringpi.pinMode(4, 1)
 
 
 # Creates a singleton class to manage remote control operations
@@ -50,16 +48,15 @@ class GateManager:
 	
 	def open_and_hold(self):
 		self.trigger_gate()
-		self.set_gate_busy(30)
-		time.sleep(30)
+		self.set_gate_busy(15)
+		time.sleep(15)
 		self.trigger_gate()
 
 	def trigger_gate(self):
-		# TODO: remove comments when merging
-		# wiringpi.digitalWrite(4, 1)
+		wiringpi.digitalWrite(4, 1)
 		print('Trigger down')
-		self.set_gate_busy(0.5)
-		time.sleep(0.5)
-		# wiringpi.digitalWrite(4, 0)
+		self.set_gate_busy(0.3)
+		time.sleep(0.3)
+		wiringpi.digitalWrite(4, 0)
 		print('Trigger up')
 		return True
