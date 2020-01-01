@@ -30,6 +30,7 @@ btn_open.addEventListener('click', () => {
 		console.log(error.message);
 	})
 });
+
 btn_open_hold.addEventListener('click', () => {
 	let promise = getHttp('/open-door/?args=1');
 	promise.then((fulfilled) => {
