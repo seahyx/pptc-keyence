@@ -114,8 +114,6 @@ ul.flash {
 	display: flex;
 	flex-flow: column nowrap;
 
-	overflow: scroll hidden;
-
 	margin: 0;
 	padding: 20px;
 }
