@@ -223,7 +223,7 @@ button:disabled::after{
 .btn-big {
 	width: 100%;
 	margin: 10px;
-	height: 50vh;
+	height: 40vh;
 	padding: 20px;
 	flex-grow: 1;
 	
