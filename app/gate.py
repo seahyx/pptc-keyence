@@ -1,3 +1,4 @@
+from threading import Thread
 import time
 
 # import wiringpi
@@ -38,9 +39,11 @@ class GateManager:
 	# Gate opening manager
 	def open_gate(self, args):
 		if args == 0:
-			self.open_once()
+			thread = Thread(target=self.open_once)
+			thread.start()
 		elif args == 1:
-			self.open_and_hold()
+			thread = Thread(target=self.open_and_hold)
+			thread.start()
 
 	# Gate opening mechanism
 	def open_once(self):
