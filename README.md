@@ -1,4 +1,4 @@
-# Our Home's Web Remote Gate
+# Parade State - Flask Server
 
 Use SSH to access the raspberry pi flask server. You must be connected to the same network to access the raspberry pi for SSH.
 
