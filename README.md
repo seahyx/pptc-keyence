@@ -48,4 +48,4 @@ To query all:
 
 DDNS service is provided by FreeDNS.
 
-Home router is configured to update its public IP address every 21 days unless otherwise configured.
+Router is configured to update its public IP address every 21 days unless otherwise configured.
