@@ -15,7 +15,7 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
-from app import routes, models, errors, permissions, gate
+from app import routes, models, errors, permissions
 
 if not app.debug:
 	# Send email to admins when server encounter errors in production
@@ -29,7 +29,7 @@ if not app.debug:
 		mail_handler = SMTPHandler(
 			mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
 			fromaddr='no-reply@' + app.config['MAIL_SERVER'],
-			toaddrs=app.config['ADMINS'], subject='Home Gate Error Log',
+			toaddrs=app.config['ADMINS'], subject='PState Flask Server Error Log',
 			credentials=auth, secure=secure)
 		mail_handler.setLevel(logging.ERROR)
 		app.logger.addHandler(mail_handler)
@@ -37,7 +37,7 @@ if not app.debug:
 	# Creates log files
 	if not os.path.exists('logs'):
 		os.mkdir('logs')
-	file_handler = RotatingFileHandler('logs/home_gate.log', maxBytes=10240,
+	file_handler = RotatingFileHandler('logs/pstate-flask.log', maxBytes=10240,
 									   backupCount=10)
 	file_handler.setFormatter(logging.Formatter(
 		'%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -45,4 +45,4 @@ if not app.debug:
 	app.logger.addHandler(file_handler)
 
 	app.logger.setLevel(logging.INFO)
-	app.logger.info('Home Gate startup')
+	app.logger.info('PState Flask server startup...')

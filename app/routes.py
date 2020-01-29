@@ -4,19 +4,17 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
-from app.gate import GateManager
 from werkzeug.urls import url_parse
 import time
-import socket
+# import socket
 
 # Function to get ip address of host
-def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
+# def get_ip_address():
+#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#     s.connect(("8.8.8.8", 80))
+#     return s.getsockname()[0]
 
-host_ip = get_ip_address()
-gate = GateManager()
+# host_ip = get_ip_address()
 
 permissions = PermissionsManager()
 permissions.redirect_view = 'index'
@@ -141,35 +139,3 @@ def change_pass(username):
 
 	return
 
-
-@app.route('/open-door/')
-@login_required
-def api():
-	print('Open door request received, gateFree = {}'.format(gate.gate_free()))
-
-	# Prevent temp users from accessing (not allowed to query from external network)
-	if (current_user.account_type == 3):
-		target_ip = request.remote_addr.split('.')
-		print(target_ip)
-		host_ip_split = host_ip.split('.')
-		print(host_ip_split)
-		# If user is accessing from another network, first two arguments will not match
-		if (target_ip[0:1] != host_ip_split[0:1]):
-			print('Remote user does not have permission to open the gate')
-			return(jsonify(message='unauthorized'))
-
-	is_forced = request.args.get('forced');
-
-	print(is_forced)
-
-	if not gate.gate_free() and not is_forced == 'true':
-		print('Gate is currently in operation, please wait {} second(s)'.format(gate.gate_time_left_to_free()))
-		return jsonify(message='fail', time_left=gate.gate_time_left_to_free())
-	
-	if request.args.get('args') and request.args.get('args').isdigit():
-		# If there another button pressed
-		args = int(request.args.get('args'))
-		gate.open_gate(args)
-		return jsonify(message='success')
-	else:
-		return jsonify(message='none')
