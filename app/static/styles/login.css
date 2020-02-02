@@ -1,0 +1,27 @@
+.big-container {
+	min-height: 100vh;
+	display: flex;
+	position: relative;
+	background-image: url('/static/img/dna.jpg');
+	background-size: cover;
+}
+
+.login {
+	backdrop-filter: blur(10px);
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.div-left {
+	display: flex;
+	max-width: 380px;
+}
+
+.div-right {
+	min-width: 400px;
+}
+
+.center-divider {
+	height: auto;
+	margin: 10px;
+	border-left: 2px solid grey;
+}
