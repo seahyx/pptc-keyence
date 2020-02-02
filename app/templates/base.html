@@ -1,6 +1,6 @@
 {% extends "base-no-header.html" %}
 
-{% block content %}
+{% block headless_content %}
 
 <header>
 	<ul>
@@ -11,6 +11,10 @@
 		{% if current_user.is_authenticated and current_user.has_admin_rights() %}
 		<li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
 		{% endif %}
+		{% endif %}
+	</ul>
+	<ul>
+		{% if not current_user.is_anonymous %}
 		<li><a href="{{ url_for('logout') }}">Logout</a></li>
 		{% endif %}
 	</ul>
