@@ -1,19 +1,29 @@
 {% extends "base-no-header.html" %}
 
-{% block content %}
-	<div class='flex-center' style='min-height: 100vh; display: flex;'>
+{% block headless_content %}
 
-		<div class='container flex-horizontal' style='margin: auto;'>
+	<!-- Login css -->
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/login.css') }}">
+
+	<!-- Container to fill screen to center login container -->
+	<div class='big-container flex-center'>
+
+		<!-- Login container element -->
+		<div class='container flex-horizontal login'>
 			
-			<div class='flex-center' style='display: flex; max-width: 380px;'>
+			<!-- Left side div -->
+			<div class='div-left flex-center'>
 				<h1 style='margin: 0;'>
 					PPTC Keyence Vision System
 				</h1>
 			</div>
 
-			<div style='height: auto; margin: 10px; border-left: 2px solid grey'></div>
+			<!-- Center divider -->
+			<div class='center-divider'></div>
 
-			<div style='min-width: 400px;'>
+			<!-- Right side div -->
+			<div class='div-right'>
 
 				<h2>Account Login</h2>
 			
@@ -53,7 +63,7 @@
 						{{ form.rmb_me.label(style='margin-left:5px') }}
 					</div>
 		
-					<button id='submit' type='submit' class='btn-small green'>Enter</button>
+					<button id='submit' type='submit' class='btn-small green'>Log In</button>
 		
 				</form>
 
