@@ -3,9 +3,9 @@
 
 <head>
 	{% if title %}
-	<title>{{ title }} - Home Gate</title>
+	<title>{{ title }} - Keyence Vision System</title>
 	{% else %}
-	<title>Home Gate</title>
+	<title>Keyence Vision System</title>
 	{% endif %}
 
 	<meta name='viewport'
@@ -21,7 +21,8 @@
 	<meta name="theme-color" content="#ffffff">
 	
 	<!-- Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Muli:400,700&display=swap' rel='stylesheet'>
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/fonts.css') }}">
 	
 	<!-- CSS -->
 	<link rel='stylesheet' type='text/css'
@@ -31,8 +32,8 @@
 </head>
 
 <body>
-	
-	{% block content %}{% endblock %}
+
+	{% block headless_content %}{% endblock %}
 
 </body>
 
