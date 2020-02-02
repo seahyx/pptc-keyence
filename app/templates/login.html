@@ -1,50 +1,65 @@
-{% extends "base.html" %}
+{% extends "base-no-header.html" %}
 
 {% block content %}
+	<div class='flex-center' style='min-height: 100vh; display: flex;'>
 
-	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+		<div class='container flex-horizontal' style='margin: auto;'>
+			
+			<div class='flex-center' style='display: flex; max-width: 380px;'>
+				<h1 style='margin: 0;'>
+					PPTC Keyence Vision System
+				</h1>
+			</div>
 
-		<h1>Welcome Home!</h1>
+			<div style='height: auto; margin: 10px; border-left: 2px solid grey'></div>
+
+			<div style='min-width: 400px;'>
+
+				<h2>Account Login</h2>
+			
+				<form action='' method='POST' class='flex-vertical' novalidate>
+					
+					<!-- Form security protection -->
+					{{ form.hidden_tag() }}
 		
-		<form action='' method='POST' class='flex-vertical' novalidate>
-			
-			<!-- Form security protection -->
-			{{ form.hidden_tag() }}
+		
+					<!-- Username -->
+					<div class='flex-horizontal' style='align-items: baseline;'>
+						{{ form.username.label }}
+		
+						{% for error in form.username.errors %}
+						<span class='error'>*{{ error }}</span>
+						{% endfor %}
+					</div>
+					
+					{{ form.username(autofocus=true, placeholder='username', autocorrect='off', autocapitalize='none') }}
+		
+		
+					<!-- Password -->
+					<div class='flex-horizontal' style='align-items: baseline;'>
+						{{ form.password.label }}
+		
+						{% for error in form.password.errors %}
+						<span class='error'>*{{ error }}</span>
+						{% endfor %}
+					</div>
+					
+					{{ form.password(placeholder='password') }}
+		
+		
+					<!-- Remember me -->
+					<div class='flex-horizontal' style='align-items:center'>
+						{{ form.rmb_me(class='checkbox') }}
+						{{ form.rmb_me.label(style='margin-left:5px') }}
+					</div>
+		
+					<button id='submit' type='submit' class='btn-small green'>Enter</button>
+		
+				</form>
 
-
-			<!-- Username -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.username.label }}
-
-				{% for error in form.username.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
 			</div>
-			
-			{{ form.username(autofocus=true, placeholder='username', autocorrect='off', autocapitalize='none') }}
-
-
-			<!-- Password -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.password.label }}
-
-				{% for error in form.password.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.password(placeholder='password') }}
-
-
-			<!-- Remember me -->
-			<div class='flex-horizontal' style='align-items:center'>
-				{{ form.rmb_me(class='checkbox') }}
-				{{ form.rmb_me.label(style='margin-left:5px') }}
-			</div>
-
-			<button id='submit' type='submit' class='btn-small teal'>Enter</button>
-
-		</form>
+	
+		</div>
 
 	</div>
 
