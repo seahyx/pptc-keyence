@@ -1,63 +1,32 @@
-<!DOCTYPE html>
-<html>
+{% extends "base-no-header.html" %}
 
-<head>
-	{% if title %}
-	<title>{{ title }} - Home Gate</title>
-	{% else %}
-	<title>Home Gate</title>
-	{% endif %}
+{% block content %}
 
-	<meta name='viewport'
-	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'>
-
-	<!-- Favicon and Icons -->
-	<link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='res/apple-touch-icon.png') }}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='res/favicon-32x32.png') }}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='res/favicon-16x16.png') }}">
-	<link rel="manifest" href="{{ url_for('static', filename='res/site.webmanifest') }}">
-	<link rel="mask-icon" href="{{ url_for('static', filename='res/safari-pinned-tab.svg') }}" color="#5bbad5">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
-	
-	<!-- Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Lato:400,700|Raleway:400,700&display=swap' rel='stylesheet'>
-	
-	<!-- CSS -->
-	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/default-style.css') }}">
-		
-	<!-- Script -->
-</head>
-
-<body>
-	<header>
-		<ul>
-			{% if current_user.is_anonymous %}
-			<li><a href="{{ url_for('login') }}">Login</a></li>
-			{% else %}
-			<li><a href="{{ url_for('index') }}">Home</a></li>
-			{% if current_user.is_authenticated and current_user.has_admin_rights() %}
-			<li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-			{% endif %}
-			<li><a href="{{ url_for('logout') }}">Logout</a></li>
-			{% endif %}
-		</ul>
-	</header>
-
-	<!-- Show flash messages -->
-	{% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class='flash'>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+<header>
+	<ul>
+		{% if current_user.is_anonymous %}
+		<li><a href="{{ url_for('login') }}">Login</a></li>
+		{% else %}
+		<li><a href="{{ url_for('index') }}">Home</a></li>
+		{% if current_user.is_authenticated and current_user.has_admin_rights() %}
+		<li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
 		{% endif %}
-	{% endwith %}
+		<li><a href="{{ url_for('logout') }}">Logout</a></li>
+		{% endif %}
+	</ul>
+</header>
 
-	{% block content %}{% endblock %}
+<!-- Show flash messages -->
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	<ul class='flash'>
+		{% for message in messages %}
+		<li>{{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endwith %}
 
-</body>
+{% block content %}{% endblock %}
 
-</html>
+{% endblock %}
