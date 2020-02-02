@@ -1,6 +1,6 @@
 
-let btns_remove = document.getElementsByClassName('button-remove');
-let btns_reset = document.getElementsByClassName('button-reset');
+let btns_remove = document.getElementsByClassName('btn-js-remove');
+let btns_reset = document.getElementsByClassName('btn-js-reset');
 
 for (let i = 0; i < btns_remove.length; i++) {
 	btns_remove[i].addEventListener('click', () => {
