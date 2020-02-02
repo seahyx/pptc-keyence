@@ -137,4 +137,4 @@ tsconfig.json
 .vscode/
 
 # Database files
-.db
+*.db
