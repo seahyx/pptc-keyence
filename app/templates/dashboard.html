@@ -31,12 +31,12 @@
 					<td>{{ account.get_account_type_name() }}</td>
 					<td>
 						<div class='flex-horizontal flex-center'>
-							<button id='{{ account.id }}' type='button' class='red button-remove' style='margin-right:10px;'
+							<button id='{{ account.id }}' type='button' class='btn-small red btn-js-remove' style='margin-right: 10px;'
 							{% if account.account_type == 0 or account.id == current_user.id %}
 							disabled
 							{% endif %}
 							>Remove</button>
-							<button id='{{ account.username }}' type='button' class='button-reset'>Reset Password</button>
+							<button id='{{ account.username }}' type='button' class='btn-small btn-js-reset'>Reset Password</button>
 						</div>
 					</td>
 				</tr>
