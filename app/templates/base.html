@@ -39,7 +39,7 @@
 	{% if not no_header %}
 
 	<!-- Checkbox to open/close navbar -->
-	<input type='checkbox' id='nav-btn'/>
+	<input type='checkbox' id='nav-btn' {% if nav_closed %}checked{% endif %}/>
 
 	<!-- Navbar -->
 	<header id='navbar'>
@@ -87,7 +87,7 @@
 			<label for='nav-btn'>&#9776;</label>
 			<ul>
 				<li></li>
-				<li><p id='time' title='Local System Time'></p></li>
+				<li><p id='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
 			</ul>
 		</div>
 	
