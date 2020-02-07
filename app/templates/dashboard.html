@@ -10,7 +10,7 @@
 		<p>Logged in as <strong>{{ current_user.username }}</strong></p>
 		{% endif %}
 
-		<h2>Account Management</h2>
+		<h2>User Management</h2>
 
 		<div style='overflow:auto;'>
 
@@ -46,7 +46,7 @@
 				<tr>
 					<th colspan='99'>
 						<div class='flex-horizontal flex-center'>
-							<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new account</button>
+							<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new user</button>
 						</div>
 					</th>
 				</tr>
