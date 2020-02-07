@@ -1,36 +1,81 @@
-{% extends "base-no-header.html" %}
+<!DOCTYPE html>
+<html>
 
-{% block headless_content %}
-
-<header>
-	<ul>
-		{% if current_user.is_anonymous %}
-		<li><a href="{{ url_for('login') }}">Login</a></li>
-		{% else %}
-		<li><a href="{{ url_for('index') }}">Home</a></li>
-		{% if current_user.is_authenticated and current_user.has_admin_rights() %}
-		<li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-		{% endif %}
-		{% endif %}
-	</ul>
-	<ul>
-		{% if not current_user.is_anonymous %}
-		<li><a href="{{ url_for('logout') }}">Logout</a></li>
-		{% endif %}
-	</ul>
-</header>
-
-<!-- Show flash messages -->
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-	<ul class='flash'>
-		{% for message in messages %}
-		<li>{{ message }}</li>
-		{% endfor %}
-	</ul>
+<head>
+	{% if title %}
+	<title>{{ title }} - Keyence Vision System</title>
+	{% else %}
+	<title>Keyence Vision System</title>
 	{% endif %}
-{% endwith %}
 
-{% block content %}{% endblock %}
+	<meta name='viewport'
+	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'>
 
-{% endblock %}
+	<!-- Favicon and Icons -->
+	<link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='res/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='res/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='res/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ url_for('static', filename='res/site.webmanifest') }}">
+	<link rel="mask-icon" href="{{ url_for('static', filename='res/safari-pinned-tab.svg') }}" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	
+	<!-- Fonts -->
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/fonts.css') }}">
+	
+	<!-- CSS -->
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/default-style.css') }}">
+		
+	<!-- Script -->
+</head>
+
+<body>
+
+	{% if not no_header %}
+
+	<header>
+		<h1>Keyence Vision System</h1>
+		<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
+
+		{% set navigation_bar = [
+			('index', 'Home'),
+			('dashboard', 'Manage Users')
+		] -%}
+		{% set active_page = active_page|default('index') -%}
+		<ul>
+			{% for href, name in navigation_bar %}
+				{% if href != 'dashboard' or (href == 'dashboard' and (current_user.is_authenticated and current_user.has_admin_rights())) %}
+					<li><a href='{{ url_for(href|e) }}' {% if href == active_page %} class='active'{% endif %}>{{ name|e }}</a></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+
+		<!-- Log out -->
+		{% if not current_user.is_anonymous %}
+		<a id='header-logout' href="{{ url_for('logout') }}">Log out >></a>
+		{% endif %}
+	</header>
+	<div id='content-spacer'></div>
+	
+	{% endif %}
+
+	<div id='content-body'>
+		<!-- Show flash messages -->
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul class='flash'>
+			{% for message in messages %}
+			<li>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+
+		{% block content %}{% endblock %}
+	</div>
+	
+</body>
+
+</html>
