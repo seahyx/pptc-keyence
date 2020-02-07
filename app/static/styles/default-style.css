@@ -116,7 +116,7 @@ header ul li a:hover {
 	background-color: var(--lightblue);
 }
 header ul li a:active {
-	background-color: white;
+	background-color: grey;
 	color: black;
 }
 
