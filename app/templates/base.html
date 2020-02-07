@@ -12,7 +12,7 @@
 	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'>
 
 	<!-- Favicon and Icons -->
-	<link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='res/apple-touch-icon.png') }}">
+	<link rel='apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='res/apple-touch-icon.png') }}">
 	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='res/favicon-32x32.png') }}">
 	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='res/favicon-16x16.png') }}">
 	<link rel="manifest" href="{{ url_for('static', filename='res/site.webmanifest') }}">
@@ -35,46 +35,75 @@
 
 	{% if not no_header %}
 
-	<header>
-		<h1>Keyence Vision System</h1>
-		<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
+	<!-- Checkbox to open/close navbar -->
+	<input type='checkbox' id='nav-btn'/>
 
-		{% set navigation_bar = [
-			('index', 'Home'),
-			('dashboard', 'Manage Users')
-		] -%}
-		{% set active_page = active_page|default('index') -%}
-		<ul>
-			{% for href, name in navigation_bar %}
-				{% if href != 'dashboard' or (href == 'dashboard' and (current_user.is_authenticated and current_user.has_admin_rights())) %}
-					<li><a href='{{ url_for(href|e) }}' {% if href == active_page %} class='active'{% endif %}>{{ name|e }}</a></li>
+	<!-- Navbar -->
+	<header id='navbar'>
+		<div id='navbar-content'>
+
+			<!-- Navbar top section -->
+			<div>
+				<h1>Keyence Vision System</h1>
+				<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
+		
+				{% set navigation_bar = [
+					('index', 'Home'),
+					('dashboard', 'Manage Users')
+				] -%}
+				{% set active_page = active_page|default('index') -%}
+				<ul>
+					{% for href, name in navigation_bar %}
+						{% if href != 'dashboard' or (href == 'dashboard' and (current_user.is_authenticated and current_user.has_admin_rights())) %}
+							<li><a href='{{ url_for(href|e) }}' {% if href == active_page %} class='active'{% endif %}>{{ name|e }}</a></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+			
+			<!-- Navbar bottom section -->
+			<div>
+				<!-- Log out -->
+				{% if not current_user.is_anonymous %}
+				<a id='header-logout' href="{{ url_for('logout') }}">Log out >></a>
 				{% endif %}
-			{% endfor %}
-		</ul>
+			</div>
 
-		<!-- Log out -->
-		{% if not current_user.is_anonymous %}
-		<a id='header-logout' href="{{ url_for('logout') }}">Log out >></a>
-		{% endif %}
+		</div>
+		
 	</header>
-	<div id='content-spacer'></div>
 	
 	{% endif %}
 
-	<div id='content-body'>
-		<!-- Show flash messages -->
-		{% with messages = get_flashed_messages() %}
-		{% if messages %}
-		<ul class='flash'>
-			{% for message in messages %}
-			<li>{{ message }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-		{% endwith %}
+	<div id='content-wrapper'>
 
-		{% block content %}{% endblock %}
+		<!-- Status bar -->
+		<div id='status-bar'>
+			<label for='nav-btn'>&#9776;</label>
+			<ul>
+				<li>TEST</li>
+				<li>CLOK</li>
+			</ul>
+		</div>
+
+		<!-- Main content -->
+		<div id='content-body'>
+			<!-- Show flash messages -->
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<ul class='flash'>
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			{% endwith %}
+
+			{% block content %}{% endblock %}
+		</div>
 	</div>
+
+	
 	
 </body>
 

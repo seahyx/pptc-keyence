@@ -40,12 +40,13 @@ body {
 
 header {
 	width: var(--nav-width);
-	height: 100%;
+	flex: 0 0 var(--nav-width);
+	height: 100vh;
 
 	padding-left: 30px;
 
-	position: fixed;
-	left: 0;
+	position: sticky;
+	top: 0;
 
 	background-color: black;
 	/* text colour */
@@ -54,11 +55,25 @@ header {
 	overflow-x: hidden;
 
 	z-index: 1;
+	
+	-webkit-transition: all 0.15s;
+	-moz-transition: all 0.15s;
+	-ms-transition: all 0.15s;
+	-o-transition: all 0.15s;
+	transition: 0.15s all;
 }
-/* Spacer for sidebar, must match navbar size */
-#content-spacer {
-	flex: 0 0 var(--nav-width);
-	padding-left: 30px;
+
+/* Header Content keeps content at constant width */
+
+#navbar-content {
+	position: absolute;
+	top: 0;
+	width: var(--nav-width);
+	height: 100%;
+
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
 }
 
 header h1 {
@@ -130,11 +145,9 @@ header ul li a.active {
 /* --- Navbar Logout Button --- */
 
 header #header-logout {
-	position: absolute;
-	bottom: 0;
+	display: flex;
 
-	margin: 10px 10px 20px 10px;
-
+	margin: 10px 10px 20px 0;
 	padding: 10px 20px;
 	
 	color: black;
@@ -160,10 +173,72 @@ header #header-logout:active {
 }
 
 
+/* --- Status Bar --- */
+
+#status-bar {
+	position: sticky;
+	top: 0;
+
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 0;
+
+	background: linear-gradient(90deg, black, var(--blue));
+	color: white;
+}
+#status-bar label {
+	margin: 0;
+	padding: 5px 10px;
+
+	font-size: 2rem;
+
+	border: 1px solid transparent;
+
+	-webkit-transition: all 0.15s;
+	-moz-transition: all 0.15s;
+	-ms-transition: all 0.15s;
+	-o-transition: all 0.15s;
+	transition: all 0.15s;
+}
+#status-bar label:hover {
+	border-color: white;
+}
+#status-bar ul {
+	display: flex;
+	flex-flow: row nowrap;
+
+	list-style: none;
+
+	margin: 0;
+}
+#status-bar ul li {
+	margin: 0 1rem;
+}
+
+
+/* --- Open/Close navbar checkbox */
+
+#nav-btn {
+	display: none;
+}
+#nav-btn:checked ~ #navbar {
+	flex: 0 0 0;
+}
+
+
+/* --- Content Wrapper --- */
+
+#content-wrapper {
+	width: 100%;
+}
+
+
 /* --- Content Body --- */
 
 #content-body {
-	padding: 10px;
 	width: 100%;
 }
 
