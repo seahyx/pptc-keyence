@@ -22,7 +22,7 @@
 				{% endfor %}
 			</div>
 			
-			{{ form.username(autofocus=true, placeholder='username', autocorrect='off', autocapitalize='none') }}
+			{{ form.username(autofocus=true, placeholder='Username', autocorrect='off', autocapitalize='none') }}
 
 
 			<!-- Password -->
@@ -34,7 +34,7 @@
 				{% endfor %}
 			</div>
 			
-			{{ form.password(placeholder='password') }}
+			{{ form.password(placeholder='Password') }}
 
 
 			<!-- Confirm Password -->
@@ -46,7 +46,7 @@
 				{% endfor %}
 			</div>
 			
-			{{ form.password2(placeholder='password') }}
+			{{ form.password2(placeholder='Confirm Password') }}
 
 
 			<!-- Select account type -->
@@ -63,9 +63,8 @@
 
 			<!-- Additional info -->
 			<p>
-				<strong>Admin</strong> - Access to gate, dashboard, and change password, delete, and add users<br>
-				<strong>Trusted user</strong> - Can open gate from home and external networks (everywhere)<br>
-				<strong>Temp user</strong> - Can only open gate from home network (stingray)
+				<strong>Administrator</strong> - Have priviledges to perform Vision adjustment, manage users<br>
+				<strong>Operator</strong> - Can only operate but not modify the system<br>
 			</p>
 	
 			<button id='submit' type='submit' class='btn-small teal'>Register</button>
