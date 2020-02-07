@@ -27,8 +27,11 @@
 	<!-- CSS -->
 	<link rel='stylesheet' type='text/css'
 	href="{{ url_for('static', filename='styles/default-style.css') }}">
-		
+
 	<!-- Script -->
+	{% if not no_header %}
+	<script src="{{ url_for('static', filename='src/js/status-bar.js') }}" defer></script>
+	{% endif %}
 </head>
 
 <body>
@@ -77,14 +80,18 @@
 
 	<div id='content-wrapper'>
 
+		{% if not no_header %}
+
 		<!-- Status bar -->
 		<div id='status-bar'>
 			<label for='nav-btn'>&#9776;</label>
 			<ul>
-				<li>TEST</li>
-				<li>CLOK</li>
+				<li></li>
+				<li><p id='time' title='Local System Time'></p></li>
 			</ul>
 		</div>
+	
+		{% endif %}
 
 		<!-- Main content -->
 		<div id='content-body'>
@@ -102,8 +109,6 @@
 			{% block content %}{% endblock %}
 		</div>
 	</div>
-
-	
 	
 </body>
 
