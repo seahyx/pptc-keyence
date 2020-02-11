@@ -96,15 +96,6 @@
 					<li><p id='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
 				</ul>
 			</div>
-
-			<!-- Navigation map -->
-			{% for href, name, parent, nav_display, admin_req in navigation_map %}
-				{% if href == active_page and parent %}
-					<div class='container'>
-						<a href="{{ url_for(parent) }}">Back</a>
-					</div>
-				{% endif %}
-			{% endfor %}
 	
 		{% endif %}
 
@@ -120,6 +111,15 @@
 			</ul>
 			{% endif %}
 			{% endwith %}
+
+			<!-- Navigation map -->
+			{% for href, name, parent, nav_display, admin_req in navigation_map %}
+				{% if href == active_page and parent %}
+					<div id='nav-back-container' class='container'>
+						<a class='bordered' href="{{ url_for(parent) }}"><< Back</a>
+					</div>
+				{% endif %}
+			{% endfor %}
 
 			{% block content %}{% endblock %}
 		</div>
