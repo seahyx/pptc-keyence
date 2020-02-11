@@ -142,6 +142,13 @@ header ul li a.active {
 	color: black;
 }
 
+/* --- Parented Navbar Item --- */
+
+header ul li a.child {
+	margin-left: 20px;
+	padding: 10px 20px;
+}
+
 /* --- Navbar Logout Button --- */
 
 header #header-logout {
