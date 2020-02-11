@@ -74,6 +74,18 @@ def logout():
 	return redirect(url_for('login'))
 
 
+@app.route('/cartridge/')
+@login_required
+def cartridge():
+	return render_template('cartridge.html', title='Cartridge Assembly QC')
+
+
+@app.route('/laser/')
+@login_required
+def laser():
+	return render_template('laser.html', title='Laser Etch QC')
+
+
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
 @permissions.admin_required
