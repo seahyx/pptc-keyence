@@ -1,6 +1,7 @@
 /* --- Variables --- */
 :root {
 	/* Colours */
+	--lighterred: hsl(355, 96%, 80%);
 	--lightred: hsl(355, 81%, 66%);
 	--red: hsl(355, 51%, 49%);
 	--darkred: hsl(355, 51%, 29%);
@@ -8,6 +9,7 @@
 	--yellow: #FFDAC1;
 	--green: lightgreen;
 	--teal: teal;
+	--lighterblue: hsl(210, 96%, 80%);
 	--lightblue: hsl(210, 81%, 66%);
 	--blue: hsl(210, 51%, 49%);
 	--darkblue: hsl(210, 51%, 29%);
@@ -120,6 +122,9 @@ header ul li a {
 	text-decoration: none;
 	white-space: nowrap;
 
+	border: none;
+	border-radius: 0;
+
 	-webkit-transition: all 0.15s;
 	-moz-transition: all 0.15s;
 	-ms-transition: all 0.15s;
@@ -148,12 +153,16 @@ header ul li a.child {
 	margin-left: 20px;
 	padding: 10px 20px;
 }
+header ul li a.child:hover {
+	padding-left: 30px;
+}
 
 /* --- Navbar Logout Button --- */
 
 header #header-logout {
 	display: flex;
 
+	width: 100%;
 	margin: 10px 10px 20px 0;
 	padding: 10px 20px;
 	
@@ -280,6 +289,10 @@ ul.flash li {
 
 	background-color: white;
 }
+/* select adjacent siblings */
+.container + .container {
+	padding-top: 0;
+}
 .flex-vertical {
 	display: flex;
 	flex-direction: column;
@@ -298,9 +311,23 @@ ul.flash li {
 .max-width {
 	width: 100%;
 }
+.bordered {
+	border: 2px solid black;
+	border-radius: 4px;
+}
+.fit-content {
+	width: fit-content;
+}
+
+#nav-back-container {
+	padding-bottom: 0;
+}
+#nav-back-container a {
+	margin: 0 10px;
+}
 
 
-/* --- Link a --- */
+/* --- Link Button --- */
 
 .btn {
 	position: relative;
@@ -330,11 +357,12 @@ ul.flash li {
 	transition: all 0.15s ease;
 }
 .btn:hover {
-	background-image: linear-gradient(to right, var(--darkblue), var(--blue));
+	background-image: linear-gradient(to right, var(--lightblue), var(--lighterblue));
 }
 .btn:active {
-
 	color: #777;
+
+	background-image: linear-gradient(to right, var(--darkblue), var(--blue));
 
 	-webkit-transition: none;
 	-moz-transition: none;	
@@ -391,11 +419,12 @@ button {
 	transition: all 0.15s ease;
 }
 button:hover {
-	background-image: linear-gradient(to right, var(--darkblue), var(--blue));
+	background-image: linear-gradient(to right, var(--lightblue), var(--lighterblue));
 }
 button:active {
-
 	color: #777;
+
+	background-image: linear-gradient(to right, var(--darkblue), var(--blue));
 
 	-webkit-transition: none;
 	-moz-transition: none;	
@@ -443,6 +472,9 @@ button:disabled::after{
 	background-image: linear-gradient(to right, var(--red), var(--lightred));
 }
 .red:hover {
+	background-image: linear-gradient(to right, var(--lightred), var(--lighterred));
+}
+.red:active {
 	background-image: linear-gradient(to right, var(--darkred), var(--red));
 }
 
@@ -565,7 +597,50 @@ table, th, td {
 	text-align: center;
 	font-family: var(--secondaryFont);
 }
-
 table {
 	border-top: 2px solid black;
+}
+
+table.tb-small td, table.tb-small th {
+	padding: 5px 10px;
+}
+
+/* --- Links --- */
+
+a {
+	width: fit-content;
+	margin: 10px;
+
+	font-family: var(--primaryFont);
+	font-weight: bold;
+	text-decoration: none;
+	
+	color: var(--blue);
+}
+
+a.bordered {
+	padding: 0 10px;
+
+	border: 2px solid var(--blue);
+	border-radius: 4px;
+
+	-webkit-transition: all 0.15s ease;
+	-moz-transition: all 0.15s ease;
+	-ms-transition: all 0.15s ease;
+	-o-transition: all 0.15s ease;
+	transition: all 0.15s ease;
+}
+a.bordered:hover {
+	border-color: var(--lightblue);
+	color: var(--lightblue);
+}
+a.bordered:active {
+	border-color: var(--darkblue);
+	color: var(--darkblue);
+
+	-webkit-transition: none;
+	-moz-transition: none;	
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
 }
