@@ -1,0 +1,27 @@
+#cartridge-img {
+	height: 90vh;
+	max-width: 40vw;
+}
+
+#img-container {
+	width: 25rem;
+	height: 12rem;
+	margin: 10px;
+}
+
+table {
+	width: 40rem;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+table th.sn {
+	border: none;
+}
+table td.sn {
+	border: none;
+	border-right: 2px solid black;
+}
+table td.full-border {
+	border: 2px solid black;
+}

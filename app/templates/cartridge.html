@@ -3,12 +3,55 @@
 
 {% block content %}
 
+	<!-- Cartridge css -->
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/cartridge.css') }}">
+
 	<div class='container'>
 		<h1>
 			Cartridge Assembly QC
 		</h1>
-		<div class='container flex-horizontal no-padding max-width'>
+		<div class='container no-padding flex-center'>
+
+			<div class='container no-padding fit-content'>
+				<div class='container flex-center no-padding bordered'>
+					<p>Status Code</p>
+				</div>
+				<div class='container flex-center flex-horizontal no-padding fit-content'>
+					
+					<div class='container no-padding flex-center'>
+						<img id='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
+						<table class='tb-small'>
+							<tr><th>Cartridge ID</th></tr>
+							<tr><td class='full-border'>id</td></tr>
+						</table>
+					</div>
+
+					<div class='container no-padding flex-center'>
+						<div id='img-container' class='container no-padding bordered'></div>
+						<div class='container no-padding'>
+							<table class='tb-small'>
+								<tr>
+									<th class='sn'>S/N</th>
+									<th>Expected Mask</th>
+									<th>Barcode</th>
+								</tr>
+								{% for x in range(1, 22) %}
+									<tr>
+										<td class='sn'>{{ x }}</td>
+										<td class='full-border'></td>
+										<td class='full-border'></td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
+		
+		
 	</div>
 
 {% endblock %}
