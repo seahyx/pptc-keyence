@@ -49,18 +49,22 @@
 			<div>
 				<h1>Keyence Vision System</h1>
 				<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
-		
-				{% set navigation_bar = [
-					('index', 'Home'),
-					('cartridge', 'Cartridge Assembly QC'),
-					('laser', 'Laser Etch QC'),
-					('dashboard', 'Manage Users')
-				] -%}
+				
+				<!-- link, title, parent, display (in navbar), admin required -->
+				{% set navigation_map = [
+					('index', 'Home', '', true, false),
+					('cartridge', 'Cartridge Assembly QC', 'index', true, false),
+					('laser', 'Laser Etch QC', 'index', true, false),
+					('dashboard', 'Manage Users', '', true, true),
+					('registration', '', 'dashboard', false, true),
+					('change-pass', '', 'dashboard', false, true)] %}
 				{% set active_page = active_page|default('index') -%}
 				<ul>
-					{% for href, name in navigation_bar %}
-						{% if href != 'dashboard' or (href == 'dashboard' and (current_user.is_authenticated and current_user.has_admin_rights())) %}
-							<li><a href='{{ url_for(href|e) }}' {% if href == active_page %} class='active'{% endif %}>{{ name|e }}</a></li>
+					{% for href, name, parent, nav_display, admin_req in navigation_map %}
+						{% if nav_display %}
+							{% if not admin_req or (admin_req and (current_user.is_authenticated and current_user.has_admin_rights())) %}
+								<li><a href='{{ url_for(href|e) }}' class='{% if href == active_page %}active{% endif %}{% if parent %} child{% endif %}'>{{ name|e }}</a></li>
+							{% endif %}
 						{% endif %}
 					{% endfor %}
 				</ul>
@@ -84,14 +88,23 @@
 
 		{% if not no_header %}
 
-		<!-- Status bar -->
-		<div id='status-bar'>
-			<label for='nav-btn'>&#9776;</label>
-			<ul>
-				<li></li>
-				<li><p id='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
-			</ul>
-		</div>
+			<!-- Status bar -->
+			<div id='status-bar'>
+				<label for='nav-btn'>&#9776;</label>
+				<ul>
+					<li></li>
+					<li><p id='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
+				</ul>
+			</div>
+
+			<!-- Navigation map -->
+			{% for href, name, parent, nav_display, admin_req in navigation_map %}
+				{% if href == active_page and parent %}
+					<div class='container'>
+						<a href="{{ url_for(parent) }}">Back</a>
+					</div>
+				{% endif %}
+			{% endfor %}
 	
 		{% endif %}
 
