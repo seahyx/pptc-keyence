@@ -285,6 +285,75 @@ ul.flash li {
 	justify-content: center;
 	align-items: center;
 }
+.no-padding {
+	padding: 0;
+}
+.max-width {
+	width: 100%;
+}
+
+
+/* --- Link a --- */
+
+.btn {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-image: linear-gradient(to right, var(--blue), var(--lightblue));
+	border-radius: 4px;
+	border: none;
+
+	cursor: pointer;
+
+	/* Button text style */
+	color: white;
+	font-family: var(--secondaryFont);
+	font-size: 1.4rem;
+	text-decoration: none;
+
+	/* Button press outline */
+	outline: none;
+
+	-webkit-transition: all 0.15s ease;
+	-moz-transition: all 0.15s ease;
+	-ms-transition: all 0.15s ease;
+	-o-transition: all 0.15s ease;
+	transition: all 0.15s ease;
+}
+.btn:hover {
+	background-image: linear-gradient(to right, var(--darkblue), var(--blue));
+}
+.btn:active {
+
+	color: #777;
+
+	-webkit-transition: none;
+	-moz-transition: none;	
+	-ms-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+.btn:active::after {
+	visibility: visible;
+
+	height: 0;
+}
+.btn:disabled {
+	background-image: none;
+	background-color: #bbb;
+	color: #666;
+
+	cursor: default;
+}
+.btn:disabled:hover{
+	background-image: none;
+	background-color: #bbb;
+}
+.btn:disabled::after{
+	display: none;
+}
 
 /* --- Button --- */
 
@@ -353,6 +422,9 @@ button:disabled::after{
 	padding: 20px;
 	flex-grow: 1;
 	
+	font-size: 1.6rem;
+}
+.btn-big p {
 	font-size: 1.6rem;
 }
 .btn-small {
