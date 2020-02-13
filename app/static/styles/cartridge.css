@@ -1,12 +1,21 @@
 #cartridge-img {
-	height: 90vh;
-	max-width: 40vw;
+	height: 600px;
+}
+
+#status-container {
+	margin-bottom: 10px;
+	position: sticky;
+	top: 3rem;
 }
 
 #img-container {
 	width: 25rem;
 	height: 12rem;
 	margin: 10px;
+}
+
+#tb-cart-id {
+	width: 100%;
 }
 
 table {
@@ -16,6 +25,8 @@ table {
 	border: none;
 }
 table th.sn {
+	width: 2rem;
+	
 	border: none;
 }
 table td.sn {
