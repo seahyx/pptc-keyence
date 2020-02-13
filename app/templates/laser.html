@@ -3,12 +3,80 @@
 
 {% block content %}
 
+	<!-- Laser css -->
+	<link rel='stylesheet' type='text/css'
+	href="{{ url_for('static', filename='styles/laser.css') }}">
+
 	<div class='container'>
+
+		<!-- Title -->
 		<h1>
 			Laser Etch QC
 		</h1>
-		<div class='container flex-horizontal no-padding max-width'>
+
+		<!-- Large container wrapper, fits width of page -->
+		<div class='container no-padding flex-center'>
+
+			<!-- Centered vertical container -->
+			<div class='container fit-content'>
+
+				<!-- Status code container -->
+				<div id='status-container' class='container flex-center no-padding bordered'>
+					<p>Status Code</p>
+				</div>
+
+				<!-- Horizontal container to contain both sides -->
+				<div class='container flex-center flex-horizontal no-padding fit-content'>
+					
+					<!-- Left side container -->
+					<div class='container no-padding flex-center'>
+						<!-- Cartridge image -->
+						<div id='cart-img' class='container no-padding bordered'></div>
+						<!-- Cartridge digital display -->
+						<div id='cart-display' class='container no-padding bordered'></div>
+						<!-- Cartridge ID -->
+						<table id='tb-cart-id' class='tb-small'>
+							<tr>
+								<td class='sn'>Work Order</td>
+								<td class='full-border'></td>
+							</tr>
+							<tr>
+								<td class='sn'>Part Number</td>
+								<td class='full-border'></td>
+							</tr>
+							<tr>
+								<td class='sn'>Part ID</td>
+								<td class='full-border'></td>
+							</tr>
+						</table>
+					</div>
+
+					<!-- Right side container -->
+					<div class='container no-padding flex-center'>
+						<!-- Barcode and mask table -->
+						<div class='container no-padding'>
+							<table class='tb-small'>
+								<tr>
+									<th class='sn'>S/N</th>
+									<th>Barcode</th>
+								</tr>
+								{% for x in range(1, 24) %}
+									<tr>
+										<td class='sn'>{{ x }}</td>
+										<td class='full-border'></td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+
+				</div>
+				
+			</div>
+
 		</div>
+		
+		
 	</div>
 
 {% endblock %}

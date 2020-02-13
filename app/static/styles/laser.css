@@ -1,0 +1,44 @@
+#status-container {
+	margin-bottom: 10px;
+	position: sticky;
+	top: 3rem;
+}
+
+#img-container {
+	width: 25rem;
+	height: 12rem;
+	margin: 10px;
+}
+
+#tb-cart-id {
+	width: 100%;
+}
+#tb-cart-id .sn {
+	width: 8rem;
+}
+
+#cart-img, #cart-display {
+	width: 30rem;
+	height: 20rem;
+
+	margin: 10px 0;
+}
+
+table {
+	width: 20rem;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+table th.sn {
+	width: 2rem;
+
+	border: none;
+}
+table td.sn {
+	border: none;
+	border-right: 2px solid black;
+}
+table td.full-border {
+	border: 2px solid black;
+}
