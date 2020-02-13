@@ -195,6 +195,8 @@ header #header-logout:active {
 	position: sticky;
 	top: 0;
 
+	height: 3rem;
+
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
@@ -285,8 +287,6 @@ ul.flash li {
 	
 	padding: 30px;
 
-	border-radius: 4px;
-
 	background-color: white;
 }
 /* select adjacent siblings */
@@ -313,7 +313,6 @@ ul.flash li {
 }
 .bordered {
 	border: 2px solid black;
-	border-radius: 4px;
 }
 .fit-content {
 	width: fit-content;
