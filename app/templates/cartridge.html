@@ -8,27 +8,40 @@
 	href="{{ url_for('static', filename='styles/cartridge.css') }}">
 
 	<div class='container'>
+
+		<!-- Title -->
 		<h1>
 			Cartridge Assembly QC
 		</h1>
+
+		<!-- Large container wrapper, fits width of page -->
 		<div class='container no-padding flex-center'>
 
-			<div class='container no-padding fit-content'>
-				<div class='container flex-center no-padding bordered'>
+			<!-- Centered vertical container -->
+			<div class='container fit-content'>
+
+				<!-- Status code container -->
+				<div id='status-container' class='container flex-center no-padding bordered'>
 					<p>Status Code</p>
 				</div>
+
+				<!-- Horizontal container to contain both sides -->
 				<div class='container flex-center flex-horizontal no-padding fit-content'>
 					
+					<!-- Left side container -->
 					<div class='container no-padding flex-center'>
+						<!-- Cartridge image -->
 						<img id='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
-						<table class='tb-small'>
+						<!-- Cartridge ID -->
+						<table id='tb-cart-id' class='tb-small'>
 							<tr><th>Cartridge ID</th></tr>
 							<tr><td class='full-border'>id</td></tr>
 						</table>
 					</div>
 
+					<!-- Right side container -->
 					<div class='container no-padding flex-center'>
-						<div id='img-container' class='container no-padding bordered'></div>
+						<!-- Barcode and mask table -->
 						<div class='container no-padding'>
 							<table class='tb-small'>
 								<tr>
@@ -46,7 +59,9 @@
 							</table>
 						</div>
 					</div>
+
 				</div>
+
 			</div>
 
 		</div>
