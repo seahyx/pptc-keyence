@@ -10,10 +10,11 @@ from logging.handlers import RotatingFileHandler
 import logging
 import os
 
+app = Flask(__name__)
+
 # Debug mode (development environment)
 app.debug = True
 
-app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
