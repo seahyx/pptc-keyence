@@ -92,6 +92,8 @@ Further information can be obtained at the SQLAlchemy [documentation (v1.3)](htt
 
 ## Account type information
 
-*Root* - cannot be deleted normally, has all admin rights.
+*Root* - Cannot be deleted normally. Has all admin rights.
 
-*Admin* - Manage user database, and control the gate. No restrictions.
+*Administrator* - Has permission to manage user database. No restrictions.
+
+*Operator* - Only has permission to operate the program.
