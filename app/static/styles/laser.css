@@ -30,6 +30,14 @@
 	background-color: white;
 }
 
+.start {
+	position: fixed;
+	right: 30px;
+	bottom: 20px;
+
+	padding: 15px 50px;
+}
+
 table {
 	width: 20rem;
 	margin: 10px;

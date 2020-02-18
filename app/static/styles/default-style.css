@@ -5,10 +5,16 @@
 	--lightred: hsl(355, 81%, 66%);
 	--red: hsl(355, 51%, 49%);
 	--darkred: hsl(355, 51%, 29%);
+
 	--orange: #FFB7B2;
 	--yellow: #FFDAC1;
-	--green: lightgreen;
 	--teal: teal;
+
+	--lightergreen: hsl(130, 67%, 77%);
+	--lightgreen: hsl(130, 67%, 67%);
+	--green: hsl(130, 67%, 57%);
+	--darkgreen: hsl(130, 67%, 37%);
+
 	--lighterblue: hsl(210, 96%, 80%);
 	--lightblue: hsl(210, 81%, 66%);
 	--blue: hsl(210, 51%, 49%);
@@ -411,6 +417,15 @@ ul.flash li {
 }
 .btn:disabled::after{
 	display: none;
+}
+.btn.green {
+	background-image: linear-gradient(to right, var(--green), var(--lightgreen));
+}
+.btn.green:hover {
+	background-image: linear-gradient(to right, var(--lightgreen), var(--lightergreen));
+}
+.btn.green:active {
+	background-image: linear-gradient(to right, var(--darkgreen), var(--green));
 }
 
 /* --- Button --- */
