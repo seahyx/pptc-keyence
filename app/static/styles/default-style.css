@@ -626,15 +626,17 @@ img {
 /* --- Table --- */
 
 table.list {
+	background-color: white;
 	border-top: 2px solid var(--table-border-color);
+	border-collapse: collapse;
 }
 table.list th, table.list td {
 	margin: 10px;
 	padding: 0 20px;
 	height: 5rem;
 
+	
 	border-bottom: 1px solid var(--table-border-color);
-	border-collapse: collapse;
 
 	text-align: left;
 	font-family: var(--secondaryFont);
