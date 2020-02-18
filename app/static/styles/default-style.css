@@ -13,7 +13,24 @@
 	--lightblue: hsl(210, 81%, 66%);
 	--blue: hsl(210, 51%, 49%);
 	--darkblue: hsl(210, 51%, 29%);
+
+	/* Element colours */
 	--text-grey: #464646;
+
+	--background-color: blanchedalmond;
+
+	/* Container border colour */
+
+	--border-color: darkgray;
+	
+	/* Navigation menu */
+
+	--nav-text-color: white;
+	--nav-background-color: black;
+
+	/* Table */
+	
+	--table-border-color: darkgray;
 
 	/* Font */
 	--primaryFont: 'Muli', sans-serif;
@@ -50,9 +67,9 @@ header {
 	position: sticky;
 	top: 0;
 
-	background-color: black;
+	background-color: var(--nav-background-color);
 	/* text colour */
-	color: white;
+	color: var(--nav-text-color);
 
 	overflow-x: hidden;
 
@@ -143,7 +160,7 @@ header ul li a:active {
 /* --- Active Navbar Item --- */
 
 header ul li a.active {
-	background-color: white;
+	background-color: var(--background-color);
 	color: black;
 }
 
@@ -204,8 +221,10 @@ header #header-logout:active {
 
 	padding: 0;
 
-	background: linear-gradient(90deg, black, var(--blue));
+	background: linear-gradient(90deg, var(--nav-background-color), var(--blue));
 	color: white;
+
+	z-index: 10;
 }
 #status-bar label {
 	margin: 0;
@@ -222,7 +241,7 @@ header #header-logout:active {
 	transition: all 0.15s;
 }
 #status-bar label:hover {
-	border-color: white;
+	border-color: var(--background-color);
 }
 #status-bar ul {
 	display: flex;
@@ -251,6 +270,8 @@ header #header-logout:active {
 
 #content-wrapper {
 	width: 100%;
+
+	background-color: var(--background-color);
 }
 
 
@@ -272,6 +293,8 @@ ul.flash {
 
 	border: 2px solid grey;
 	border-radius: 4px;
+
+	background-color: white;
 }
 
 ul.flash li {
@@ -286,8 +309,6 @@ ul.flash li {
 	flex-flow: column nowrap;
 	
 	padding: 30px;
-
-	background-color: white;
 }
 /* select adjacent siblings */
 .container + .container {
@@ -305,6 +326,9 @@ ul.flash li {
 	justify-content: center;
 	align-items: center;
 }
+.align-start {
+	align-items: flex-start;
+}
 .no-padding {
 	padding: 0;
 }
@@ -312,7 +336,7 @@ ul.flash li {
 	width: 100%;
 }
 .bordered {
-	border: 2px solid black;
+	border: 2px solid var(--border-color);
 }
 .fit-content {
 	width: fit-content;
@@ -586,22 +610,19 @@ img {
 
 /* --- Table --- */
 
-table, th, td {
+table.list {
+	border-top: 2px solid var(--table-border-color);
+}
+table.list th, table.list td {
 	margin: 10px;
-	padding: 10px;
+	padding: 0 20px;
+	height: 5rem;
 
-	border-bottom: 2px solid black;
+	border-bottom: 1px solid var(--table-border-color);
 	border-collapse: collapse;
 
-	text-align: center;
+	text-align: left;
 	font-family: var(--secondaryFont);
-}
-table {
-	border-top: 2px solid black;
-}
-
-table.tb-small td, table.tb-small th {
-	padding: 5px 10px;
 }
 
 /* --- Links --- */

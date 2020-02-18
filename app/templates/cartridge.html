@@ -26,12 +26,18 @@
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
-				<div class='container flex-center flex-horizontal no-padding fit-content'>
+				<div class='container flex-center flex-horizontal align-start no-padding fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container no-padding flex-center'>
+					<div class='container no-padding' style='margin-right:10px'>
 						<!-- Cartridge image -->
-						<img id='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
+						<div id='cartridge-container' class='container no-padding flex-center bordered'>
+							<!-- Underlay - colours the circles -->
+							<div id='cartridge-underlay' class='container no-padding'>
+							</div>
+							<!-- Cartridge image overlay -->
+							<img id='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
+						</div>
 						<!-- Cartridge ID -->
 						<table id='tb-cart-id' class='tb-small'>
 							<tr><th>Cartridge ID</th></tr>
@@ -40,7 +46,7 @@
 					</div>
 
 					<!-- Right side container -->
-					<div class='container no-padding flex-center'>
+					<div class='container no-padding'>
 						<!-- Barcode and mask table -->
 						<div class='container no-padding'>
 							<table class='tb-small'>

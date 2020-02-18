@@ -12,11 +12,11 @@
 	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'>
 
 	<!-- Favicon and Icons -->
-	<link rel='apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='res/apple-touch-icon.png') }}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='res/favicon-32x32.png') }}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='res/favicon-16x16.png') }}">
-	<link rel="manifest" href="{{ url_for('static', filename='res/site.webmanifest') }}">
-	<link rel="mask-icon" href="{{ url_for('static', filename='res/safari-pinned-tab.svg') }}" color="#5bbad5">
+	<link rel='apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='/res/apple-touch-icon.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='/res/favicon-32x32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='/res/favicon-16x16.png') }}">
+	<link rel="manifest" href="{{ url_for('static', filename='/res/site.webmanifest') }}">
+	<link rel="mask-icon" href="{{ url_for('static', filename='/res/safari-pinned-tab.svg') }}" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
 	<meta name="theme-color" content="#ffffff">
 	
@@ -47,9 +47,12 @@
 
 			<!-- Navbar top section -->
 			<div>
-				<h1>Keyence Vision System</h1>
+				<!-- Title -->
+				<h1>2D Barcode System</h1>
+				<!-- Account info -->
 				<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
 				
+				<!-- Navigation map for info -->
 				<!-- link, title, parent, display (in navbar), admin required -->
 				{% set navigation_map = [
 					('index', 'Home', '', true, false),
@@ -62,6 +65,7 @@
 				<ul>
 					{% for href, name, parent, nav_display, admin_req in navigation_map %}
 						{% if nav_display %}
+							<!-- Only display admin-access pages if user has permission -->
 							{% if not admin_req or (admin_req and (current_user.is_authenticated and current_user.has_admin_rights())) %}
 								<li><a href='{{ url_for(href|e) }}' class='{% if href == active_page %}active{% endif %}{% if parent %} child{% endif %}'>{{ name|e }}</a></li>
 							{% endif %}
@@ -101,6 +105,7 @@
 
 		<!-- Main content -->
 		<div id='content-body'>
+
 			<!-- Show flash messages -->
 			{% with messages = get_flashed_messages() %}
 			{% if messages %}
@@ -112,10 +117,11 @@
 			{% endif %}
 			{% endwith %}
 
-			<!-- Navigation map -->
+			<!-- Back button, if page has a parent -->
 			{% for href, name, parent, nav_display, admin_req in navigation_map %}
 				{% if href == active_page and parent %}
 					<div id='nav-back-container' class='container'>
+						<!-- Back button -->
 						<a class='bordered' href="{{ url_for(parent) }}"><< Back</a>
 					</div>
 				{% endif %}
