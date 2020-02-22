@@ -12,8 +12,8 @@ body, h1, h2, h3, p, a {
 }
 
 body {
-  font-size: 1rem;
-  background-color: #fdfdfd;
+  font-size: 0.8rem;
+  background-color: #f2f2f2;
   margin: 0;
   display: flex;
   flex-flow: row nowrap;
@@ -24,33 +24,32 @@ body {
 /* --- P --- */
 p, label {
   margin: 5px 10px;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 /* --- Header text --- */
 h1 {
   margin: 30px 10px 20px 10px;
   font-weight: lighter;
-  font-size: 2.4rem;
+  font-size: 1.44rem;
 }
 
 h2 {
   margin: 20px 10px 10px 10px;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 }
 
 /* --- Span --- */
 span.error {
   color: red;
-  font-size: 0.75rem;
+  font-size: 0.6rem;
 }
 
 /* --- Header (Side Navbar) --- */
 header {
-  width: 300px;
-  flex: 0 0 300px;
+  width: 14.4rem;
+  flex: 0 0 14.4rem;
   height: 100vh;
-  padding-left: 30px;
   position: sticky;
   top: 0;
   background-color: black;
@@ -72,8 +71,10 @@ header {
 .nav-content {
   position: absolute;
   top: 0;
-  width: 300px;
+  width: 14.4rem;
   height: 100%;
+  padding-left: 1.6rem;
+  box-sizing: border-box;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -87,7 +88,7 @@ header {
 
 .nav-content p {
   margin-left: 0;
-  margin-bottom: 15px;
+  margin-bottom: 0.8rem;
   color: #dedede;
 }
 
@@ -99,10 +100,11 @@ header {
 .nav-content ul {
   display: flex;
   flex-flow: column nowrap;
-  overflow: scroll hidden;
-  list-style: none;
+  width: -webkit-fill-available;
   margin: 0;
   padding: 0;
+  list-style: none;
+  overflow: scroll hidden;
 }
 
 .nav-content ul::-webkit-scrollbar {
@@ -117,7 +119,7 @@ header {
   position: relative;
   width: 100%;
   margin: 0;
-  padding: 15px 20px;
+  padding: 0.8rem 20px;
   color: #dedede;
   font-weight: lighter;
   text-decoration: none;
@@ -133,7 +135,7 @@ header {
 }
 
 .nav-content ul li a:hover {
-  padding-left: 30px;
+  padding-left: 1.6rem;
   background-color: #2b63df;
 }
 
@@ -145,7 +147,7 @@ header {
 .nav-content ul li a.active {
   color: #212121;
   font-weight: bold;
-  background-color: #fdfdfd;
+  background-color: #f2f2f2;
 }
 
 .nav-content ul li a.child {
@@ -154,7 +156,7 @@ header {
 }
 
 .nav-content ul li a.child:hover {
-  padding-left: 30px;
+  padding-left: 1.6rem;
 }
 
 /* --- Navbar Logout Button --- */
@@ -165,7 +167,7 @@ header {
   justify-content: center;
   width: 100%;
   margin: 10px 10px 20px 0;
-  padding: 10px 20px;
+  padding: 0.5333333333rem 1.0666666667rem;
   color: #212121;
   font-weight: bold;
   text-decoration: none;
@@ -195,7 +197,7 @@ header {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
-  height: 2rem;
+  height: 1.6rem;
   padding: 0;
   background: linear-gradient(90deg, black, #6d94e9);
   color: #dedede;
@@ -204,7 +206,7 @@ header {
 
 .status-bar label {
   margin: 0;
-  padding: 10px 10px;
+  padding: 0.5333333333rem 0.5333333333rem;
   border: 2px solid transparent;
   -webkit-transition: all 0.15s ease;
   -moz-transition: all 0.15s ease;
@@ -214,7 +216,7 @@ header {
 }
 
 .status-bar label:hover {
-  border-color: #fdfdfd;
+  border-color: #f2f2f2;
 }
 
 .status-bar ul {
@@ -222,12 +224,9 @@ header {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: center;
+  padding: 0 1.6rem;
   list-style: none;
   margin: 0;
-}
-
-.status-bar ul li {
-  margin: 0 1rem;
 }
 
 .status-bar ul li p {
@@ -244,7 +243,7 @@ header {
 /* --- Content Wrapper --- */
 .content-wrapper {
   width: 100%;
-  background-color: #fdfdfd;
+  background-color: #f2f2f2;
 }
 
 /* --- Content Body --- */
@@ -258,8 +257,8 @@ ul.flash {
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: center;
-  margin: 30px;
-  padding: 15px 30px;
+  margin: 1.6rem;
+  padding: 0.8rem 1.6rem;
   border: 1px solid #737373;
   background-color: lightgreen;
 }
@@ -270,7 +269,7 @@ ul.flash {
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: center;
-  padding: 30px;
+  padding: 1.6rem;
 }
 
 /* additional container classes */
@@ -317,17 +316,18 @@ ul.flash {
   border: 2px solid #737373;
 }
 
-.fit-content {
-  width: fit-content;
+.fill-available {
+  width: -webkit-fill-available;
 }
 
 /* --- Back Button --- */
 .nav-back-container {
-  padding-bottom: 0;
+  padding-top: 0;
 }
 
 .nav-back-container a {
-  margin: 0 10px;
+  margin: 0 0.5333333333rem;
+  background-color: white;
 }
 
 /* --- Link Button --- */
@@ -429,11 +429,11 @@ ul.flash {
   height: 40vh;
   padding: 20px;
   flex-grow: 1;
-  font-size: 1.6rem;
+  font-size: 1.28rem;
 }
 
 .btn.btn-big p {
-  font-size: 1.6rem;
+  font-size: 1.28rem;
 }
 
 .btn.btn-small {
@@ -448,8 +448,8 @@ ul.flash {
 /* --- Input --- */
 input {
   width: -webkit-fill-available;
-  padding: 10px;
-  margin: 10px;
+  padding: 0.5333333333rem;
+  margin: 0.5333333333rem;
   border: 2px solid #999999;
   border-radius: 4px;
   outline: none;
@@ -518,9 +518,9 @@ table.list {
 }
 
 table.list th, table.list td {
-  margin: 10px;
+  margin: 0.5333333333rem;
   padding: 0 20px;
-  height: 5rem;
+  height: 4rem;
   border-bottom: 1px solid #737373;
   text-align: left;
 }
@@ -575,14 +575,14 @@ a.bordered:active {
 
 .overlay h1 {
   color: white;
-  text-shadow: 0 0 0.5rem black;
+  text-shadow: 0 0 0.4rem black;
 }
 
 .login {
-  width: 270px;
-  flex: 0 0 270px;
+  width: 16rem;
+  flex: 0 0 16rem;
   position: relative;
-  background-color: #fdfdfd;
+  background-color: #f2f2f2;
   box-shadow: 0 0 10px black;
 }
 
@@ -603,7 +603,7 @@ a.bordered:active {
 }
 
 .user-mngt table .tb-actions {
-  width: 30%;
+  width: 18rem;
 }
 
 .user-mngt table .btn-noleftmargin {
@@ -612,33 +612,39 @@ a.bordered:active {
 
 /* Shared stylesheet for program pages */
 table.tb-program {
-  width: 25rem;
+  width: 20rem;
   margin: 0;
   padding: 0;
   border: none;
   text-align: center;
-  border-collapse: separate;
+  border-collapse: collapse;
 }
 
 table.tb-program tr {
-  height: 1.5rem;
+  height: 1.28rem;
 }
 
 table.tb-program tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 
 table.tb-program tr:nth-child(even) td.full-border {
-  background-color: #f2f2f2;
+  background-color: #e6e6e6;
 }
 
 table.tb-program th {
-  border: 2px solid transparent;
+  border: none;
+  border-bottom: 2px solid #737373;
 }
 
-table.tb-program .sn {
-  width: 2rem;
-  border: 2px solid transparent;
+table.tb-program th.sn {
+  width: 10%;
+  border-bottom: none;
+}
+
+table.tb-program td.sn {
+  border: none;
+  border-right: 2px solid #737373;
 }
 
 table.tb-program td.full-border {
@@ -652,7 +658,7 @@ table.tb-program td.full-border {
   bottom: 20px;
   padding: 15px 50px;
   align-self: flex-end;
-  border: 5px solid #fdfdfd;
+  border: 5px solid #f2f2f2;
   z-index: 5;
 }
 
@@ -660,17 +666,17 @@ table.tb-program td.full-border {
   position: sticky;
   top: 3rem;
   width: -webkit-fill-available;
-  margin-bottom: 10px;
+  margin-bottom: 0.5333333333rem;
   background-color: white;
   z-index: 5;
 }
 
 .margin-center {
-  margin: 0 10px;
+  margin: 0 0.5333333333rem;
 }
 
 .margin-right {
-  margin-right: 10px;
+  margin-right: 0.5333333333rem;
 }
 
 .cart-container {
@@ -679,34 +685,38 @@ table.tb-program td.full-border {
 }
 
 .cart-img {
-  min-width: 250px;
-  margin: 10px;
+  min-width: 150px;
+  margin: 0.5333333333rem;
   z-index: 1;
 }
 
 .cart-underlay {
   position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
+  top: 0.5333333333rem;
+  bottom: 0.5333333333rem;
+  left: 0.5333333333rem;
+  right: 0.5333333333rem;
   margin: 3%;
   background-color: #18cd5e;
 }
 
 table.tb-program.tb-cart-id {
-  width: 20rem;
+  width: 16rem;
+}
+
+table.tb-program .mask {
+  width: 35%;
 }
 
 .laser-img, .laser-display {
   width: 300px;
   height: 150px;
-  margin: 10px 0;
+  margin: 0.5333333333rem 0;
   background-color: white;
 }
 
 table.tb-program.tb-laser-id {
-  width: 25rem;
+  width: 20rem;
 }
 
 table.tb-program.tb-laser-id .sn {
@@ -715,7 +725,7 @@ table.tb-program.tb-laser-id .sn {
 }
 
 table.tb-program.tb-laser-barcode {
-  width: 20rem;
+  width: 16rem;
 }
 
 .container.input-form-container {
@@ -727,5 +737,5 @@ table.tb-program.tb-laser-barcode {
 }
 
 .label-container.label-checkbox {
-  padding-bottom: 10px;
+  padding-bottom: 0.5333333333rem;
 }

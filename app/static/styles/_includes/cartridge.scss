@@ -5,7 +5,7 @@
 }
 
 .cart-img {
-	min-width: 250px;
+	min-width: 150px;
 	margin: $spacing-unit / 3;
 	z-index: 1;
 }
@@ -22,6 +22,13 @@
 	background-color: $btn-green-color;
 }
 
-table.tb-program.tb-cart-id {
-	width: $base-font-size * 20;
+table.tb-program {
+
+	&.tb-cart-id {
+		width: 20 * $base-font-size;
+	}
+	
+	.mask {
+		width: 35%;
+	}
 }

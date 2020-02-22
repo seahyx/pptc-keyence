@@ -3,17 +3,15 @@
 
 // Information table
 table.tb-program {
-	width: $base-font-size * 25;
+	width: 25 * $base-font-size;
 	margin: 0;
 	padding: 0;
 	border: none;
 	text-align: center;
-
-	border-collapse: $tb-border-style;
+	border-collapse: collapse;
 
 	tr {
-		// Placeholder height, if rows are not filled
-		height: $base-font-size * 1.5;
+		height: 1.6 * $base-font-size;
 
 		&:nth-child(even) {
 			background-color: $table-alt-color;
@@ -26,20 +24,22 @@ table.tb-program {
 
 	th {
 		// Make it same height as full-border
-		border: $tb-border-width solid transparent;
-	}
+		border: none;
+		border-bottom: $tb-border-width solid $border-color;
 
-	// Serial number header
-	.sn {
-		width: $base-font-size * 2;
-		
-		// Make it same height as full-border
-		border: $tb-border-width solid transparent;
+		&.sn {
+			width: 10%;
+
+			border-bottom: none;
+		}
 	}
 
 	td {
-		
-		// Normal table cell
+		&.sn {
+			border: none;
+			border-right: $tb-border-width solid $border-color;
+		}
+
 		&.full-border {
 			background-color: white;
 			border: $tb-border-width solid $border-color;

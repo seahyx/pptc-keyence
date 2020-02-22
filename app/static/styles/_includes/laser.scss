@@ -10,7 +10,7 @@
 table.tb-program {
 
 	&.tb-laser-id {
-		width: $base-font-size * 25;
+		width: 25 * $base-font-size;
 
 		.sn {
 			width: 30%;
@@ -19,7 +19,7 @@ table.tb-program {
 	}
 
 	&.tb-laser-barcode {
-		width: $base-font-size * 20;
+		width: 20 * $base-font-size;
 	}
 
 }

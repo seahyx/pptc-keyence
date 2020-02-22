@@ -27,12 +27,12 @@ p, label {
 h1 {
 	margin: 30px 10px 20px 10px;
 	font-weight: lighter;
-	@include relative-font-size(2.4);
+	@include relative-font-size(1.8);
 }
 
 h2 {
 	margin: 20px 10px 10px 10px;
-	@include relative-font-size(1.8);
+	@include relative-font-size(1.5);
 }
 
 
@@ -51,8 +51,6 @@ header {
 	width: $nav-width;
 	flex: 0 0 $nav-width;
 	height: 100vh;
-
-	padding-left: $spacing-unit;
 
 	position: sticky;
 	top: 0;
@@ -77,6 +75,9 @@ header {
 	top: 0;
 	width: $nav-width;
 	height: 100%;
+	padding-left: $spacing-unit;
+	box-sizing: border-box;
+
 
 	@include display-flex(column, space-between);
 
@@ -101,12 +102,14 @@ header {
 	ul {
 		display: flex;
 		flex-flow: column nowrap;
-	
-		overflow: scroll hidden;
-	
-		list-style: none;
+
+		width: -webkit-fill-available;
 		margin: 0;
 		padding: 0;
+	
+		list-style: none;
+	
+		overflow: scroll hidden;
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -200,7 +203,7 @@ header {
 
 	@include display-flex(row, space-between);
 
-	height: 2rem;
+	height: 2 * $base-font-size;
 
 	padding: 0;
 
@@ -225,19 +228,17 @@ header {
 
 	ul {
 		@include display-flex;
+
+		padding: 0 $spacing-unit;
 	
 		list-style: none;
 	
 		margin: 0;
 		
-		li {
-			margin: 0 1rem;
-
-			p {
-				color: $text-contrast-light;
-				font-weight: lighter;
-				text-shadow: 0 0 10px black;
-			}
+		li p {
+			color: $text-contrast-light;
+			font-weight: lighter;
+			text-shadow: 0 0 10px black;
 		}
 	}
 }
@@ -316,8 +317,8 @@ ul.flash {
 .bordered {
 	border: 2px solid $border-color;
 }
-.fit-content {
-	width: fit-content;
+.fill-available {
+	width: -webkit-fill-available;
 }
 
 
@@ -325,10 +326,11 @@ ul.flash {
 /* --- Back Button --- */
 
 .nav-back-container {
-	padding-bottom: 0;
+	padding-top: 0;
 	
 	a {
 		margin: 0 $spacing-unit / 3;
+		background-color: white;
 	}
 }
 
@@ -488,7 +490,7 @@ table.list {
 	th, td {
 		margin: $spacing-unit / 3;
 		padding: 0 20px;
-		height: 5rem;
+		height: 5 * $base-font-size;
 	
 		
 		border-bottom: 1px solid $grey-color;
