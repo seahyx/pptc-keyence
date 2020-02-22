@@ -12,14 +12,14 @@
 
 		<h2>User Management</h2>
 
-		<div style='overflow:auto;'>
+		<div class='user-mngt'>
 
-			<table class='list' style='width:-webkit-fill-available;'>
+			<table class='list'>
 
 				<tr>
 					<th>Username</th>
 					<th>Account Type</th>
-					<th style='width:30rem;'>Actions</th>
+					<th class='tb-actions'>Actions</th>
 				</tr>
 	
 				{% for account in users %}
@@ -32,12 +32,12 @@
 					<td>{{ account.get_account_type_name() }}</td>
 					<td>
 						<div class='flex-horizontal'>
-							<button id='{{ account.id }}' type='button' class='btn-small red btn-js-remove' style='margin-left: 0; margin-right: 10px;'
+							<button id='{{ account.id }}' type='button' class='btn btn-small btn-red btn-noleftmargin btn-js-remove'
 							{% if account.account_type == 0 or account.id == current_user.id %}
 							disabled
 							{% endif %}
 							>Remove</button>
-							<button id='{{ account.username }}' type='button' class='btn-small btn-js-reset'>Reset Password</button>
+							<button id='{{ account.username }}' type='button' class='btn btn-small btn-js-reset'>Reset Password</button>
 						</div>
 					</td>
 				</tr>
@@ -46,7 +46,7 @@
 				<tr>
 					<th colspan='99'>
 						<div class='flex-horizontal flex-center'>
-							<button type='button' class='btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new user</button>
+							<button type='button' class='btn btn-small' onclick="window.location.href = '{{ url_for("registration", next="/"+request.endpoint) }}'">Create new user</button>
 						</div>
 					</th>
 				</tr>
@@ -56,7 +56,7 @@
 		</div>
 
 		
-	</divclas>
+	</div>
 
 	<script src="{{ url_for('static', filename='src/dashboard.js') }}" defer></script>
 
