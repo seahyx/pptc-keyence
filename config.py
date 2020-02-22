@@ -10,6 +10,9 @@ class Config(object):
 
 	# Flask-Session
 	SESSION_TYPE = environ.get('SESSION_TYPE') or 'sqlalchemy'
+ 
+	# Flask Debug Tool
+	DEBUG_TB_INTERCEPT_REDIRECTS = False;
 
 	# Email
 	MAIL_SERVER = environ.get('MAIL_SERVER')
