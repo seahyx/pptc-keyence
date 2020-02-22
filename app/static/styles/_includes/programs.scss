@@ -14,6 +14,14 @@ table.tb-program {
 	tr {
 		// Placeholder height, if rows are not filled
 		height: $base-font-size * 1.5;
+
+		&:nth-child(even) {
+			background-color: $table-alt-color;
+
+			td.full-border {
+				background-color: $table-alt-color;
+			}
+		}
 	}
 
 	th {
@@ -65,6 +73,9 @@ table.tb-program {
 	z-index: 5;
 }
 
-.spacing-center {
+.margin-center {
 	margin: 0 $spacing-unit / 3;
+}
+.margin-right {
+	margin-right: $spacing-unit / 3;
 }

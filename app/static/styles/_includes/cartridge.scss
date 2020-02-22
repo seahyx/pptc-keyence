@@ -1,16 +1,16 @@
-.cartridge-container {
+.cart-container {
 	position: relative;
 
 	background-color: white;
 }
 
-.cartridge-img {
+.cart-img {
 	min-width: 250px;
 	margin: $spacing-unit / 3;
 	z-index: 1;
 }
 
-.cartridge-underlay {
+.cart-underlay {
 	position: absolute;
 	top: $spacing-unit / 3;
 	bottom: $spacing-unit / 3;
@@ -22,6 +22,6 @@
 	background-color: $btn-green-color;
 }
 
-table.tb-program.tb-cartid {
+table.tb-program.tb-cart-id {
 	width: $base-font-size * 20;
 }

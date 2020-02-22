@@ -1,0 +1,11 @@
+.container.input-form-container {
+	width: 400px;
+}
+
+.label-container {
+	align-items: baseline;
+
+	&.label-checkbox {
+		padding-bottom: $spacing-unit /3;
+	}
+}

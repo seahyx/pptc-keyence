@@ -82,7 +82,6 @@ header {
 
 	h1 {
 		margin-left: 0;
-		font-weight: bold;
 	
 		color: $text-contrast;
 	}
@@ -123,7 +122,7 @@ header {
 				margin: 0;
 				padding: $spacing-unit / 2 20px;
 				color: $text-contrast;
-				font-weight: bold;
+				font-weight: lighter;
 				text-decoration: none;
 				white-space: nowrap;
 			
@@ -144,6 +143,7 @@ header {
 				// Currently open page
 				&.active {
 					color: $text-color;
+					font-weight: bold;
 					background-color: $background-color;
 				}
 				
@@ -235,6 +235,7 @@ header {
 
 			p {
 				color: $text-contrast-light;
+				font-weight: lighter;
 				text-shadow: 0 0 10px black;
 			}
 		}
@@ -270,11 +271,10 @@ header {
 ul.flash {
 	@include display-flex(column, center, flex-start);
 
-	margin: $spacing-unit / 3;
+	margin: $spacing-unit;
 	padding: $spacing-unit / 2 $spacing-unit;
 
-	border: 2px solid $grey-color;
-	border-radius: 4px;
+	border: 1px solid $border-color;
 
 	background-color: $flash-bg-color;
 }
@@ -405,6 +405,9 @@ ul.flash {
 	&.btn-small {
 		margin: 10px;
 		padding: 7.5px 20px;
+	}
+	&.btn-wide {
+		width: -webkit-fill-available;
 	}
 }
 

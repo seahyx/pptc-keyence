@@ -30,9 +30,9 @@ $brand-color-lighter:	lighten($brand-color, 30%) !default;
 $brand-color-dark:		darken($brand-color, 15%) !default;
 
 // Background color of flash messages
-$flash-bg-color:	white !default;
+$flash-bg-color:	lightgreen !default;
 
-$grey-color:		hsl(0, 0%, 45%) !default;
+$grey-color:			hsl(0, 0%, 45%) !default;
 $grey-color-light:	lighten($grey-color, 15%) !default;
 $grey-color-dark:	darken($grey-color, 15%) !default;
 
@@ -45,16 +45,17 @@ $btn-red-color:		hsl(0, 79%, 45%) !default;
 $btn-green-color:	hsl(143, 79%, 45%) !default;
 
 $btn-border-radius:	4px !default;
-$border-color:		$grey-color !default;
+$border-color:			$grey-color !default;
 
 
 $table-text-align:	left !default;
+$table-alt-color:		hsl(0, 0%, 95%);
 
 // Width of the content area - if needed
 $content-width:		800px !default;
 
-$on-palm:			600px !default;
-$on-laptop:			800px !default;
+$on-palm:					600px !default;
+$on-laptop:				800px !default;
 
 // Use media queries like this:
 // @include media-query($on-palm) {

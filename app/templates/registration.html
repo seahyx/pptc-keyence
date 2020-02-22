@@ -3,73 +3,77 @@
 
 {% block content %}
 
-	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+	<div class='container flex-center'>
 
-		<h1>Create new user</h1>
+		<div class='container input-form-container'>
 
-		<form action='' method='POST' class='flex-vertical' novalidate>
-			
-			<!-- Form security protection -->
-			{{ form.hidden_tag() }}
+			<h1>Create new user</h1>
 
-
-			<!-- Username -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.username.label }}
-
-				{% for error in form.username.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.username(autofocus=true, placeholder='Username', autocorrect='off', autocapitalize='none') }}
-
-
-			<!-- Password -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.password.label }}
-
-				{% for error in form.password.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.password(placeholder='Password') }}
-
-
-			<!-- Confirm Password -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.password2.label }}
-
-				{% for error in form.password2.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.password2(placeholder='Confirm Password') }}
-
-
-			<!-- Select account type -->
-			<div class='flex-horizontal' style='align-items:baseline; padding-bottom: 10px'>
-				{{ form.account_type.label }}
-
-				{{ form.account_type }}
+			<form action='' method='POST' class='flex-vertical align-start max-width' novalidate>
 				
-				{% for error in form.account_type.errors %}
-				<span class='error', style='margin-left: 10px'>*{{ error }}</span>
-				{% endfor %}
-			</div>
+				<!-- Form security protection -->
+				{{ form.hidden_tag() }}
 
 
-			<!-- Additional info -->
-			<p>
-				<strong>Administrator</strong> - Has permission to perform Vision adjustment and user management<br>
-				<strong>Operator</strong> - Only has permission operate the program but not modify the system<br>
-			</p>
+				<!-- Username -->
+				<div class='flex-horizontal label-container'>
+					{{ form.username.label }}
+
+					{% for error in form.username.errors %}
+					<span class='error'>*{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{{ form.username(autofocus=true, placeholder='Username', autocorrect='off', autocapitalize='none') }}
+
+
+				<!-- Password -->
+				<div class='flex-horizontal label-container'>
+					{{ form.password.label }}
 	
-			<button id='submit' type='submit' class='btn-small teal'>Register</button>
+					{% for error in form.password.errors %}
+					<span class='error'>*{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{{ form.password(placeholder='Password') }}
+	
+	
+				<!-- Confirm Password -->
+				<div class='flex-horizontal label-container'>
+					{{ form.password2.label }}
 
-		</form>
+					{% for error in form.password2.errors %}
+					<span class='error'>*{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{{ form.password2(placeholder='Confirm Password') }}
+
+
+				<!-- Select account type -->
+				<div class='flex-horizontal label-container label-checkbox'>
+					{{ form.account_type.label }}
+
+					{{ form.account_type }}
+					
+					{% for error in form.account_type.errors %}
+					<span class='error'> *{{ error }}</span>
+					{% endfor %}
+				</div>
+
+
+				<!-- Additional info -->
+				<p>
+					<strong>Administrator</strong> - Has permission to perform Vision adjustment and user management<br>
+					<strong>Operator</strong> - Only has permission operate the program but not modify the system<br>
+				</p>
+
+				<button id='submit' type='submit' class='btn btn-small btn-wide'>Register</button>
+
+			</form>
+
+		</div>
 
 	</div>
 

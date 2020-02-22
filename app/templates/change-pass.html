@@ -3,43 +3,47 @@
 
 {% block content %}
 
-	<div class='container' style='max-width: 400px; margin-left: auto; margin-right: auto;'>
+	<div class='container flex-center'>
 
-		<h1>Change password for {{ user.get_account_type_name() }} {{ user.username }}</h1>
+		<div class='container input-form-container'>
 
-		<form action='' method='POST' class='flex-vertical' novalidate>
-			
-			<!-- Form security protection -->
-			{{ form.hidden_tag() }}
-
-
-			<!-- Password -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.password.label }}
-
-				{% for error in form.password.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.password(placeholder='password') }}
-
-
-			<!-- Confirm Password -->
-			<div class='flex-horizontal' style='align-items: baseline;'>
-				{{ form.password2.label }}
-
-				{% for error in form.password2.errors %}
-				<span class='error'>*{{ error }}</span>
-				{% endfor %}
-			</div>
-			
-			{{ form.password2(placeholder='password') }}
-
+			<h1>Change password for {{ user.get_account_type_name() }} {{ user.username }}</h1>
 	
-			<button id='submit' type='submit' class='btn-small teal'>Change password</button>
-
-		</form>
+			<form action='' method='POST' class='flex-vertical align-start max-width' novalidate>
+				
+				<!-- Form security protection -->
+				{{ form.hidden_tag() }}
+	
+	
+				<!-- Password -->
+				<div class='flex-horizontal label-container'>
+					{{ form.password.label }}
+	
+					{% for error in form.password.errors %}
+					<span class='error'>*{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{{ form.password(placeholder='password') }}
+	
+	
+				<!-- Confirm Password -->
+				<div class='flex-horizontal label-container'>
+					{{ form.password2.label }}
+	
+					{% for error in form.password2.errors %}
+					<span class='error'>*{{ error }}</span>
+					{% endfor %}
+				</div>
+				
+				{{ form.password2(placeholder='password') }}
+	
+		
+				<button id='submit' type='submit' class='btn btn-small btn-wide'>Change password</button>
+	
+			</form>
+	
+		</div>
 
 	</div>
 

@@ -3,10 +3,6 @@
 
 {% block content %}
 
-	<!-- Laser css -->
-	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/laser.css') }}">
-
 	<div class='container'>
 
 		<!-- Title -->
@@ -21,7 +17,7 @@
 			<div class='container fit-content'>
 
 				<!-- Status code container -->
-				<div id='status-container' class='container flex-center no-padding bordered'>
+				<div class='container status-container flex-center no-padding bordered'>
 					<p>Status Code</p>
 				</div>
 
@@ -29,13 +25,13 @@
 				<div class='container flex-center flex-horizontal align-start no-padding fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container no-padding flex-center' style='margin-right:10px'>
+					<div class='container no-padding flex-center margin-right'>
 						<!-- Cartridge image -->
-						<div id='cart-img' class='container no-padding bordered'></div>
+						<div class='laser-img container no-padding bordered'></div>
 						<!-- Cartridge digital display -->
-						<div id='cart-display' class='container no-padding bordered'></div>
+						<div class='laser-display container no-padding bordered'></div>
 						<!-- Cartridge ID -->
-						<table id='tb-cart-id' class='tb-small'>
+						<table class='tb-program tb-laser-id'>
 							<tr>
 								<td class='sn'>Work Order</td>
 								<td class='full-border'></td>
@@ -55,7 +51,7 @@
 					<div class='container no-padding flex-center'>
 						<!-- Barcode and mask table -->
 						<div class='container no-padding'>
-							<table class='tb-small'>
+							<table class='tb-program tb-laser-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>
 									<th>Barcode</th>
@@ -76,7 +72,7 @@
 
 		</div>
 		
-		<a class='btn green start'>Start</a>
+		<a class='btn btn-green btn-start'>Start</a>
 		
 	</div>
 

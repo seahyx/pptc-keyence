@@ -82,7 +82,6 @@ header {
 
 .nav-content h1 {
   margin-left: 0;
-  font-weight: bold;
   color: #dedede;
 }
 
@@ -120,7 +119,7 @@ header {
   margin: 0;
   padding: 15px 20px;
   color: #dedede;
-  font-weight: bold;
+  font-weight: lighter;
   text-decoration: none;
   white-space: nowrap;
   border: none;
@@ -145,6 +144,7 @@ header {
 
 .nav-content ul li a.active {
   color: #212121;
+  font-weight: bold;
   background-color: #fdfdfd;
 }
 
@@ -232,6 +232,7 @@ header {
 
 .status-bar ul li p {
   color: white;
+  font-weight: lighter;
   text-shadow: 0 0 10px black;
 }
 
@@ -257,11 +258,10 @@ ul.flash {
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: center;
-  margin: 10px;
+  margin: 30px;
   padding: 15px 30px;
-  border: 2px solid #737373;
-  border-radius: 4px;
-  background-color: white;
+  border: 1px solid #737373;
+  background-color: lightgreen;
 }
 
 /* --- Div --- */
@@ -439,6 +439,10 @@ ul.flash {
 .btn.btn-small {
   margin: 10px;
   padding: 7.5px 20px;
+}
+
+.btn.btn-wide {
+  width: -webkit-fill-available;
 }
 
 /* --- Input --- */
@@ -620,6 +624,14 @@ table.tb-program tr {
   height: 1.5rem;
 }
 
+table.tb-program tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table.tb-program tr:nth-child(even) td.full-border {
+  background-color: #f2f2f2;
+}
+
 table.tb-program th {
   border: 2px solid transparent;
 }
@@ -653,22 +665,26 @@ table.tb-program td.full-border {
   z-index: 5;
 }
 
-.spacing-center {
+.margin-center {
   margin: 0 10px;
 }
 
-.cartridge-container {
+.margin-right {
+  margin-right: 10px;
+}
+
+.cart-container {
   position: relative;
   background-color: white;
 }
 
-.cartridge-img {
+.cart-img {
   min-width: 250px;
   margin: 10px;
   z-index: 1;
 }
 
-.cartridge-underlay {
+.cart-underlay {
   position: absolute;
   top: 10px;
   bottom: 10px;
@@ -678,27 +694,38 @@ table.tb-program td.full-border {
   background-color: #18cd5e;
 }
 
-table.tb-program.tb-cartid {
+table.tb-program.tb-cart-id {
   width: 20rem;
 }
 
-#img-container {
-  width: 25rem;
-  height: 12rem;
-  margin: 10px;
-}
-
-#tb-cart-id {
-  width: 100%;
-}
-
-#tb-cart-id .sn {
-  width: 8rem;
-}
-
-#cart-img, #cart-display {
-  width: 30rem;
-  height: 20rem;
+.laser-img, .laser-display {
+  width: 300px;
+  height: 150px;
   margin: 10px 0;
   background-color: white;
+}
+
+table.tb-program.tb-laser-id {
+  width: 25rem;
+}
+
+table.tb-program.tb-laser-id .sn {
+  width: 30%;
+  font-weight: bold;
+}
+
+table.tb-program.tb-laser-barcode {
+  width: 20rem;
+}
+
+.container.input-form-container {
+  width: 400px;
+}
+
+.label-container {
+  align-items: baseline;
+}
+
+.label-container.label-checkbox {
+  padding-bottom: 10px;
 }
