@@ -1,0 +1,70 @@
+/* Shared stylesheet for program pages */
+
+
+// Information table
+table.tb-program {
+	width: $base-font-size * 25;
+	margin: 0;
+	padding: 0;
+	border: none;
+	text-align: center;
+
+	border-collapse: $tb-border-style;
+
+	tr {
+		// Placeholder height, if rows are not filled
+		height: $base-font-size * 1.5;
+	}
+
+	th {
+		// Make it same height as full-border
+		border: $tb-border-width solid transparent;
+	}
+
+	// Serial number header
+	.sn {
+		width: $base-font-size * 2;
+		
+		// Make it same height as full-border
+		border: $tb-border-width solid transparent;
+	}
+
+	td {
+		
+		// Normal table cell
+		&.full-border {
+			background-color: white;
+			border: $tb-border-width solid $border-color;
+		}
+	}
+}
+
+.btn.btn-start {
+	position: sticky;
+	right: 30px;
+	bottom: 20px;
+
+	padding: 15px 50px;
+
+	align-self: flex-end;
+
+	border: 5px solid $background-color;
+
+	z-index: 5;
+}
+
+.status-container {
+	position: sticky;
+	top: 3rem;
+
+	width: -webkit-fill-available;
+	margin-bottom: $spacing-unit / 3;
+	
+	background-color: white;
+
+	z-index: 5;
+}
+
+.spacing-center {
+	margin: 0 $spacing-unit / 3;
+}

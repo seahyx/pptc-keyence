@@ -1,0 +1,27 @@
+.cartridge-container {
+	position: relative;
+
+	background-color: white;
+}
+
+.cartridge-img {
+	min-width: 250px;
+	margin: $spacing-unit / 3;
+	z-index: 1;
+}
+
+.cartridge-underlay {
+	position: absolute;
+	top: $spacing-unit / 3;
+	bottom: $spacing-unit / 3;
+	left: $spacing-unit / 3;
+	right: $spacing-unit / 3;
+
+	margin: 3%;
+
+	background-color: $btn-green-color;
+}
+
+table.tb-program.tb-cartid {
+	width: $base-font-size * 20;
+}

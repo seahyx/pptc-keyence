@@ -44,9 +44,8 @@ $btn-red-color:		hsl(0, 79%, 45%) !default;
 
 $btn-green-color:	hsl(143, 79%, 45%) !default;
 
-$border-color:		$grey-color !default;
-
 $btn-border-radius:	4px !default;
+$border-color:		$grey-color !default;
 
 
 $table-text-align:	left !default;
@@ -71,6 +70,13 @@ $on-laptop:			800px !default;
 // Width of the input area
 $login-width: 270px !default;
 $login-image: url('/static/img/dna.jpg') !default;
+
+
+/* Programs page(s) */
+
+// Table
+$tb-border-width: 2px;
+$tb-border-style: separate;
 
 
 
@@ -159,9 +165,11 @@ $login-image: url('/static/img/dna.jpg') !default;
 	&:hover {
 		background-image: linear-gradient(to right, $color-light, $color-lighter);
 	}
-
 	&:active {
 		background-image: linear-gradient(to right, $color-dark, $color);
+	}
+	&:disabled {
+		background-image: none;
 	}
 }
 

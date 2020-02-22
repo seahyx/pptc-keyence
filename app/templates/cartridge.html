@@ -3,16 +3,10 @@
 
 {% block content %}
 
-	<!-- Cartridge css -->
-	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/cartridge.css') }}">
-
 	<div class='container'>
 
 		<!-- Title -->
-		<h1>
-			{{ cart_prog_name }}
-		</h1>
+		<h1>{{ cart_prog_name }}</h1>
 
 		<!-- Large container wrapper, fits width of page -->
 		<div class='container no-padding flex-center'>
@@ -21,7 +15,7 @@
 			<div class='container fit-content'>
 
 				<!-- Status code container -->
-				<div id='status-container' class='container flex-center no-padding bordered'>
+				<div class='container status-container flex-center no-padding bordered'>
 					<p>Status Code</p>
 				</div>
 
@@ -29,17 +23,21 @@
 				<div class='container flex-center flex-horizontal align-start no-padding fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container no-padding' style='margin-right:10px'>
+					<div class='container no-padding'>
 						<!-- Cartridge image -->
-						<div id='cartridge-container' class='container no-padding flex-center bordered'>
+						<div class='container cartridge-container no-padding flex-center bordered'>
 							<!-- Underlay - colours the circles -->
-							<div id='cartridge-underlay' class='container no-padding'>
+							<div class='container cartridge-underlay no-padding'>
 							</div>
 							<!-- Cartridge image overlay -->
-							<img id='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
+							<img class='cartridge-img' src="{{ url_for('static', filename='img/cartridge.svg') }}">
 						</div>
+					</div>
+
+					<!-- Center container -->
+					<div class='container no-padding spacing-center'>
 						<!-- Cartridge ID -->
-						<table id='tb-cart-id' class='tb-small'>
+						<table class='tb-program tb-cartid'>
 							<tr><th>Cartridge ID</th></tr>
 							<tr><td class='full-border'>id</td></tr>
 						</table>
@@ -49,7 +47,7 @@
 					<div class='container no-padding'>
 						<!-- Barcode and mask table -->
 						<div class='container no-padding'>
-							<table class='tb-small'>
+							<table class='tb-program'>
 								<tr>
 									<th class='sn'>S/N</th>
 									<th>Expected Mask</th>
@@ -71,8 +69,8 @@
 			</div>
 
 		</div>
-		
-		<a class='btn green start'>Start</a>
+
+		<a class='btn btn-green btn-start'>Start</a>
 		
 	</div>
 

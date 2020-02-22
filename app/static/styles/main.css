@@ -3,6 +3,7 @@
 /* !IF ANY CHANGES ARE MADE, COMPILE main.scss NOT THIS FILE! */
 /* General settings */
 /* Login page */
+/* Programs page(s) */
 /* --- Basic setup --- */
 body, h1, h2, h3, p, a {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -296,6 +297,10 @@ ul.flash {
   align-items: flex-start;
 }
 
+.align-end {
+  align-items: flex-end;
+}
+
 .no-padding {
   padding: 0;
 }
@@ -356,6 +361,10 @@ ul.flash {
   background-image: linear-gradient(to right, #4174e2, #6d94e9);
 }
 
+.btn:disabled {
+  background-image: none;
+}
+
 .btn:active {
   color: #999999;
   -webkit-transition: none;
@@ -394,6 +403,10 @@ ul.flash {
   background-image: linear-gradient(to right, #13a049, #18cd5e);
 }
 
+.btn.btn-green:disabled {
+  background-image: none;
+}
+
 .btn.btn-red {
   background-image: linear-gradient(to right, #cd1818, #e73232);
 }
@@ -404,6 +417,10 @@ ul.flash {
 
 .btn.btn-red:active {
   background-image: linear-gradient(to right, #a01313, #cd1818);
+}
+
+.btn.btn-red:disabled {
+  background-image: none;
 }
 
 .btn.btn-big {
@@ -500,7 +517,7 @@ table.list th, table.list td {
   margin: 10px;
   padding: 0 20px;
   height: 5rem;
-  border-bottom: 1px solid #4d4d4d;
+  border-bottom: 1px solid #737373;
   text-align: left;
 }
 
@@ -571,4 +588,117 @@ a.bordered:active {
 
 .login form button {
   width: -webkit-fill-available;
+}
+
+.user-mngt {
+  width: 100%;
+}
+
+.user-mngt table {
+  width: 100%;
+}
+
+.user-mngt table .tb-actions {
+  width: 30%;
+}
+
+.user-mngt table .btn-noleftmargin {
+  margin-left: 0;
+}
+
+/* Shared stylesheet for program pages */
+table.tb-program {
+  width: 25rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-align: center;
+  border-collapse: separate;
+}
+
+table.tb-program tr {
+  height: 1.5rem;
+}
+
+table.tb-program th {
+  border: 2px solid transparent;
+}
+
+table.tb-program .sn {
+  width: 2rem;
+  border: 2px solid transparent;
+}
+
+table.tb-program td.full-border {
+  background-color: white;
+  border: 2px solid #737373;
+}
+
+.btn.btn-start {
+  position: sticky;
+  right: 30px;
+  bottom: 20px;
+  padding: 15px 50px;
+  align-self: flex-end;
+  border: 5px solid #fdfdfd;
+  z-index: 5;
+}
+
+.status-container {
+  position: sticky;
+  top: 3rem;
+  width: -webkit-fill-available;
+  margin-bottom: 10px;
+  background-color: white;
+  z-index: 5;
+}
+
+.spacing-center {
+  margin: 0 10px;
+}
+
+.cartridge-container {
+  position: relative;
+  background-color: white;
+}
+
+.cartridge-img {
+  min-width: 250px;
+  margin: 10px;
+  z-index: 1;
+}
+
+.cartridge-underlay {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  margin: 3%;
+  background-color: #18cd5e;
+}
+
+table.tb-program.tb-cartid {
+  width: 20rem;
+}
+
+#img-container {
+  width: 25rem;
+  height: 12rem;
+  margin: 10px;
+}
+
+#tb-cart-id {
+  width: 100%;
+}
+
+#tb-cart-id .sn {
+  width: 8rem;
+}
+
+#cart-img, #cart-display {
+  width: 30rem;
+  height: 20rem;
+  margin: 10px 0;
+  background-color: white;
 }
