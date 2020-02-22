@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, flash, redirect, url_for, request, session
+from flask import render_template, jsonify, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
@@ -23,7 +23,10 @@ permissions.redirect_view = 'index'
 # for the template before any page is rendered
 @app.context_processor
 def inject_dict():
-	return dict(nav_closed=session.get('navbar-state', True))
+	return dict(
+		program_name='2D Barcode System',
+		cart_prog_name='Cartridge Assembly QC',
+		laser_prog_name='Laser Etch QC')
 
 
 @app.route('/')
@@ -69,7 +72,6 @@ def login():
 
 @app.route('/logout/')
 def logout():
-	session.pop('navbar-state', None)
 	logout_user()
 	return redirect(url_for('login'))
 
@@ -155,12 +157,3 @@ def change_pass(username):
 		return(redirect(url_for('dashboard')))
 	
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
-
-@app.route('/navbar/<state>/')
-def navbar_update(state):
-	print('navbar state is ' + state)
-	if state == 'open':
-		session['navbar-state'] = False
-	else:
-		session['navbar-state'] = True
-	return jsonify(message='success')

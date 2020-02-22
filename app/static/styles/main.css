@@ -1,0 +1,574 @@
+/* Main scss file */
+/* !IF ANY CHANGES ARE MADE TO ANY STYLESHEET, COMPILE THIS FILE! */
+/* !IF ANY CHANGES ARE MADE, COMPILE main.scss NOT THIS FILE! */
+/* General settings */
+/* Login page */
+/* --- Basic setup --- */
+body, h1, h2, h3, p, a {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 400;
+  color: #212121;
+}
+
+body {
+  font-size: 1rem;
+  background-color: #fdfdfd;
+  margin: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* --- P --- */
+p, label {
+  margin: 5px 10px;
+  font-size: 1rem;
+}
+
+/* --- Header text --- */
+h1 {
+  margin: 30px 10px 20px 10px;
+  font-weight: lighter;
+  font-size: 2.4rem;
+}
+
+h2 {
+  margin: 20px 10px 10px 10px;
+  font-size: 1.8rem;
+}
+
+/* --- Span --- */
+span.error {
+  color: red;
+  font-size: 0.75rem;
+}
+
+/* --- Header (Side Navbar) --- */
+header {
+  width: 300px;
+  flex: 0 0 300px;
+  height: 100vh;
+  padding-left: 30px;
+  position: sticky;
+  top: 0;
+  background-color: black;
+  /* text colour */
+  overflow-x: hidden;
+  z-index: 1;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+:root[data-nav-open=false] header {
+  flex: 0 0 0;
+}
+
+/* Header Content keeps content at constant width */
+.nav-content {
+  position: absolute;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-content h1 {
+  margin-left: 0;
+  font-weight: bold;
+  color: #dedede;
+}
+
+.nav-content p {
+  margin-left: 0;
+  margin-bottom: 15px;
+  color: #dedede;
+}
+
+.nav-content .header-user {
+  overflow-wrap: break-word;
+  font-weight: bold;
+}
+
+.nav-content ul {
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: scroll hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-content ul::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-content ul li {
+  display: flex;
+}
+
+.nav-content ul li a {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 15px 20px;
+  color: #dedede;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+  border: none;
+  border-radius: 0;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  /* --- Parented Navbar Item --- */
+}
+
+.nav-content ul li a:hover {
+  padding-left: 30px;
+  background-color: #2b63df;
+}
+
+.nav-content ul li a:active {
+  color: #212121;
+  background-color: #737373;
+}
+
+.nav-content ul li a.active {
+  color: #212121;
+  background-color: #fdfdfd;
+}
+
+.nav-content ul li a.child {
+  margin-left: 20px;
+  padding: 10px 20px;
+}
+
+.nav-content ul li a.child:hover {
+  padding-left: 30px;
+}
+
+/* --- Navbar Logout Button --- */
+.header-logout {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 10px 20px 0;
+  padding: 10px 20px;
+  color: #212121;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #cd1818;
+  border-radius: 4px;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+.header-logout:hover {
+  background-color: #ea4848;
+}
+
+.header-logout:active {
+  background-color: #891010;
+}
+
+/* --- Status Bar --- */
+.status-bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  height: 2rem;
+  padding: 0;
+  background: linear-gradient(90deg, black, #6d94e9);
+  color: #dedede;
+  z-index: 10;
+}
+
+.status-bar label {
+  margin: 0;
+  padding: 10px 10px;
+  border: 2px solid transparent;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+.status-bar label:hover {
+  border-color: #fdfdfd;
+}
+
+.status-bar ul {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+}
+
+.status-bar ul li {
+  margin: 0 1rem;
+}
+
+.status-bar ul li p {
+  color: white;
+  text-shadow: 0 0 10px black;
+}
+
+/* --- Open/Close navbar checkbox */
+#nav-toggle {
+  display: none;
+}
+
+/* --- Content Wrapper --- */
+.content-wrapper {
+  width: 100%;
+  background-color: #fdfdfd;
+}
+
+/* --- Content Body --- */
+.content-body {
+  width: 100%;
+}
+
+/* --- Flash --- */
+ul.flash {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 10px;
+  padding: 15px 30px;
+  border: 2px solid #737373;
+  border-radius: 4px;
+  background-color: white;
+}
+
+/* --- Div --- */
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* additional container classes */
+.flex-vertical {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-top-padding {
+  padding-top: 0;
+}
+
+.max-width {
+  width: 100%;
+}
+
+.bordered {
+  border: 2px solid #737373;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+/* --- Back Button --- */
+.nav-back-container {
+  padding-bottom: 0;
+}
+
+.nav-back-container a {
+  margin: 0 10px;
+}
+
+/* --- Link Button --- */
+.btn {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  /* Button text style */
+  color: white;
+  text-decoration: none;
+  /* Button press outline */
+  outline: none;
+  background-image: linear-gradient(to right, #6d94e9, #99b4f0);
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+.btn:hover {
+  background-image: linear-gradient(to right, #99b4f0, #c6d5f6);
+}
+
+.btn:active {
+  background-image: linear-gradient(to right, #4174e2, #6d94e9);
+}
+
+.btn:active {
+  color: #999999;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.btn:active::after {
+  visibility: visible;
+  height: 0;
+}
+
+.btn:disabled {
+  background-image: none;
+  background-color: #999999;
+  color: #737373;
+  cursor: default;
+}
+
+.btn:disabled:hover {
+  background-image: none;
+  background-color: #999999;
+}
+
+.btn.btn-green {
+  background-image: linear-gradient(to right, #18cd5e, #32e777);
+}
+
+.btn.btn-green:hover {
+  background-image: linear-gradient(to right, #32e777, #5fec95);
+}
+
+.btn.btn-green:active {
+  background-image: linear-gradient(to right, #13a049, #18cd5e);
+}
+
+.btn.btn-red {
+  background-image: linear-gradient(to right, #cd1818, #e73232);
+}
+
+.btn.btn-red:hover {
+  background-image: linear-gradient(to right, #e73232, #ec5f5f);
+}
+
+.btn.btn-red:active {
+  background-image: linear-gradient(to right, #a01313, #cd1818);
+}
+
+.btn.btn-big {
+  width: 100%;
+  margin: 10px;
+  height: 40vh;
+  padding: 20px;
+  flex-grow: 1;
+  font-size: 1.6rem;
+}
+
+.btn.btn-big p {
+  font-size: 1.6rem;
+}
+
+.btn.btn-small {
+  margin: 10px;
+  padding: 7.5px 20px;
+}
+
+/* --- Input --- */
+input {
+  width: -webkit-fill-available;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #999999;
+  border-radius: 4px;
+  outline: none;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+input:hover {
+  border-color: #afc5f3;
+}
+
+input:focus {
+  border-color: #6d94e9;
+}
+
+input:active {
+  border-color: #6d94e9;
+}
+
+.checkbox {
+  width: auto;
+  -webkit-appearance: none;
+  display: inline-block;
+  position: relative;
+  border: 2px solid #999999;
+  padding: 6px;
+  margin-top: 12px;
+}
+
+.checkbox:checked {
+  border: 2px solid #6d94e9;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: #6d94e9;
+}
+
+/* --- select --- */
+select {
+  padding: 5px;
+  border: 2px solid #6d94e9;
+  outline: none;
+}
+
+/* --- img --- */
+img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px;
+}
+
+/* --- Table --- */
+table.list {
+  background-color: white;
+  border-top: 2px solid #4d4d4d;
+  border-collapse: collapse;
+}
+
+table.list th, table.list td {
+  margin: 10px;
+  padding: 0 20px;
+  height: 5rem;
+  border-bottom: 1px solid #4d4d4d;
+  text-align: left;
+}
+
+/* --- Links --- */
+a {
+  width: fit-content;
+  margin: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #6d94e9;
+}
+
+a.bordered {
+  padding: 0 10px;
+  border: 2px solid #6d94e9;
+  border-radius: 4px;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition: all 0.15s ease;
+  -ms-transition: all 0.15s ease;
+  -o-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+a.bordered:hover {
+  border-color: #afc5f3;
+  color: #afc5f3;
+}
+
+a.bordered:active {
+  border-color: #2b63df;
+  color: #2b63df;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.background {
+  min-height: 100vh;
+  background-image: url("/static/img/dna.jpg");
+  background-size: cover;
+}
+
+.overlay {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-image: linear-gradient(135deg, rgba(43, 99, 223, 0.8), rgba(175, 197, 243, 0.8));
+}
+
+.overlay h1 {
+  color: white;
+  text-shadow: 0 0 0.5rem black;
+}
+
+.login {
+  width: 270px;
+  flex: 0 0 270px;
+  position: relative;
+  background-color: #fdfdfd;
+  box-shadow: 0 0 10px black;
+}
+
+.login form {
+  width: 100%;
+}
+
+.login form button {
+  width: -webkit-fill-available;
+}

@@ -1,0 +1,170 @@
+/* !IF ANY CHANGES ARE MADE, COMPILE main.scss NOT THIS FILE! */
+
+
+@charset "utf-8";
+
+/* General settings */
+// Define defaults for each variable.
+
+$base-font-family:	-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$base-font-size:	1rem !default;
+$base-font-weight:	400 !default;
+$small-font-size:	$base-font-size * 0.875 !default;
+$base-line-height:	1.5 !default;
+
+$spacing-unit:		30px !default;
+$nav-width:			300px !default;	// Width of nav menu
+
+// Colours
+$text-color:			hsl(0, 0%, 13%) !default;
+$text-color-light:		lighten($text-color, 20%) !default;
+$text-contrast:			invert($text-color) !default;
+$text-contrast-light:	lighten($text-contrast, 20%) !default;
+
+$background-color:	#fdfdfd !default;
+$nav-background-color:	black !default;
+
+$brand-color:			#6d94e9 !default;
+$brand-color-light:		lighten($brand-color, 15%) !default;
+$brand-color-lighter:	lighten($brand-color, 30%) !default;
+$brand-color-dark:		darken($brand-color, 15%) !default;
+
+// Background color of flash messages
+$flash-bg-color:	white !default;
+
+$grey-color:		hsl(0, 0%, 45%) !default;
+$grey-color-light:	lighten($grey-color, 15%) !default;
+$grey-color-dark:	darken($grey-color, 15%) !default;
+
+$btn-color:			hsl(204, 86%, 53%) !default;
+$btn-color-light:	lighten($btn-color, 15%) !default;
+$btn-color-dark:	darken($btn-color, 15%) !default;
+
+$btn-red-color:		hsl(0, 79%, 45%) !default;
+
+$btn-green-color:	hsl(143, 79%, 45%) !default;
+
+$border-color:		$grey-color !default;
+
+$btn-border-radius:	4px !default;
+
+
+$table-text-align:	left !default;
+
+// Width of the content area - if needed
+$content-width:		800px !default;
+
+$on-palm:			600px !default;
+$on-laptop:			800px !default;
+
+// Use media queries like this:
+// @include media-query($on-palm) {
+//   .wrapper {
+//     padding-right: $spacing-unit / 2;
+//     padding-left: $spacing-unit / 2;
+//   }
+// }
+
+
+/* Login page */
+
+// Width of the input area
+$login-width: 270px !default;
+$login-image: url('/static/img/dna.jpg') !default;
+
+
+
+@mixin media-query($device) {
+	@media screen and (max-width: $device) {
+		@content;
+	}
+}
+
+@mixin relative-font-size($ratio) {
+	font-size: $base-font-size * $ratio;
+}
+
+@mixin transitions($transition...) {
+	-webkit-transition:	$transition;
+	-moz-transition:	$transition;
+	-ms-transition:		$transition;
+	-o-transition:		$transition;
+	transition:			$transition;
+}
+@mixin transitions-all($duration: 0.15s) {
+	@include transitions(all $duration ease);
+}
+
+@mixin animation($animation...) {
+	-webkit-animation:	$animation;
+	-moz-animation:		$animation;
+	-o-animation:		$animation;
+	animation:			$animation;
+}
+
+@mixin display-flex($orientation: row, $justify: center, $align: center) {
+	display: flex;
+	flex-flow: $orientation nowrap;
+	align-items: $align;
+	justify-content: $justify;
+}
+
+@mixin filter($filter...) {
+	-webkit-filter: $filter;
+	filter: $filter;
+}
+
+@mixin scrollbar(
+	$size,
+	$thumb-color,
+	$thumb-color-hover,
+	$thumb-color-active,
+	$track-color: mix($thumb-color, white,  50%)) {
+	
+	// For Google Chrome
+	&::-webkit-scrollbar {
+		width:  $size;
+		height: $size;
+	}
+	
+	&::-webkit-scrollbar-thumb {
+		background: $thumb-color;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: $thumb-color-hover;
+	}
+	&::-webkit-scrollbar-thumb:active {
+		background: $thumb-color-active;
+	}
+	
+	&::-webkit-scrollbar-track {
+		background: $track-color;
+		border: 1px solid $thumb-color;
+	}
+	
+	// For Internet Explorer
+	& {
+		scrollbar-face-color: $thumb-color;
+		scrollbar-track-color: $track-color;
+	}
+}
+
+@mixin btn-gradient($color) {
+	$color-light: lighten($color, 10%);
+	$color-lighter: lighten($color, 20%);
+	$color-dark: darken($color, 10%);
+
+	background-image: linear-gradient(to right, $color, $color-light);
+
+	&:hover {
+		background-image: linear-gradient(to right, $color-light, $color-lighter);
+	}
+
+	&:active {
+		background-image: linear-gradient(to right, $color-dark, $color);
+	}
+}
+
+// Import partials.
+@import
+	"base";

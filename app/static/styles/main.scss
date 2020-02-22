@@ -1,0 +1,7 @@
+/* Main scss file */
+/* !IF ANY CHANGES ARE MADE TO ANY STYLESHEET, COMPILE THIS FILE! */
+
+// Import partials.
+@import
+	"_includes/master.scss",
+	"_includes/login.scss";

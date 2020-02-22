@@ -1,0 +1,524 @@
+/* --- Basic setup --- */
+
+body, h1, h2, h3, p, a {
+	font-family: $base-font-family;
+	font-weight: $base-font-weight;
+	color: $text-color;
+}
+body {
+	font-size: $base-font-size;
+	background-color: $background-color;
+	margin: 0;
+
+	@include display-flex(row, flex-start, flex-start);
+}
+
+
+/* --- P --- */
+
+p, label {
+	margin: 5px 10px;
+	@include relative-font-size(1.0);
+}
+
+
+/* --- Header text --- */
+
+h1 {
+	margin: 30px 10px 20px 10px;
+	font-weight: lighter;
+	@include relative-font-size(2.4);
+}
+
+h2 {
+	margin: 20px 10px 10px 10px;
+	@include relative-font-size(1.8);
+}
+
+
+/* --- Span --- */
+
+span.error {
+	color: red;
+
+	@include relative-font-size(0.75);
+}
+
+
+/* --- Header (Side Navbar) --- */
+
+header {
+	width: $nav-width;
+	flex: 0 0 $nav-width;
+	height: 100vh;
+
+	padding-left: $spacing-unit;
+
+	position: sticky;
+	top: 0;
+	background-color: $nav-background-color;
+
+	/* text colour */
+
+	overflow-x: hidden;
+
+	z-index: 1;
+	
+	@include transitions-all;
+}
+:root[data-nav-open=false] header {
+	flex: 0 0 0;
+}
+
+/* Header Content keeps content at constant width */
+
+.nav-content {
+	position: absolute;
+	top: 0;
+	width: $nav-width;
+	height: 100%;
+
+	@include display-flex(column, space-between);
+
+	h1 {
+		margin-left: 0;
+		font-weight: bold;
+	
+		color: $text-contrast;
+	}
+
+	p {
+		margin-left: 0;
+		margin-bottom: $spacing-unit / 2;
+	
+		color: $text-contrast;
+	}
+
+	.header-user {
+		overflow-wrap: break-word;
+		font-weight: bold;
+	}
+
+	ul {
+		display: flex;
+		flex-flow: column nowrap;
+	
+		overflow: scroll hidden;
+	
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		li {
+			display: flex;
+			
+			a {
+				position: relative;
+			
+				width: 100%;
+			
+				margin: 0;
+				padding: $spacing-unit / 2 20px;
+				color: $text-contrast;
+				font-weight: bold;
+				text-decoration: none;
+				white-space: nowrap;
+			
+				border: none;
+				border-radius: 0;
+
+				@include transitions-all;
+				
+				&:hover {
+					padding-left: $spacing-unit;
+					background-color: $brand-color-dark;
+				}
+				&:active {
+					color: $text-color;
+					background-color: $grey-color;
+				}
+
+				// Currently open page
+				&.active {
+					color: $text-color;
+					background-color: $background-color;
+				}
+				
+
+				/* --- Parented Navbar Item --- */
+
+				&.child {
+					margin-left: 20px;
+					padding: 10px 20px;
+				}
+				&.child:hover {
+					padding-left: $spacing-unit;
+				}
+			}
+		}
+	}
+}
+
+
+/* --- Navbar Logout Button --- */
+
+.header-logout {
+	
+	@include display-flex;
+
+	width: 100%;
+	margin: 10px 10px 20px 0;
+	padding: $spacing-unit/3 ($spacing-unit/3)*2;
+	
+	color: $text-color;
+	font-weight: bold;
+	text-decoration: none;
+	white-space: nowrap;
+
+	background-color: $btn-red-color;
+	border-radius: 4px;
+
+	@include transitions-all;
+	
+	&:hover {
+		background-color: lighten($btn-red-color, 15%);
+	}
+	&:active {
+		background-color: darken($btn-red-color, 15%);
+	}
+}
+
+
+/* --- Status Bar --- */
+
+.status-bar {
+	position: sticky;
+	top: 0;
+
+	@include display-flex(row, space-between);
+
+	height: 2rem;
+
+	padding: 0;
+
+	background: linear-gradient(90deg, $nav-background-color, $brand-color);
+	color: $text-contrast;
+
+	z-index: 10;
+	
+	// Toggle button
+	label {
+		margin: 0;
+		padding: $spacing-unit / 3 $spacing-unit / 3;
+	
+		border: 2px solid transparent;
+	
+		@include transitions-all;
+		
+		&:hover {
+			border-color: $background-color;
+		}
+	}
+
+	ul {
+		@include display-flex;
+	
+		list-style: none;
+	
+		margin: 0;
+		
+		li {
+			margin: 0 1rem;
+
+			p {
+				color: $text-contrast-light;
+				text-shadow: 0 0 10px black;
+			}
+		}
+	}
+}
+
+
+/* --- Open/Close navbar checkbox */
+
+#nav-toggle {
+	display: none;
+}
+
+
+/* --- Content Wrapper --- */
+
+.content-wrapper {
+	width: 100%;
+
+	background-color: $background-color;
+}
+
+
+/* --- Content Body --- */
+
+.content-body {
+	width: 100%;
+}
+
+
+/* --- Flash --- */
+
+ul.flash {
+	@include display-flex(column, center, flex-start);
+
+	margin: $spacing-unit / 3;
+	padding: $spacing-unit / 2 $spacing-unit;
+
+	border: 2px solid $grey-color;
+	border-radius: 4px;
+
+	background-color: $flash-bg-color;
+}
+
+
+/* --- Div --- */
+
+.container {
+	@include display-flex(column, center, flex-start);
+	
+	padding: $spacing-unit;
+}
+/* additional container classes */
+.flex-vertical {
+	@include display-flex(column, flex-start);
+}
+.flex-horizontal {
+	@include display-flex(row, flex-start);
+}
+.flex-center {
+	justify-content: center;
+	align-items: center;
+}
+.align-start {
+	align-items: flex-start;
+}
+.no-padding {
+	padding: 0;
+}
+.no-top-padding {
+	padding-top: 0;
+}
+.max-width {
+	width: 100%;
+}
+.bordered {
+	border: 2px solid $border-color;
+}
+.fit-content {
+	width: fit-content;
+}
+
+
+
+/* --- Back Button --- */
+
+.nav-back-container {
+	padding-bottom: 0;
+	
+	a {
+		margin: 0 $spacing-unit / 3;
+	}
+}
+
+
+/* --- Link Button --- */
+
+.btn {
+	position: relative;
+	
+	@include display-flex;
+
+	border-radius: $btn-border-radius;
+	border: none;
+
+	cursor: pointer;
+
+	/* Button text style */
+	color: $text-contrast-light;
+	text-decoration: none;
+
+	/* Button press outline */
+	outline: none;
+
+	@include btn-gradient($brand-color);
+	
+	@include transitions-all;
+
+	// Hover transition is covered in @include btn-gradient
+
+	&:active {
+		color: $grey-color-light;
+	
+		@include transitions(none);
+	}
+	&:active::after {
+		visibility: visible;
+	
+		height: 0;
+	}
+
+	&:disabled {
+		background-image: none;
+		background-color: $grey-color-light;
+		color: $grey-color;
+	
+		cursor: default;
+
+		&:hover{
+			background-image: none;
+			background-color: $grey-color-light;
+		}
+	}
+
+	&.btn-green {
+		@include btn-gradient($btn-green-color);
+	}
+	&.btn-red {
+		@include btn-gradient($btn-red-color);
+	}
+	
+	&.btn-big {
+		width: 100%;
+		margin: 10px;
+		height: 40vh;
+		padding: 20px;
+		flex-grow: 1;
+		
+		@include relative-font-size(1.6);
+
+		p {
+			@include relative-font-size(1.6);
+		}
+	}
+	&.btn-small {
+		margin: 10px;
+		padding: 7.5px 20px;
+	}
+}
+
+
+/* --- Input --- */
+
+input {
+	width: -webkit-fill-available;
+	padding: $spacing-unit / 3;
+	margin: $spacing-unit / 3;
+	border: 2px solid $grey-color-light;
+	border-radius: 4px;
+
+	outline: none;
+
+	@include transitions-all;
+
+	&:hover {
+		border-color: $brand-color-light;
+	}
+	&:focus {
+		border-color: $brand-color;
+	}
+	&:active {
+		border-color: $brand-color;
+	}
+}
+
+.checkbox {
+	width: auto;
+	-webkit-appearance: none;
+	display: inline-block;
+	position: relative;
+	border: 2px solid $grey-color-light;
+	padding: 6px;
+	margin-top: 12px;
+
+	&:checked {
+		border: 2px solid $brand-color;
+	}
+	&:checked::after {
+		content: '';
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 8px;
+		height: 8px;
+		background-color: $brand-color;
+	}
+}
+
+/* --- select --- */
+
+select {
+	padding: 5px;
+
+	border: 2px solid $brand-color;
+	
+	outline: none;
+}
+
+/* --- img --- */
+
+img {
+	max-width: 100%;
+	height: auto;
+	margin: 10px;
+}
+
+
+/* --- Table --- */
+
+table.list {
+	background-color: white;
+	border-top: 2px solid $grey-color-dark;
+	border-collapse: collapse;
+
+	th, td {
+		margin: $spacing-unit / 3;
+		padding: 0 20px;
+		height: 5rem;
+	
+		
+		border-bottom: 1px solid $grey-color-dark;
+	
+		text-align: left;
+	}
+}
+
+/* --- Links --- */
+
+a {
+	width: fit-content;
+	margin: 10px;
+
+	font-weight: bold;
+	text-decoration: none;
+	
+	color: $brand-color;
+
+	&.bordered {
+		padding: 0 10px;
+	
+		border: 2px solid $brand-color;
+		border-radius: 4px;
+	
+		@include transitions-all;
+
+		&:hover {
+			border-color: $brand-color-light;
+			color: $brand-color-light;
+		}
+		&:active {
+			border-color: $brand-color-dark;
+			color: $brand-color-dark;
+		
+			@include transitions(none);
+		}
+	}
+}

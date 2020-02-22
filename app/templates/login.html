@@ -2,32 +2,18 @@
 
 {% block content %}
 
-	<!-- Login css -->
-	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/login.css') }}">
-
 	<!-- Container to fill screen to center login container -->
-	<div class='big-container flex-center'>
+	<div class='background flex-center'>
 
-		<!-- Login container element -->
-		<div class='container flex-horizontal login'>
+		<!-- Overlay over background image -->
+		<div class='overlay'>
 			
-			<!-- Left side div -->
-			<div class='div-left flex-center'>
-				<h1 style='margin: 0;'>
-					2D Barcode System
-				</h1>
-			</div>
-
-			<!-- Center divider -->
-			<div class='center-divider'></div>
-
-			<!-- Right side div -->
-			<div class='div-right'>
-
+			<!-- Login container element -->
+			<div class='container login'>
+	
 				<h2>Account Login</h2>
 			
-				<form action='' method='POST' class='flex-vertical' novalidate>
+				<form action='' method='POST' class='flex-vertical align-start' novalidate>
 					
 					<!-- Form security protection -->
 					{{ form.hidden_tag() }}
@@ -63,14 +49,17 @@
 						{{ form.rmb_me.label(style='margin-left:5px') }}
 					</div>
 		
-					<button id='submit' type='submit' class='btn-small green'>Log In</button>
+					<button id='submit' type='submit' class='btn btn-small'>Log In</button>
 		
 				</form>
-
+		
 			</div>
-	
-		</div>
 
+			<div class='container max-width flex-center'>
+				<h1>{{ program_name }}</h1>
+			</div>
+
+		</div>
 	</div>
 
 {% endblock %}

@@ -1,0 +1,35 @@
+.background {
+	min-height: 100vh;
+	background-image: $login-image;
+	background-size: cover;
+}
+
+.overlay {
+	width: 100%;
+	min-height: 100vh;
+
+	display: flex;
+
+	background-image: linear-gradient(135deg, transparentize($brand-color-dark, .2), transparentize($brand-color-light, .2));
+
+	h1 {
+		color: $text-contrast-light;
+		text-shadow: 0 0 $base-font-size*.5 black;
+	}
+}
+
+.login {
+	width: $login-width;
+	flex: 0 0 $login-width;
+	position: relative;
+	background-color: $background-color;
+	box-shadow: 0 0 10px black;
+
+	form {
+		width: 100%;
+
+		button {
+			width: -webkit-fill-available;
+		}
+	}
+}

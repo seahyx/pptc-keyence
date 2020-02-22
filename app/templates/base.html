@@ -3,34 +3,32 @@
 
 <head>
 	{% if title %}
-	<title>{{ title }} - Keyence Vision System</title>
+	<title>{{ title }} - {{ program_name }}</title>
 	{% else %}
-	<title>Keyence Vision System</title>
+	<title>{{ program_name }}</title>
 	{% endif %}
 
 	<meta name='viewport'
 	content='user-scalable=yes, initial-scale=1, minimum-scale=1, width=device-width, height=device-height'>
 
 	<!-- Favicon and Icons -->
-	<link rel='apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='/res/apple-touch-icon.png') }}">
+	<link rel='apple-touch-icon' sizes="120x120" href="{{ url_for('static', filename='/res/apple-touch-icon.png') }}">
 	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='/res/favicon-32x32.png') }}">
 	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='/res/favicon-16x16.png') }}">
 	<link rel="manifest" href="{{ url_for('static', filename='/res/site.webmanifest') }}">
 	<link rel="mask-icon" href="{{ url_for('static', filename='/res/safari-pinned-tab.svg') }}" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
-	
-	<!-- Fonts -->
-	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/fonts.css') }}">
+	<meta name="theme-color" content="#6d94e9">
 	
 	<!-- CSS -->
 	<link rel='stylesheet' type='text/css'
-	href="{{ url_for('static', filename='styles/default-style.css') }}">
+	href="{{ url_for('static', filename='styles/main.css') }}">
 
-	<!-- Script -->
+	<!-- Scripts -->
 	{% if not no_header %}
-	<script src="{{ url_for('static', filename='src/js/status-bar.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='src/status-bar.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='src/nav-loader.js') }}"></script>
+	<script src="{{ url_for('static', filename='src/nav-toggler.js') }}" defer></script>
 	{% endif %}
 </head>
 
@@ -39,18 +37,19 @@
 	{% if not no_header %}
 
 	<!-- Checkbox to open/close navbar -->
-	<input type='checkbox' id='nav-btn' {% if nav_closed %}checked{% endif %}/>
+	<input type='checkbox' id='nav-toggle'/>
 
 	<!-- Navbar -->
-	<header id='navbar'>
-		<div id='navbar-content'>
+	<header>
+
+		<nav class='nav-content'>
 
 			<!-- Navbar top section -->
 			<div>
 				<!-- Title -->
-				<h1>2D Barcode System</h1>
+				<h1>{{ program_name }}</h1>
 				<!-- Account info -->
-				<p>Logged in as <span id='header-user'>{{ current_user.username }}</span></p>
+				<p>Logged in as <span class='header-user'>{{ current_user.username }}</span></p>
 				
 				<!-- Navigation map for info -->
 				<!-- link, title, parent, display (in navbar), admin required -->
@@ -64,8 +63,8 @@
 				{% set active_page = active_page|default('index') -%}
 				<ul>
 					{% for href, name, parent, nav_display, admin_req in navigation_map %}
+						<!-- Only display admin-access pages if user has permission -->
 						{% if nav_display %}
-							<!-- Only display admin-access pages if user has permission -->
 							{% if not admin_req or (admin_req and (current_user.is_authenticated and current_user.has_admin_rights())) %}
 								<li><a href='{{ url_for(href|e) }}' class='{% if href == active_page %}active{% endif %}{% if parent %} child{% endif %}'>{{ name|e }}</a></li>
 							{% endif %}
@@ -78,33 +77,33 @@
 			<div>
 				<!-- Log out -->
 				{% if not current_user.is_anonymous %}
-				<a id='header-logout' href="{{ url_for('logout') }}">Log out >></a>
+				<a class='header-logout' href="{{ url_for('logout') }}">Log out >></a>
 				{% endif %}
 			</div>
 
-		</div>
+		</nav>
 		
 	</header>
 	
 	{% endif %}
 
-	<div id='content-wrapper'>
+	<div class='content-wrapper'>
 
 		{% if not no_header %}
 
 			<!-- Status bar -->
-			<div id='status-bar'>
-				<label for='nav-btn'>&#9776;</label>
+			<div class='status-bar'>
+				<label for='nav-toggle'>&#9776;</label>
 				<ul>
 					<li></li>
-					<li><p id='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
+					<li><p class='time' title='Local System Time'>00:00:00 AM - 1/1/1970</p></li>
 				</ul>
 			</div>
 	
 		{% endif %}
 
 		<!-- Main content -->
-		<div id='content-body'>
+		<div class='content-body'>
 
 			<!-- Show flash messages -->
 			{% with messages = get_flashed_messages() %}
@@ -120,7 +119,7 @@
 			<!-- Back button, if page has a parent -->
 			{% for href, name, parent, nav_display, admin_req in navigation_map %}
 				{% if href == active_page and parent %}
-					<div id='nav-back-container' class='container'>
+					<div class='container nav-back-container'>
 						<!-- Back button -->
 						<a class='bordered' href="{{ url_for(parent) }}"><< Back</a>
 					</div>
