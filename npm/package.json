@@ -1,0 +1,22 @@
+{
+  "name": "pptc-keyence-electron",
+  "version": "1.0.0",
+  "description": "Keyence Vision System for Miseq Tray Inspection",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Seah Ying Xiang",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.0.1",
+    "python-shell": "^1.0.8"
+  },
+  "dependencies": {
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "save-dev": "0.0.1-security"
+  }
+}

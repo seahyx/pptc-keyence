@@ -3,7 +3,6 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from flask_session import Session, SqlAlchemySessionInterface
 from flask_debugtoolbar import DebugToolbarExtension
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
@@ -21,8 +20,6 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 toolbar = DebugToolbarExtension(app)
-Session(app)
-SqlAlchemySessionInterface(app, db, 'sessions', 'sess_')
 
 from app import routes, models, errors, permissions
 
