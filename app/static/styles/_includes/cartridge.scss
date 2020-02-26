@@ -1,12 +1,16 @@
+$cart-display-width: 150px;
+$cart-img-size: 200px;
+
 .cart-container {
 	position: relative;
 
 	background-color: white;
 }
 
-.cart-img {
-	min-width: 150px;
+.cart-display {
+	min-width: $cart-display-width;
 	margin: $spacing-unit / 3;
+	pointer-events: none;
 	z-index: 1;
 }
 
@@ -19,16 +23,146 @@
 
 	margin: 3%;
 
-	background-color: $btn-green-color;
+	// Debug styles!
+
+	// background-color: $btn-green-color;
+	// opacity: 50%;
+	// z-index: 2;
+}
+
+.cart-overlay {
+	position: absolute;
+	top: $spacing-unit / 3;
+	bottom: $spacing-unit / 3;
+	left: $spacing-unit / 3;
+	right: $spacing-unit / 3;
+
+	margin: 3%;
+
+	// Debug styles!
+
+	opacity: 50%;
+	z-index: 2;
+
+	.upper {
+		// Debug color
+		// background-color: $btn-green-color;
+
+		@include grid-lines(1, 2, 1, 5);
+	}
+	.lower {
+		// Debug color
+		// background-color: $btn-red-color;
+
+		@include grid-lines(1, 2, 5, 11);
+	}
 }
 
 table.tb-program {
 
 	&.tb-cart-id {
-		width: 20 * $base-font-size;
+		width: 18 * $base-font-size;
 	}
 	
 	.mask {
 		width: 35%;
 	}
+}
+
+// Cartridge photo
+.cart-img {
+	width: $cart-img-size;
+	height: $cart-img-size;
+
+	margin: $spacing-unit / 3 0;
+
+	background-color: white;
+}
+
+// Debug color
+@mixin random-bgr(){
+	background: rgb(random(255), random(255), random(255));
+}
+
+// Grid items
+.gr-cart-item {
+
+	// Debug color
+	// @for $i from 0 to 22 {
+	// 	&:nth-child(#{$i}) {
+	// 		@include random-bgr();
+	// 	}
+	// }
+
+	background-color: $btn-green-color;
+
+	&.i21 {
+		@include grid-lines(1, 7, 1, 2);
+	}
+	&.i22 {
+		@include grid-lines(7, 13, 1, 2);
+	}
+	
+	&.i17 {
+		@include grid-lines(1, 4, 2, 4);
+	}
+	&.i18 {
+		@include grid-lines(4, 7, 2, 3);
+	}
+	&.i19 {
+		@include grid-lines(7, 10, 2, 3);
+	}
+	&.i20 {
+		@include grid-lines(10, 13, 2, 3);
+	}
+
+	&.i13 {
+		@include grid-lines(1, 4, 3, 4);
+	}
+	&.i14 {
+		@include grid-lines(4, 7, 3, 4);
+	}
+	&.i15 {
+		@include grid-lines(7, 10, 3, 4);
+	}
+	&.i16 {
+		@include grid-lines(10, 13, 3, 4);
+	}
+
+	&.i9 {
+		@include grid-lines(1, 4, 4, 5);
+	}
+	&.i10 {
+		@include grid-lines(4, 7, 4, 5);
+	}
+	&.i11 {
+		@include grid-lines(7, 10, 4, 5);
+	}
+	&.i12 {
+		@include grid-lines(10, 13, 4, 5);
+	}
+
+	&.i5 {
+		@include grid-lines(1, 4, 5, 6);
+	}
+	&.i6 {
+		@include grid-lines(4, 7, 5, 6);
+	}
+	&.i7 {
+		@include grid-lines(7, 10, 5, 6);
+	}
+	&.i8 {
+		@include grid-lines(10, 13, 5, 6);
+	}
+
+	&.i1 {
+		@include grid-lines(1, 5, 6, 11);
+	}
+	&.i2 {
+		@include grid-lines(5, 9, 6, 11);
+	}
+	&.i4 {
+		@include grid-lines(9, 13, 6, 11);
+	}
+
 }

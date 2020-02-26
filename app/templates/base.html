@@ -112,20 +112,16 @@
 		<!-- Main content -->
 		<div class='content-body'>
 
-			{% if not no_header %}
-
-				<!-- Show flash messages -->
-				{% with messages = get_flashed_messages() %}
-				{% if messages %}
-				<ul class='flash'>
-					{% for message in messages %}
-					<li>{{ message }}</li>
-					{% endfor %}
-				</ul>
-				{% endif %}
-				{% endwith %}
-
+			<!-- Show flash messages -->
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<ul class='flash'{% if no_header %} style='display: none;'{% endif %}>
+				{% for message in messages %}
+				<li>{{ message }}</li>
+				{% endfor %}
+			</ul>
 			{% endif %}
+			{% endwith %}
 
 			{% block content %}{% endblock %}
 

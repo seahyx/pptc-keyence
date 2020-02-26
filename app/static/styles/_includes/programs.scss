@@ -63,9 +63,10 @@ table.tb-program {
 
 .status-container {
 	position: sticky;
-	top: 3rem;
+	top: 3 * $base-font-size;
 
 	width: -webkit-fill-available;
+
 	margin-bottom: $spacing-unit / 3;
 	
 	background-color: white;
