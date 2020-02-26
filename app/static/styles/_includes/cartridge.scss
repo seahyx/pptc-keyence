@@ -38,11 +38,12 @@ $cart-img-size: 200px;
 	right: $spacing-unit / 3;
 
 	margin: 3%;
+	
+	z-index: 2;
 
 	// Debug styles!
 
-	opacity: 50%;
-	z-index: 2;
+	// opacity: 50%;
 
 	.upper {
 		// Debug color
@@ -77,11 +78,6 @@ table.tb-program {
 	margin: $spacing-unit / 3 0;
 
 	background-color: white;
-}
-
-// Debug color
-@mixin random-bgr(){
-	background: rgb(random(255), random(255), random(255));
 }
 
 // Grid items

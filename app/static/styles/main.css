@@ -716,7 +716,6 @@ table.tb-program td.full-border {
   left: 0.5333333333rem;
   right: 0.5333333333rem;
   margin: 3%;
-  opacity: 50%;
   z-index: 2;
 }
 
@@ -900,11 +899,22 @@ table.tb-program .mask {
   grid-row-end: 11;
 }
 
-.laser-img, .laser-display {
-  width: 150px;
-  height: 150px;
-  margin: 0.5333333333rem 0;
+.laser-img {
+  width: 300px;
+  height: 200px;
+  margin-bottom: 0.5333333333rem;
   background-color: white;
+}
+
+.laser-display-container {
+  position: relative;
+  margin-bottom: 0.5333333333rem;
+  background-color: white;
+}
+
+.laser-display-container .laser-display {
+  min-width: 300px;
+  z-index: 1;
 }
 
 table.tb-program.tb-laser-id {
@@ -918,6 +928,45 @@ table.tb-program.tb-laser-id .sn {
 
 table.tb-program.tb-laser-barcode {
   width: 16rem;
+}
+
+.laser-underlay {
+  position: absolute;
+  top: 0.5333333333rem;
+  bottom: 0.5333333333rem;
+  left: 0.5333333333rem;
+  right: 0.5333333333rem;
+  margin: 5%;
+  margin-left: 7%;
+  grid-template-columns: auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto;
+}
+
+.gr-laser-item {
+  background-color: #18cd5e;
+}
+
+.laser-overlay {
+  position: absolute;
+  top: 0.5333333333rem;
+  bottom: 0.5333333333rem;
+  left: 0.5333333333rem;
+  right: 0.5333333333rem;
+  z-index: 2;
+}
+
+.laser-overlay .left {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 5;
+}
+
+.laser-overlay .right {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 5;
 }
 
 .container.input-form-container {

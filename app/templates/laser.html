@@ -13,7 +13,7 @@
 
 				<!-- Status code container -->
 				<div class='container status-container flex-center no-padding bordered'>
-					<p>Status Code</p>
+					<p>Set Rack on Stage, Enter WO, Part Number, and Rack ID, then click Start</p>
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
@@ -23,21 +23,67 @@
 					<div class='container no-padding flex-center margin-right'>
 						<!-- Cartridge image -->
 						<div class='laser-img container no-padding bordered'></div>
-						<!-- Cartridge digital display -->
-						<div class='laser-display container no-padding bordered'></div>
+
+						<!-- Cartridge digital container -->
+						<div class='container laser-display-container no-padding bordered'>
+
+							<!-- Underlay - colours the circles -->
+							<div class='grid laser-underlay no-padding'>
+								<!-- Grid items - top->bottom, left->right -->
+								<!-- There are 4 rows and 6 columns -->
+
+								<div class='gr-laser-item i19'></div>
+								<div class='gr-laser-item i20'></div>
+								<div class='gr-laser-item i21'></div>
+								<div class='gr-laser-item i22'></div>
+								<div class='gr-laser-item i23'></div>
+								<div class='gr-laser-item i24'></div>
+
+								<div class='gr-laser-item i13'></div>
+								<div class='gr-laser-item i14'></div>
+								<div class='gr-laser-item i15'></div>
+								<div class='gr-laser-item i16'></div>
+								<div class='gr-laser-item i17'></div>
+								<div class='gr-laser-item i18'></div>
+
+								<div class='gr-laser-item i7'></div>
+								<div class='gr-laser-item i8'></div>
+								<div class='gr-laser-item i9'></div>
+								<div class='gr-laser-item i10'></div>
+								<div class='gr-laser-item i11'></div>
+								<div class='gr-laser-item i12'></div>
+
+								<div class='gr-laser-item i1'></div>
+								<div class='gr-laser-item i2'></div>
+								<div class='gr-laser-item i3'></div>
+								<div class='gr-laser-item i4'></div>
+								<div class='gr-laser-item i5'></div>
+								<div class='gr-laser-item i6'></div>
+
+							</div>
+							<!-- Cartridge display overlay -->
+							<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
+							<!-- Overlay - functional buttons left/right -->
+							<div class='grid laser-overlay no-padding'>
+								<div class='left'></div>
+								<div class='right'></div>
+							</div>
+
+						</div>
+
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-laser-id'>
 							<tr>
 								<td class='sn'>Work Order</td>
-								<td class='full-border'></td>
+								<td class='full-border'>20143236</td>
 							</tr>
 							<tr>
 								<td class='sn'>Part Number</td>
-								<td class='full-border'></td>
+								<td class='full-border'>15028053</td>
 							</tr>
 							<tr>
-								<td class='sn'>Part ID</td>
-								<td class='full-border'></td>
+								<td class='sn'>Rack ID</td>
+								<td class='full-border'>QC1</td>
 							</tr>
 						</table>
 					</div>
@@ -54,7 +100,7 @@
 								{% for x in range(1, 24) %}
 									<tr>
 										<td class='sn'>{{ x }}</td>
-										<td class='full-border'></td>
+										<td class='full-border'>MS2005864-IMSS0</td>
 									</tr>
 								{% endfor %}
 							</table>

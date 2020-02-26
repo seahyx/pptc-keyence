@@ -1,10 +1,24 @@
-.laser-img, .laser-display {
-	width: 150px;
-	height: 150px;
+.laser-img {
+	width: 300px;
+	height: 200px;
 
-	margin: $spacing-unit / 3 0;
+	margin-bottom: $spacing-unit / 3;
 
 	background-color: white;
+}
+
+.laser-display-container {
+	position: relative;
+
+	margin-bottom: $spacing-unit / 3;
+
+	background-color: white;
+
+	.laser-display {
+		min-width: 300px;
+
+		z-index: 1;
+	}
 }
 
 table.tb-program {
@@ -22,4 +36,67 @@ table.tb-program {
 		width: 20 * $base-font-size;
 	}
 
+}
+
+// Underlay
+.laser-underlay {
+	position: absolute;
+	top: $spacing-unit / 3;
+	bottom: $spacing-unit / 3;
+	left: $spacing-unit / 3;
+	right: $spacing-unit / 3;
+
+	margin: 5%;
+	margin-left: 7%;
+
+	// Debug styles!
+
+	// background-color: $btn-green-color;
+	// opacity: 50%;
+	// z-index: 2;
+	
+	grid-template-columns: auto auto auto auto auto auto;
+	grid-template-rows: auto auto auto auto;
+}
+
+.gr-laser-item {
+
+	// Debug color
+	// opacity: 50%;
+	// @for $i from 0 to 22 {
+	// 	&:nth-child(#{$i}) {
+	// 		@include random-bgr();
+	// 	}
+	// }
+
+	background-color: $btn-green-color;
+}
+
+// Overlay
+
+.laser-overlay {
+	position: absolute;
+	top: $spacing-unit / 3;
+	bottom: $spacing-unit / 3;
+	left: $spacing-unit / 3;
+	right: $spacing-unit / 3;
+
+	z-index: 2;
+
+	// Debug styles!
+
+	// opacity: 50%;
+
+	.left {
+		// Debug color
+		// background-color: $btn-green-color;
+
+		@include grid-lines(1, 2, 1, 5);
+	}
+	.right {
+		// Debug color
+		// background-color: $btn-red-color;
+
+		@include grid-lines(2, 3, 1, 5);
+	}
 }

@@ -176,9 +176,14 @@ $table-alt-color : hsl(0, 0%, 90%);
 @mixin grid-lines($col-start, $col-end, $row-start, $row-end) {
 	grid-column-start: $col-start;
 	grid-column-end: $col-end;
-	
+
 	grid-row-start: $row-start;
 	grid-row-end: $row-end;
+}
+
+// Debug color
+@mixin random-bgr(){
+	background: rgb(random(255), random(255), random(255));
 }
 
 // Import partials.
