@@ -60,7 +60,7 @@ header {
 
 	overflow-x: hidden;
 
-	z-index: 1;
+	z-index: 100;
 	
 	@include transitions-all;
 }
@@ -254,6 +254,7 @@ header {
 /* --- Content Wrapper --- */
 
 .content-wrapper {
+	min-width: fit-content;
 	width: 100%;
 
 	background-color: $background-color;
@@ -474,7 +475,6 @@ select {
 /* --- img --- */
 
 img {
-	max-width: 100%;
 	height: auto;
 	margin: 10px;
 }

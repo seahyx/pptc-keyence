@@ -55,7 +55,7 @@ header {
   background-color: black;
   /* text colour */
   overflow-x: hidden;
-  z-index: 1;
+  z-index: 100;
   -webkit-transition: all 0.15s ease;
   -moz-transition: all 0.15s ease;
   -ms-transition: all 0.15s ease;
@@ -242,6 +242,7 @@ header {
 
 /* --- Content Wrapper --- */
 .content-wrapper {
+  min-width: fit-content;
   width: 100%;
   background-color: #f2f2f2;
 }
@@ -505,7 +506,6 @@ select {
 
 /* --- img --- */
 img {
-  max-width: 100%;
   height: auto;
   margin: 10px;
 }
@@ -709,7 +709,7 @@ table.tb-program .mask {
 }
 
 .laser-img, .laser-display {
-  width: 300px;
+  width: 150px;
   height: 150px;
   margin: 0.5333333333rem 0;
   background-color: white;
