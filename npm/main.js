@@ -29,7 +29,7 @@ function loadSite() {
 		console.log('waiting for the server start...');
 		console.log(err);
 		loadSite();
-	});
+	});	
 }
 
 function createWindow () {
