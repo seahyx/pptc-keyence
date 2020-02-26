@@ -4,12 +4,35 @@ let rq = require('request-promise');
 
 let mainAddr = 'http://localhost:5000/';
 
-function createWindow () {
+function startUp() {
 
-	PythonShell.run('../app.py', null, function (err) {
+	console.log('Starting server...');
+
+	PythonShell.run('../app.py', null, function(err) {
 		if (err) throw err;
-		console.log('finished');
+
+		console.log('Server closed!');
 	});
+
+	loadSite();
+
+};
+
+function loadSite() {
+	rq(mainAddr)
+	.then(function(htmlString) {
+		console.log('Server started!');
+		console.log('Creating window...');
+		createWindow();
+	})
+	.catch(function(err) {
+		console.log('waiting for the server start...');
+		console.log(err);
+		loadSite();
+	});
+}
+
+function createWindow () {
 
 	window = new BrowserWindow({width: 800, height: 600, show: false});
 
@@ -19,20 +42,10 @@ function createWindow () {
 	// ready the window with load url and show
 	window.once('ready-to-show', () => {
 		window.show();
+		console.log('Window created!');
 	});
-}
 
-function startUp() {
-	rq(mainAddr)
-		.then(function(htmlString){
-			console.log('Server started!');
-			createWindow();
-		})
-		.catch(function(err){
-			//console.log('waiting for the server start...');
-			startUp();
-		});
-};
+}
 
 app.on('ready', startUp)
 
