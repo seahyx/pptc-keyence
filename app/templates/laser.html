@@ -3,71 +3,101 @@
 
 {% block content %}
 
-	<div class='container no-padding flex-center'>
+	<div class='container flex-center'>
 
 		<!-- Large container wrapper, fits width of page -->
-		<div class='container no-padding flex-center'>
+		<div class='container flex-center'>
 
 			<!-- Centered vertical container -->
-			<div class='container fit-content'>
+			<div class='container padding fit-content'>
 
 				<!-- Status code container -->
-				<div class='container status-container flex-center no-padding bordered'>
+				<div class='container status-container flex-center bordered'>
 					<p>Set Rack on Stage, Enter WO, Part Number, and Rack ID, then click Start</p>
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
-				<div class='container flex-center flex-horizontal align-start no-padding fit-content'>
+				<div class='container flex-center flex-horizontal align-start fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container no-padding flex-center margin-right'>
+					<div class='container flex-center margin-right'>
 						<!-- Cartridge image -->
-						<div class='laser-img container no-padding bordered'></div>
+						<div class='laser-img container bordered'></div>
 
 						<!-- Cartridge digital container -->
-						<div class='container laser-display-container no-padding bordered'>
+						<div class='container laser-display-container bordered'>
 
-							<!-- Underlay - colours the circles -->
-							<div class='grid laser-underlay no-padding'>
-								<!-- Grid items - top->bottom, left->right -->
-								<!-- There are 4 rows and 6 columns -->
 
-								<div class='gr-laser-item i19'></div>
-								<div class='gr-laser-item i20'></div>
-								<div class='gr-laser-item i21'></div>
-								<div class='gr-laser-item i22'></div>
-								<div class='gr-laser-item i23'></div>
-								<div class='gr-laser-item i24'></div>
-
-								<div class='gr-laser-item i13'></div>
-								<div class='gr-laser-item i14'></div>
-								<div class='gr-laser-item i15'></div>
-								<div class='gr-laser-item i16'></div>
-								<div class='gr-laser-item i17'></div>
-								<div class='gr-laser-item i18'></div>
-
-								<div class='gr-laser-item i7'></div>
-								<div class='gr-laser-item i8'></div>
-								<div class='gr-laser-item i9'></div>
-								<div class='gr-laser-item i10'></div>
-								<div class='gr-laser-item i11'></div>
-								<div class='gr-laser-item i12'></div>
-
-								<div class='gr-laser-item i1'></div>
-								<div class='gr-laser-item i2'></div>
-								<div class='gr-laser-item i3'></div>
-								<div class='gr-laser-item i4'></div>
-								<div class='gr-laser-item i5'></div>
-								<div class='gr-laser-item i6'></div>
-
+							<!-- TUBE Display -->
+							<div class='container laser-tube' style='display: none;'>
+								
+								<!-- Underlay - colours the circles -->
+								<div class='grid laser-underlay'>
+									<!-- Grid items - top->bottom, left->right -->
+									<!-- There are 4 rows and 6 columns -->
+									<div class='gr-laser-item i19'></div>
+									<div class='gr-laser-item i20'></div>
+									<div class='gr-laser-item i21'></div>
+									<div class='gr-laser-item i22'></div>
+									<div class='gr-laser-item i23'></div>
+									<div class='gr-laser-item i24'></div>
+	
+									<div class='gr-laser-item i13'></div>
+									<div class='gr-laser-item i14'></div>
+									<div class='gr-laser-item i15'></div>
+									<div class='gr-laser-item i16'></div>
+									<div class='gr-laser-item i17'></div>
+									<div class='gr-laser-item i18'></div>
+	
+									<div class='gr-laser-item i7'></div>
+									<div class='gr-laser-item i8'></div>
+									<div class='gr-laser-item i9'></div>
+									<div class='gr-laser-item i10'></div>
+									<div class='gr-laser-item i11'></div>
+									<div class='gr-laser-item i12'></div>
+	
+									<div class='gr-laser-item i1'></div>
+									<div class='gr-laser-item i2'></div>
+									<div class='gr-laser-item i3'></div>
+									<div class='gr-laser-item i4'></div>
+									<div class='gr-laser-item i5'></div>
+									<div class='gr-laser-item i6'></div>
+	
+								</div>
+								<!-- Cartridge display overlay -->
+								<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
+								<!-- Overlay - functional buttons left/right -->
+								<div class='grid laser-overlay'>
+									<div class='left'></div>
+									<div class='right'></div>
+								</div>
+								
 							</div>
-							<!-- Cartridge display overlay -->
-							<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
-							<!-- Overlay - functional buttons left/right -->
-							<div class='grid laser-overlay no-padding'>
-								<div class='left'></div>
-								<div class='right'></div>
+
+
+							<!-- TROUGH Display -->
+							<div class='container laser-trough'>
+								
+								<!-- Underlay - colours the troughs -->
+								<div class='grid laser-underlay'>
+									<!-- Grid items - top->bottom, left->right -->
+									<!-- There are 4 columns -->
+									<div class='gr-laser-item i1'></div>
+									<div class='gr-laser-item i2'></div>
+									<div class='gr-laser-item i3'></div>
+									<div class='gr-laser-item i4'></div>
+	
+								</div>
+								<!-- Cartridge display overlay -->
+								<img class='laser-display' src="{{ url_for('static', filename='img/laser-trough.svg') }}">
+								<!-- Overlay - functional buttons left/right -->
+								<div class='grid laser-overlay'>
+									<div class='left'></div>
+									<div class='right'></div>
+								</div>
+								
 							</div>
+							
 
 						</div>
 
@@ -89,9 +119,9 @@
 					</div>
 
 					<!-- Right side container -->
-					<div class='container no-padding flex-center'>
+					<div class='container flex-center'>
 						<!-- Barcode and mask table -->
-						<div class='container no-padding'>
+						<div class='container'>
 							<table class='tb-program tb-laser-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>

@@ -286,8 +286,6 @@ ul.flash {
 
 .container {
 	@include display-flex(column, center, flex-start);
-	
-	padding: $spacing-unit;
 }
 /* additional container classes */
 .flex-vertical {
@@ -306,10 +304,10 @@ ul.flash {
 .align-end {
 	align-items: flex-end;
 }
-.no-padding {
-	padding: 0;
+.padding {
+	padding: $spacing-unit;
 }
-.no-top-padding {
+.top-no-padding {
 	padding-top: 0;
 }
 .max-width {

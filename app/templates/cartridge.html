@@ -3,29 +3,29 @@
 
 {% block content %}
 
-	<div class='container'>
+	<div class='container padding'>
 
 		<!-- Large container wrapper, fits width of page -->
-		<div class='container no-padding flex-center fill-available'>
+		<div class='container flex-center fill-available'>
 
 			<!-- Centered vertical container -->
-			<div class='container fit-content no-padding'>
+			<div class='container fit-content'>
 
 				<!-- Status code container -->
-				<div class='container status-container flex-center no-padding bordered'>
+				<div class='container status-container flex-center bordered'>
 					<p>Set Cartridge on Stage, Enter Barcode, then click Start</p>
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
-				<div class='container flex-center flex-horizontal align-start no-padding fit-content'>
+				<div class='container flex-center flex-horizontal align-start fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container no-padding'>
+					<div class='container'>
 						<!-- Cartridge display -->
-						<div class='container cart-container no-padding flex-center bordered'>
+						<div class='container cart-container flex-center bordered'>
 
 							<!-- Underlay - colours the circles -->
-							<div class='grid cart-underlay no-padding'>
+							<div class='grid cart-underlay'>
 								<!-- Grid items - top->bottom, left->right -->
 								<!-- There are 10 rows and 12 columns -->
 								<div class='gr-cart-item i21'></div>
@@ -58,7 +58,7 @@
 							<!-- Cartridge image overlay -->
 							<img class='cart-display' src="{{ url_for('static', filename='img/cartridge.svg') }}">
 							<!-- Overlay - function buttons top/bottom -->
-							<div class='grid cart-overlay no-padding'>
+							<div class='grid cart-overlay'>
 								<div class='upper'></div>
 								<div class='lower'></div>
 							</div>
@@ -73,9 +73,9 @@
 					</div>
 
 					<!-- Center container -->
-					<div class='container no-padding margin-center'>
+					<div class='container margin-center'>
 						<!-- Barcode and mask table -->
-						<div class='container no-padding'>
+						<div class='container'>
 							<table class='tb-program'>
 								<tr>
 									<th class='sn'>S/N</th>
@@ -94,9 +94,9 @@
 					</div>
 
 					<!-- Right side container -->
-					<div class='container no-padding'>
+					<div class='container'>
 						<!-- Cartridge photo -->
-						<div class='cart-img container no-padding bordered'></div>
+						<div class='cart-img container bordered'></div>
 					</div>
 
 				</div>

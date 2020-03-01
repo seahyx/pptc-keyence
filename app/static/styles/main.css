@@ -270,7 +270,6 @@ ul.flash {
   flex-flow: column nowrap;
   align-items: flex-start;
   justify-content: center;
-  padding: 1.6rem;
 }
 
 /* additional container classes */
@@ -301,11 +300,11 @@ ul.flash {
   align-items: flex-end;
 }
 
-.no-padding {
-  padding: 0;
+.padding {
+  padding: 1.6rem;
 }
 
-.no-top-padding {
+.top-no-padding {
   padding-top: 0;
 }
 
@@ -690,17 +689,18 @@ table.tb-program td.full-border {
 
 .cart-container {
   position: relative;
+  min-width: 12.8rem;
   background-color: white;
 }
 
-.cart-display {
-  min-width: 150px;
+.cart-container .cart-display {
+  min-width: -webkit-fill-available;
   margin: 0.5333333333rem;
   pointer-events: none;
   z-index: 1;
 }
 
-.cart-underlay {
+.cart-container .cart-underlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -709,7 +709,7 @@ table.tb-program td.full-border {
   margin: 3%;
 }
 
-.cart-overlay {
+.cart-container .cart-overlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -719,14 +719,14 @@ table.tb-program td.full-border {
   z-index: 2;
 }
 
-.cart-overlay .upper {
+.cart-container .cart-overlay .upper {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 5;
 }
 
-.cart-overlay .lower {
+.cart-container .cart-overlay .lower {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 5;
@@ -734,7 +734,7 @@ table.tb-program td.full-border {
 }
 
 table.tb-program.tb-cart-id {
-  width: 14.4rem;
+  width: -webkit-fill-available;
 }
 
 table.tb-program .mask {
@@ -906,17 +906,6 @@ table.tb-program .mask {
   background-color: white;
 }
 
-.laser-display-container {
-  position: relative;
-  margin-bottom: 0.5333333333rem;
-  background-color: white;
-}
-
-.laser-display-container .laser-display {
-  min-width: 300px;
-  z-index: 1;
-}
-
 table.tb-program.tb-laser-id {
   width: 20rem;
 }
@@ -930,7 +919,13 @@ table.tb-program.tb-laser-barcode {
   width: 16rem;
 }
 
-.laser-underlay {
+.laser-display-container {
+  position: relative;
+  margin-bottom: 0.5333333333rem;
+  background-color: white;
+}
+
+.laser-tube .laser-underlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -942,27 +937,78 @@ table.tb-program.tb-laser-barcode {
   grid-template-rows: auto auto auto auto;
 }
 
-.gr-laser-item {
+.laser-tube .laser-underlay .gr-laser-item {
   background-color: #18cd5e;
 }
 
-.laser-overlay {
+.laser-tube .laser-display {
+  min-width: 300px;
+  z-index: 1;
+}
+
+.laser-tube .laser-overlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
   left: 0.5333333333rem;
   right: 0.5333333333rem;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
   z-index: 2;
 }
 
-.laser-overlay .left {
+.laser-tube .laser-overlay .left {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 5;
 }
 
-.laser-overlay .right {
+.laser-tube .laser-overlay .right {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 5;
+}
+
+.laser-trough .laser-underlay {
+  position: absolute;
+  top: 0.5333333333rem;
+  bottom: 0.5333333333rem;
+  left: 0.5333333333rem;
+  right: 0.5333333333rem;
+  margin: 5% 10%;
+  grid-template-columns: auto auto auto auto;
+}
+
+.laser-trough .laser-underlay .gr-laser-item {
+  background-color: #18cd5e;
+}
+
+.laser-trough .laser-display {
+  min-width: 300px;
+  z-index: 1;
+}
+
+.laser-trough .laser-overlay {
+  position: absolute;
+  top: 0.5333333333rem;
+  bottom: 0.5333333333rem;
+  left: 0.5333333333rem;
+  right: 0.5333333333rem;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  z-index: 2;
+}
+
+.laser-trough .laser-overlay .left {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 5;
+}
+
+.laser-trough .laser-overlay .right {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
