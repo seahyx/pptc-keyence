@@ -4,14 +4,33 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
+from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 import logging
 import os
 
+# Logging configuration
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
+
 app = Flask(__name__)
 
 # Debug mode (development environment)
+# !Remember to turn off in production!
 app.debug = True
 
 app.config.from_object(Config)
@@ -23,6 +42,7 @@ toolbar = DebugToolbarExtension(app)
 
 from app import routes, models, errors, permissions
 
+# Production email logging and file logs
 if not app.debug:
 	# Send email to admins when server encounter errors in production
 	if app.config['MAIL_SERVER']:
