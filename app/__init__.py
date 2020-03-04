@@ -12,26 +12,22 @@ import os
 
 # Logging configuration
 dictConfig({
-    'version': 1,
-    'formatters': {'default': {
-        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-    }},
-    'handlers': {'wsgi': {
-        'class': 'logging.StreamHandler',
-        'stream': 'ext://flask.logging.wsgi_errors_stream',
-        'formatter': 'default'
-    }},
-    'root': {
-        'level': 'INFO',
-        'handlers': ['wsgi']
-    }
+		'version': 1,
+		'formatters': {'default': {
+				'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+		}},
+		'handlers': {'wsgi': {
+				'class': 'logging.StreamHandler',
+				'stream': 'ext://flask.logging.wsgi_errors_stream',
+				'formatter': 'default'
+		}},
+		'root': {
+				'level': 'INFO',
+				'handlers': ['wsgi']
+		}
 })
 
 app = Flask(__name__)
-
-# Debug mode (development environment)
-# !Remember to turn off in production!
-app.debug = True
 
 app.config.from_object(Config)
 db = SQLAlchemy(app)
@@ -64,7 +60,7 @@ if not app.debug:
 	if not os.path.exists('logs'):
 		os.mkdir('logs')
 	file_handler = RotatingFileHandler('logs/PPTC-Keyence.log', maxBytes=10240,
-									   backupCount=10)
+										 backupCount=10)
 	file_handler.setFormatter(logging.Formatter(
 		'%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
 	file_handler.setLevel(logging.INFO)
