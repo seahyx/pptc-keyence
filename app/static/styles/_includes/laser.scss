@@ -17,8 +17,8 @@ table.tb-program {
 			font-weight: bold;
 		}
 	}
-
-	&.tb-laser-barcode {
+	
+	&.tb-laser-barcode, &.tb-laser-select {
 		width: 20 * $base-font-size;
 	}
 
@@ -182,4 +182,12 @@ table.tb-program {
 		}
 	}
 
+}
+
+// Laser modal (instrument selection popup)
+
+.laser-modal {
+	.modal-wrapper, .modal-content {
+		background-color: $background-color;
+	}
 }

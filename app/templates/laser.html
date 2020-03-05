@@ -18,7 +18,7 @@
 
 				<!-- Horizontal container to contain both sides -->
 				<div class='container flex-center flex-horizontal align-start fit-content'>
-					
+
 					<!-- Left side container -->
 					<div class='container flex-center margin-right'>
 						<!-- Cartridge image -->
@@ -30,7 +30,7 @@
 
 							<!-- TUBE Display -->
 							<div class='container laser-tube' style='display: none;'>
-								
+
 								<!-- Underlay - colours the circles -->
 								<div class='grid laser-underlay'>
 									<!-- Grid items - top->bottom, left->right -->
@@ -41,28 +41,28 @@
 									<div class='gr-laser-item i22'></div>
 									<div class='gr-laser-item i23'></div>
 									<div class='gr-laser-item i24'></div>
-	
+
 									<div class='gr-laser-item i13'></div>
 									<div class='gr-laser-item i14'></div>
 									<div class='gr-laser-item i15'></div>
 									<div class='gr-laser-item i16'></div>
 									<div class='gr-laser-item i17'></div>
 									<div class='gr-laser-item i18'></div>
-	
+
 									<div class='gr-laser-item i7'></div>
 									<div class='gr-laser-item i8'></div>
 									<div class='gr-laser-item i9'></div>
 									<div class='gr-laser-item i10'></div>
 									<div class='gr-laser-item i11'></div>
 									<div class='gr-laser-item i12'></div>
-	
+
 									<div class='gr-laser-item i1'></div>
 									<div class='gr-laser-item i2'></div>
 									<div class='gr-laser-item i3'></div>
 									<div class='gr-laser-item i4'></div>
 									<div class='gr-laser-item i5'></div>
 									<div class='gr-laser-item i6'></div>
-	
+
 								</div>
 								<!-- Cartridge display overlay -->
 								<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
@@ -71,13 +71,13 @@
 									<div class='left'></div>
 									<div class='right'></div>
 								</div>
-								
+
 							</div>
 
 
 							<!-- TROUGH Display -->
 							<div class='container laser-trough'>
-								
+
 								<!-- Underlay - colours the troughs -->
 								<div class='grid laser-underlay'>
 									<!-- Grid items - top->bottom, left->right -->
@@ -86,7 +86,7 @@
 									<div class='gr-laser-item i2'></div>
 									<div class='gr-laser-item i3'></div>
 									<div class='gr-laser-item i4'></div>
-	
+
 								</div>
 								<!-- Cartridge display overlay -->
 								<img class='laser-display' src="{{ url_for('static', filename='img/laser-trough.svg') }}">
@@ -95,9 +95,9 @@
 									<div class='left'></div>
 									<div class='right'></div>
 								</div>
-								
+
 							</div>
-							
+
 
 						</div>
 
@@ -120,6 +120,18 @@
 
 					<!-- Right side container -->
 					<div class='container flex-center'>
+
+						<!-- Laser etch instrument selection -->
+						<div class='container bordered padding-small margin-bottom'>
+							<table class='tb-program tb-laser-select'>
+								<tr>
+									<th class='sn'>Laser Instrument</th>
+								</tr>
+								<tr>
+									<td id='td-laser-select' class='full-border'>{{ instrument_default }}</td>
+								</tr>
+							</table>
+						</div>
 						<!-- Barcode and mask table -->
 						<div class='container'>
 							<table class='tb-program tb-laser-barcode'>
@@ -135,16 +147,51 @@
 								{% endfor %}
 							</table>
 						</div>
+
 					</div>
 
 				</div>
-				
+
 			</div>
 
 		</div>
-		
-		<a class='btn btn-green btn-start'>Start</a>
-		
+
+		<a id='btn-start' class='btn btn-green btn-start'>Start</a>
+
+		<!-- Laser instrument selection modal -->
+		<div id='laser-modal' class='modal laser-modal'>
+
+			<div class='container modal-wrapper padding'>
+
+				<!-- Modal content -->
+				<div class='modal-content container padding bordered'>
+	
+					<h2>Select Laser Etcher</h2>
+	
+					<div class='container margin-bottom'>
+						
+						{% for instrument in instruments %}
+							<div class='container flex-horizontal'>
+								<input id='{{ instrument }}' name='laser-modal-radio' type='radio' value='{{ instrument }}'>
+								<label for='{{ instrument }}'>{{ instrument }}</label>
+							</div>
+						{% endfor %}
+						
+					</div>
+
+					<div class='container flex-horizontal space-between max-width'>
+						<a id='btn-select-cancel' class='btn btn-small'>Cancel</a>
+						<a id='btn-select-confirm' class='btn btn-small btn-green'>Confirm</a>
+					</div>
+	
+				</div>
+
+			</div>
+
+		</div>
+
 	</div>
+
+	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
 
 {% endblock %}

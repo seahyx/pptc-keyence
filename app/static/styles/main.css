@@ -304,8 +304,28 @@ ul.flash {
   padding: 1.6rem;
 }
 
+.padding-small {
+  padding: 0.5333333333rem;
+}
+
 .top-no-padding {
   padding-top: 0;
+}
+
+.margin-center {
+  margin: 0 0.5333333333rem;
+}
+
+.margin-right {
+  margin-right: 0.5333333333rem;
+}
+
+.margin-bottom {
+  margin-bottom: 0.5333333333rem;
+}
+
+.space-between {
+  justify-content: space-between;
 }
 
 .max-width {
@@ -330,12 +350,8 @@ ul.flash {
 }
 
 /* --- Back Button --- */
-.nav-back-container {
-  padding-top: 0;
-}
-
 .nav-back-container a {
-  margin: 0 0.5333333333rem;
+  margin: 1.6rem;
   background-color: white;
 }
 
@@ -568,6 +584,35 @@ a.bordered:active {
   transition: none;
 }
 
+/* --- Modals --- */
+.modal {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  z-index: 50;
+  -webkit-transition: visibility 0s, opacity 0.15s ease;
+  -moz-transition: visibility 0s, opacity 0.15s ease;
+  -ms-transition: visibility 0s, opacity 0.15s ease;
+  -o-transition: visibility 0s, opacity 0.15s ease;
+  transition: visibility 0s, opacity 0.15s ease;
+}
+
+.modal[data-enabled] {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
+}
+
 .background {
   min-height: 100vh;
   background-image: url("/static/img/dna.jpg");
@@ -677,14 +722,6 @@ table.tb-program td.full-border {
   margin-bottom: 0.5333333333rem;
   background-color: white;
   z-index: 5;
-}
-
-.margin-center {
-  margin: 0 0.5333333333rem;
-}
-
-.margin-right {
-  margin-right: 0.5333333333rem;
 }
 
 .cart-container {
@@ -915,7 +952,7 @@ table.tb-program.tb-laser-id .sn {
   font-weight: bold;
 }
 
-table.tb-program.tb-laser-barcode {
+table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   width: 16rem;
 }
 
@@ -1013,6 +1050,10 @@ table.tb-program.tb-laser-barcode {
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 5;
+}
+
+.laser-modal .modal-wrapper, .laser-modal .modal-content {
+  background-color: #f2f2f2;
 }
 
 .container.input-form-container {

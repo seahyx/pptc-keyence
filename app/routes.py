@@ -38,7 +38,7 @@ def index():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-	
+
 	# If user is logged in and navigates to this page somehow
 	if current_user.is_authenticated:
 		# Redirect back to home page
@@ -66,7 +66,7 @@ def login():
 			next_page = url_for('index')
 
 		return redirect(next_page)
-	
+
 	return render_template('login.html', title='Login', form=form, no_header=True)
 
 
@@ -85,7 +85,8 @@ def cartridge():
 @app.route('/laser/')
 @login_required
 def laser():
-	return render_template('laser.html', title='Laser Etch QC')
+	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-002', 'ROFB-ETCHER-003']
+	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default=laser_instruments[0])
 
 
 @app.route('/registration/', methods=['GET', 'POST'])
@@ -119,7 +120,7 @@ def dashboard():
 	if request.args.get('rmId') and request.args.get('rmId').isdigit():
 		removal_id = int(request.args.get('rmId'))
 		print('Dashboard: Account of list id {} requested'.format(removal_id))
-		
+
 		# Now check if the number is valid and that the user is safe to delete
 		user = User.query.filter_by(id=removal_id).first()
 		if (user):
@@ -155,5 +156,5 @@ def change_pass(username):
 		db.session.commit()
 		flash('Success: Password for {} {} has been changed'.format(user.get_account_type_name(), user.username))
 		return(redirect(url_for('dashboard')))
-	
+
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
