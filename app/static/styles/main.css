@@ -705,6 +705,13 @@ table.tb-program td.full-border {
   border: 2px solid #737373;
 }
 
+table.tb-program td input {
+  margin: 0;
+  border: none;
+  text-align: center;
+  background-color: transparent;
+}
+
 .btn.btn-start {
   position: sticky;
   right: 30px;
@@ -948,7 +955,6 @@ table.tb-program.tb-laser-id {
 }
 
 table.tb-program.tb-laser-id .sn {
-  width: 30%;
   font-weight: bold;
 }
 

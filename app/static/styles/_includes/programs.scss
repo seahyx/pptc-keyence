@@ -44,6 +44,16 @@ table.tb-program {
 			background-color: white;
 			border: $tb-border-width solid $border-color;
 		}
+
+		input {
+			margin: 0;
+
+			border: none;
+
+			text-align: center;
+
+			background-color: transparent;
+		}
 	}
 }
 
