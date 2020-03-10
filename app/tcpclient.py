@@ -17,15 +17,22 @@ class TCPClient:
 
 	def connect(self):
 		# Connect the socket to the port where the server is listening
-		self.app.logger.info(f'Connecting to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
-		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.connect(self.SERVER_ADDRESS)
-		self.app.logger.info(f'Connected to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+		try:
+			self.app.logger.info(f'Connecting to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.sock.connect(self.SERVER_ADDRESS)
+			self.app.logger.info(f'Connected to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+			return True
+		except:
+			self.app.logger.info(f'Connection failed')
+			return False
 
 	def send(self, message):
 
 		# Connect to server
-		self.connect()
+		connected = self.connect()
+		if not connected:
+			return False
 
 		try:
 			# Send data
@@ -40,3 +47,4 @@ class TCPClient:
 		finally:
 			self.app.logger.info(f'Closing socket to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
 			self.sock.close()
+			return True
