@@ -33,6 +33,7 @@ def inject_dict():
 @app.route('/home/')
 @login_required
 def index():
+	app.logger.info('Loading index page...')
 	return render_template('home.html', title='Home')
 
 
@@ -42,43 +43,59 @@ def login():
 	# If user is logged in and navigates to this page somehow
 	if current_user.is_authenticated:
 		# Redirect back to home page
+		app.logger.info('User is already logged in, redirecting to index page...')
 		return redirect(url_for('index'))
 
 	form = LoginForm()
 
 	if form.validate_on_submit():
 
+		app.logger.info('Logging in user...')
+
 		# Find a user by username from the User db table
 		user = User.query.filter_by(username=form.username.data).first()
 
-		if user is None or not user.check_password(form.password.data):
-			# Wrong username or password
-			flash('Invalid username or password')
+		if user:
+			if not user.check_password(form.password.data):
+				# Wrong password
+				app.logger.info('Log in failed: Wrong password')
+				return redirect(url_for('login'))
+		else:
+			# Wrong username
+			app.logger.info('Log in failed: Wrong username')
 			return redirect(url_for('login'))
 
 		# Correct username and password
 		flash('Logged in successfully')
+		app.logger.info(f'Logged in successfully with username {user.username}')
 		login_user(user, remember=form.rmb_me.data)
 
 		next_page = request.args.get('next')
 		# Netloc tests if next is pointed towards other site, which can link to malicious sites. Thus not accepting the redirect if it has value.
 		if not next_page or url_parse(next_page).netloc != '':
+			app.logger.info('Redirecting to index page...')
 			next_page = url_for('index')
 
+		app.logger.info(f'Redirecting to {next_page} page...')
 		return redirect(next_page)
 
+	app.logger.info('Loading login page...')
 	return render_template('login.html', title='Login', form=form, no_header=True)
 
 
 @app.route('/logout/')
 def logout():
+	app.logger.info('Logging out user')
 	logout_user()
+	app.logger.info('User logged out')
+	app.logger.info('Redirecting to login page...')
 	return redirect(url_for('login'))
 
 
 @app.route('/cartridge/')
 @login_required
 def cartridge():
+	app.logger.info('Loading cartridge page...')
 	return render_template('cartridge.html', title='Cartridge Assembly QC')
 
 
@@ -86,6 +103,7 @@ def cartridge():
 @login_required
 def laser():
 	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
+	app.logger.info('Loading laser page...')
 	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default=laser_instruments[0])
 
 
@@ -101,6 +119,7 @@ def registration():
 		user.set_password(form.password.data)
 		db.session.add(user)
 		db.session.commit()
+		app.logger.info(f'New user <{user.get_account_type_name()}> with username {user.username} and account_type {user.account_type} created')
 		flash('{} {} has been created'.format(user.get_account_type_name(), user.username))
 
 		next_page = request.args.get('next')
@@ -108,8 +127,10 @@ def registration():
 		if not next_page or url_parse(next_page).netloc != '':
 			next_page = url_for('index')
 
+		app.logger.info(f'Redirecting to {next_page} page...')
 		return redirect(next_page)
 
+	app.logger.info('Loading registration page...')
 	return render_template('registration.html', title='Create new account', form=form)
 
 
@@ -119,7 +140,7 @@ def registration():
 def dashboard():
 	if request.args.get('rmId') and request.args.get('rmId').isdigit():
 		removal_id = int(request.args.get('rmId'))
-		print('Dashboard: Account of list id {} requested'.format(removal_id))
+		app.logger.info(f'Account removal of list id {removal_id} requested')
 
 		# Now check if the number is valid and that the user is safe to delete
 		user = User.query.filter_by(id=removal_id).first()
@@ -129,17 +150,18 @@ def dashboard():
 				# The user is not the currently logged in user or root, thus can be safely deleted
 				db.session.delete(user)
 				db.session.commit()
-				print('Success: User with username {}, id of {} is deleted'.format(user.username, removal_id))
-				flash('Success: User with username {}, id of {} is deleted'.format(user.username, removal_id))
+				app.logger.info(f'User with username {user.username}, list id of {removal_id} is successfully deleted')
+				flash(f'User with username {user.username}, list id of {removal_id} is successfully deleted')
 			else:
 				# The user is root or current user, thus cannot be removed
-				print('Error: User with username {}, id of {} cannot be deleted'.format(user.username, removal_id))
-				flash('Error: User with username {}, id of {} cannot be deleted'.format(user.username, removal_id))
+				app.logger.info(f'User with username {user.username}, list id of {removal_id} cannot be deleted')
+				flash(f'User with username {user.username}, list id of {removal_id} cannot be deleted')
 		else:
 			# The user doesn't exist
-			print('Error: User with id of {} does not exist'.format(removal_id))
-			flash('Error: User with id of {} does not exist'.format(removal_id))
+			app.logger.info(f'User with list id of {removal_id} does not exist')
+			flash(f'User with list id of {removal_id} does not exist')
 
+	app.logger.info('Loading dashboard page...')
 	return render_template('dashboard.html', title='Admin Dashboard', users=User.query.order_by(User.account_type).order_by(User.username).all())
 
 
@@ -154,7 +176,12 @@ def change_pass(username):
 	if form.validate_on_submit():
 		user.set_password(form.password.data)
 		db.session.commit()
-		flash('Success: Password for {} {} has been changed'.format(user.get_account_type_name(), user.username))
+		
+		app.logger.info(f'Password for user {user.username} has been successfully changed')
+		flash(f'Password for user {user.username} has been successfully changed')
+		
+		app.logger.info('Redirecting to dashboard page...')
 		return(redirect(url_for('dashboard')))
 
+	app.logger.info('Loading change password page...')
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))

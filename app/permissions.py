@@ -12,6 +12,7 @@ class PermissionsManager():
 			if current_user.is_authenticated and current_user.has_admin_rights():
 				return func(*args, **kwargs)
 			else:
-				flash('You do not have the permission to access this page')
+				flash('Page access denied, admin privileges required')
+				app.logger.info('Page access denied, admin privileges required')
 				return redirect(url_for(self.redirect_view))
 		return wrapper
