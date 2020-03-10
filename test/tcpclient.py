@@ -1,6 +1,7 @@
 import socket
 import sys
 
+
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -23,7 +24,9 @@ try:
     while amount_received < amount_expected:
         data = sock.recv(100)
         amount_received += len(data)
-        print ('received "%s"' % str(data), file=sys.stderr)
+        print ('received "%s"' % data.decode('utf-8'), file=sys.stderr)
+
+				# 000000000010000000000200000000003000000000040000000000500000000006000000000070000000000800000000009000000000010000000000100000000002
 
 finally:
     print ('closing socket', file=sys.stderr)
