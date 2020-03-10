@@ -7,6 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
+from app.tcpclient import TCPClient
 import logging
 import os
 
@@ -35,8 +36,21 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 toolbar = DebugToolbarExtension(app)
+tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
 
 from app import routes, models, errors, permissions
+
+# Insert root user if none exists
+from app.models import User
+userlist = User.query.all()
+if len(userlist) == 0:
+	user = User(username='root', account_type=0, password_hash='pbkdf2:sha256:150000$Sn5LeTtv$b9bfc8a77bc8e232c90f494dc09c64c2b9604901b3b34a1ea6d03ebea3083cdf')
+	db.session.add(user)
+	db.session.commit()
+
+# Connection handshake with Vision System
+tcpclient.send('R0')
+tcpclient.send('PW,1,001')
 
 # Production email logging and file logs
 if not app.debug:
@@ -67,4 +81,4 @@ if not app.debug:
 	app.logger.addHandler(file_handler)
 
 	app.logger.setLevel(logging.INFO)
-	app.logger.info('PPTC-Keyence server startup...')
+	app.logger.info('Server startup...')
