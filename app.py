@@ -4,7 +4,6 @@ from flask_socketio import SocketIO, emit
 
 # Debug mode (development environment)
 app.debug = True
-debugMode = False
 socketio = SocketIO(app)
 
 @app.shell_context_processor
