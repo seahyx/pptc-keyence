@@ -94,7 +94,7 @@ table.tb-program {
 	// 	}
 	// }
 
-	background-color: $btn-green-color;
+	background-color: $prog-display-off;
 
 	&.i21 {
 		@include grid-lines(1, 7, 1, 2);

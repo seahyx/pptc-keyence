@@ -44,6 +44,10 @@ $btn-red-color        : hsl(0, 79%, 45%) !default;
 
 $btn-green-color      : hsl(143, 79%, 45%) !default;
 
+// Programs
+$prog-display-off: $grey-color-light;
+$prog-display-on: $btn-green-color;
+
 $btn-border-radius    : 4px !default;
 $border-color         : $grey-color !default;
 

@@ -793,7 +793,7 @@ table.tb-program .mask {
 }
 
 .gr-cart-item {
-  background-color: #18cd5e;
+  background-color: #999999;
 }
 
 .gr-cart-item.i21 {
@@ -981,7 +981,7 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
 }
 
 .laser-tube .laser-underlay .gr-laser-item {
-  background-color: #18cd5e;
+  background-color: #999999;
 }
 
 .laser-tube .laser-display {
@@ -1025,7 +1025,7 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
 }
 
 .laser-trough .laser-underlay .gr-laser-item {
-  background-color: #18cd5e;
+  background-color: #999999;
 }
 
 .laser-trough .laser-display {
