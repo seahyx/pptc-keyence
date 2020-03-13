@@ -138,4 +138,6 @@ tsconfig.json
 
 # Database files
 *.db
-logs/PPTC-Keyence.log.1
+
+# Log files
+*.log.*
