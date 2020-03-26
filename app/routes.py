@@ -1,6 +1,7 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
-from app import app, db
+from flask_socketio import emit
+from app import app, db, socketio
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
@@ -185,3 +186,19 @@ def change_pass(username):
 
 	app.logger.info('Loading change password page...')
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
+
+
+# SocketIO interfaces
+
+@socketio.on('connect', namespace='/laser/api')
+def laser_connect():
+	app.logger.info('Connected to Laser Etch QC client interface')
+	emit('response', {'data': 'Connected to laser etch qc api'})
+
+@socketio.on('disconnect', namespace='/laser/api')
+def laser_disconnect():
+	app.logger.info('Disconnected from Laser Etch QC client interface')
+
+@socketio.on('start', namespace='/laser/api')
+def laser_start(message):
+    emit('response', {'data': message['data']})

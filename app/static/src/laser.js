@@ -1,8 +1,8 @@
-const btn_start = document.getElementById('btn-start');
-const laser_modal = document.getElementById('laser-modal');
-const btn_select_cancel = document.getElementById('btn-select-cancel');
-const btn_select_confirm = document.getElementById('btn-select-confirm');
-const td_laser_select = document.getElementById('td-laser-select');
+const btn_start = document.querySelector('#btn-start');
+const laser_modal = document.querySelector('#laser-modal');
+const btn_select_cancel = document.querySelector('#btn-select-cancel');
+const btn_select_confirm = document.querySelector('#btn-select-confirm');
+const td_laser_select = document.querySelector('#td-laser-select');
 
 btn_start.addEventListener('click', () => {
 	laser_modal.setAttribute('data-enabled', '');
@@ -23,3 +23,17 @@ btn_select_confirm.addEventListener('click', (event) => {
 	}
 	laser_modal.removeAttribute('data-enabled');
 })
+
+var socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
+
+socketio.on('response', function(msg) {
+	console.log(`Received data: ${msg.data}`);
+});
+
+btn_start.addEventListener('click', () => {
+	socketio.emit('start', {data: 'Testing testing 123'});
+})
+
+function get_barcode_row(sn) {
+	return document.querySelector(`#barcode-${sn} .full-border`);
+}

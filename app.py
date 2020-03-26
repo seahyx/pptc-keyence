@@ -1,10 +1,9 @@
-from app import app, db
+from app import app, db, socketio
 from app.models import User
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 
 # Debug mode (development environment)
 app.debug = True
-socketio = SocketIO(app)
 
 @app.shell_context_processor
 def make_shell_context():
