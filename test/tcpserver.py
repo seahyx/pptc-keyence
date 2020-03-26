@@ -31,7 +31,7 @@ while True:
 
 			if data:
 				if (message[0] == 'T1'):
-					data = b'T1 MSG-1001, MSG-1002, MSG-1003'
+					data = b'T1,0,MSG-1001,1,,0,MSG-1002,0,MSG-1003'
 				elif (message[0] == 'N0'):
 					data = b'N0'
 				elif (message[0] == 'PW'):
