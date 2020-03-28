@@ -2,7 +2,7 @@
 
 // Returns true/false for open/close
 // !! Returns a string !!
-const nav_state = localStorage.getItem('nav-open') ? localStorage.getItem('nav-open') : null;
+let nav_state = localStorage.getItem('nav-open') ? localStorage.getItem('nav-open') : null;
 
 if (nav_state !== null) {
 	document.documentElement.setAttribute('data-nav-open', nav_state);
