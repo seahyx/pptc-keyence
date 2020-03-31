@@ -4,6 +4,8 @@ from app import app
 from functools import wraps
 
 class PermissionsManager():
+	''' Restricts user access to administrative functions '''
+	
 	redirect_view = ''
 
 	def admin_required(self, func):
@@ -13,6 +15,6 @@ class PermissionsManager():
 				return func(*args, **kwargs)
 			else:
 				flash('Page access denied, admin privileges required')
-				app.logger.info('Page access denied, admin privileges required')
+				app.logger.info(f'{current_user.username} denied access, admin privileges required')
 				return redirect(url_for(self.redirect_view))
 		return wrapper
