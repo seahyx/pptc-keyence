@@ -29,7 +29,7 @@
 
 
 							<!-- TUBE Display -->
-							<div class='container laser-tube' style='display: none;'>
+							<div class='container laser-tube'>
 
 								<!-- Underlay - colours the circles -->
 								<div class='grid laser-underlay'>
@@ -76,7 +76,7 @@
 
 
 							<!-- TROUGH Display -->
-							<div class='container laser-trough'>
+							<div class='container laser-trough' style='display: none;'>
 
 								<!-- Underlay - colours the troughs -->
 								<div class='grid laser-underlay'>
@@ -139,7 +139,7 @@
 									<th class='sn'>S/N</th>
 									<th>Barcode</th>
 								</tr>
-								{% for x in range(1, 24) %}
+								{% for x in range(1, 25) %}
 									<tr id='barcode-{{ x }}'>
 										<td class='sn'>{{ x }}</td>
 										<td class='full-border'></td>
