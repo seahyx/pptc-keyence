@@ -105,7 +105,7 @@ def cartridge():
 def laser():
 	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
 	app.logger.info('Loading laser page...')
-	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default=laser_instruments[0])
+	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default='')
 
 
 @app.route('/registration/', methods=['GET', 'POST'])

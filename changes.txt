@@ -1,0 +1,7 @@
+Changes.txt
+
+31/3/2020
+by Seah YW
+1. Remove all default values on Catridge Assembly QC and Laser Etch QC screens
+2. Amended prompt message
+3. Change the main.cfg the default port no 8500 of tcp server
