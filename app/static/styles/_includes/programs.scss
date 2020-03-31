@@ -83,3 +83,22 @@ table.tb-program {
 
 	z-index: 5;
 }
+
+.gr-cartridge-item, .gr-laser-item {
+	// Debug color
+	// opacity: 50%;
+	// @for $i from 0 to 22 {
+	// 	&:nth-child(#{$i}) {
+	// 		@include random-bgr();
+	// 	}
+	// }
+
+	background-color: $gr-item-off;
+
+	&.error {
+		background-color: $gr-item-error;
+	}
+	&.pass {
+		background-color: $gr-item-pass;
+	}
+}

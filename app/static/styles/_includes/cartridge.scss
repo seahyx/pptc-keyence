@@ -94,8 +94,6 @@ table.tb-program {
 	// 	}
 	// }
 
-	background-color: $prog-display-off;
-
 	&.i21 {
 		@include grid-lines(1, 7, 1, 2);
 	}

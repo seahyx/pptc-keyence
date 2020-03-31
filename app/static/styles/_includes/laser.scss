@@ -55,18 +55,6 @@ table.tb-program {
 		grid-template-columns: auto auto auto auto auto auto;
 		grid-template-rows: auto auto auto auto;
 
-		.gr-laser-item {
-
-			// Debug color
-			// opacity: 50%;
-			// @for $i from 0 to 22 {
-			// 	&:nth-child(#{$i}) {
-			// 		@include random-bgr();
-			// 	}
-			// }
-	
-			background-color: $prog-display-off;
-		}
 	}
 
 	// Display
@@ -129,19 +117,6 @@ table.tb-program {
 		// z-index: 2;
 		
 		grid-template-columns: auto auto auto auto;
-
-		.gr-laser-item {
-
-			// Debug color
-			// opacity: 50%;
-			// @for $i from 0 to 22 {
-			// 	&:nth-child(#{$i}) {
-			// 		@include random-bgr();
-			// 	}
-			// }
-	
-			background-color: $prog-display-off;
-		}
 	}
 
 	// Display
