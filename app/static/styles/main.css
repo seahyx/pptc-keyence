@@ -731,6 +731,18 @@ table.tb-program td input {
   z-index: 5;
 }
 
+.gr-cartridge-item, .gr-laser-item {
+  background-color: #999999;
+}
+
+.gr-cartridge-item.error, .gr-laser-item.error {
+  background-color: #cd1818;
+}
+
+.gr-cartridge-item.pass, .gr-laser-item.pass {
+  background-color: #18cd5e;
+}
+
 .cart-container {
   position: relative;
   min-width: 12.8rem;
@@ -790,10 +802,6 @@ table.tb-program .mask {
   height: 200px;
   margin: 0.5333333333rem 0;
   background-color: white;
-}
-
-.gr-cart-item {
-  background-color: #999999;
 }
 
 .gr-cart-item.i21 {
@@ -980,10 +988,6 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   grid-template-rows: auto auto auto auto;
 }
 
-.laser-tube .laser-underlay .gr-laser-item {
-  background-color: #999999;
-}
-
 .laser-tube .laser-display {
   min-width: 300px;
   z-index: 1;
@@ -1022,10 +1026,6 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   right: 0.5333333333rem;
   margin: 5% 10%;
   grid-template-columns: auto auto auto auto;
-}
-
-.laser-trough .laser-underlay .gr-laser-item {
-  background-color: #999999;
 }
 
 .laser-trough .laser-display {
