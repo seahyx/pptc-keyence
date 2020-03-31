@@ -5,6 +5,11 @@ import sys
 from configparser import ConfigParser
 
 class ConfigFileLoader:
+	''' Configuration file loader
+	
+	:param file: Configuration file to be read.
+	'''
+
 	CONF_SECTION = 'conf'
 	PARSER = ConfigParser()
 	config = ''
@@ -34,6 +39,7 @@ class ConfigFileLoader:
 		return f'<ConfigFileLoader config={config}>'
 
 class Config(object):
+	''' Configuration settings storage '''
 
 	# Load configuration files
 	config = ConfigFileLoader('main.cfg')
