@@ -8,6 +8,7 @@ from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 from app.tcpclient import TCPClient
+from app.test.tcpserver import TCPServer
 import logging
 import os
 
@@ -30,13 +31,23 @@ dictConfig({
 
 app = Flask(__name__)
 
+# Debug mode (development environment)
+app.debug = True
+
+# Init modules
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
 socketio = SocketIO(app)
+
+# For debug
+tcpserver = None
+tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
+if app.debug:
+	tcpserver = TCPServer(app)
+	tcpclient = TCPClient(app)
 
 from app import routes, models, errors, permissions
 
