@@ -97,6 +97,7 @@ def logout():
 @login_required
 def cartridge():
 	app.logger.info('Loading cartridge page...')
+	tcpclient.send('PW,1,1')
 	return render_template('cartridge.html', title='Cartridge Assembly QC')
 
 
@@ -104,6 +105,7 @@ def cartridge():
 @login_required
 def laser():
 	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
+	tcpclient.send('PW,1,3')
 	app.logger.info('Loading laser page...')
 	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default='')
 

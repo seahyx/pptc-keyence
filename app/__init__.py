@@ -47,7 +47,7 @@ tcpserver = None
 tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
 if app.debug:
 	tcpserver = TCPServer(app)
-	tcpclient = TCPClient(app)
+	# tcpclient = TCPClient(app)
 
 from app import routes, models, errors, permissions
 
@@ -61,7 +61,7 @@ if len(userlist) == 0:
 
 # Connection handshake with Vision System
 tcpclient.send('R0')
-tcpclient.send('PW,1,001')
+# tcpclient.send('PW,1,001')
 
 # Production email logging and file logs
 if not app.debug:
@@ -84,7 +84,7 @@ if not app.debug:
 	# Creates log files
 	if not os.path.exists('logs'):
 		os.mkdir('logs')
-	file_handler = RotatingFileHandler('logs/PPTC-Keyence.log', maxBytes=10240,
+	file_handler = RotatingFileHandler('logs/2DBarcode.log', maxBytes=10240,
 										 backupCount=10)
 	file_handler.setFormatter(logging.Formatter(
 		'%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))

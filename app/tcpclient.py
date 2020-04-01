@@ -3,78 +3,86 @@ import socket
 import sys
 
 class TCPClient:
-	''' TCP interface for client
+    ''' TCP interface for client
 
-	This class will connect to the Vision TCP server/dummy test server
-	in the background. It will initialize with the server address and port
-	as configured in the config file.
+    This class will connect to the Vision TCP server/dummy test server
+    in the background. It will initialize with the server address and port
+    as configured in the config file.
 
-	:param app: The flask application instance.
+    :param app: The flask application instance.
 
-	:param address: IP address of the tcp server. Defaults to ``'localhost'``.
+    :param address: IP address of the tcp server. Defaults to ``'localhost'``.
 
-	:param port: Port number of the tcp server. Defaults to ``8500``.
-	'''
+    :param port: Port number of the tcp server. Defaults to ``8500``.
+    '''
 
-	SERVER_ADDRESS = None
-	sock = None
-	app = None
+    SERVER_ADDRESS = None
+    sock = None
+    app = None
 
-	def __init__(self, app, address='localhost', port=8500):
+    def __init__(self, app, address='192.168.1.90', port=8500):
 
-		# Get app
-		self.app = app
+        # Get app
+        self.app = app
+        self.connected = False
 
-		# Create a TCP/IP socket
-		self.SERVER_ADDRESS = (address, port)
+        # Create a TCP/IP socket
+        self.SERVER_ADDRESS = (address, port)
 
-	def connect(self):
-		''' Connect the socket to the port where the server is listening '''
+    def connect(self):
+        ''' Connect the socket to the port where the server is listening '''
 
-		try:
-			self.app.logger.info(f'Attempting connection to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
-			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.sock.connect(self.SERVER_ADDRESS)
-			self.app.logger.info(f'Connected to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
-			return True
+        try:
+            self.app.logger.info(f'Attempting connection to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.sock.connect(self.SERVER_ADDRESS)
+            self.app.logger.info(f'Connected to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+            return True
 
-		except:
-			self.app.logger.info(f'Connection failed')
-			return False
+        except:
+            self.app.logger.info(f'Connection failed')
+            return False
 
-	def send(self, message):
-		''' Send message
+    def send(self, message):
+        ''' Send message
 
-		:type message: str
-		:param message: Message to be sent
-		'''
+        :type message: str
+        :param message: Message to be sent
+        '''
 
-		# Connect to server
-		connected = self.connect()
-		if not connected:
-			return None
+        message += "\r"
+        # Connect to server
+        if not self.connected:
+            self.connected = self.connect()
+            if not self.connected:
+                return None
 
-		data_decoded = ['']
+        data_decoded = ['']
 
-		try:
-			# Send data
-			self.app.logger.info(f'Sending "{message}" to server')
-			self.sock.sendall(str.encode(message))
+        try:
+            # Send data
+            self.app.logger.info(f'Sending "{message}" to server')
+            self.sock.sendall(str.encode(message))
 
-			# Look for the response
-			data = self.sock.recv(1024)
-			
-			# Response is received
-			data_decoded = data.decode('utf-8').split(',')
-			self.app.logger.info(f'Received {data_decoded} from server')
+            # Look for the response
+            data = self.sock.recv(1024)
+            
+            # Response is received
+            data_decoded = data.decode('utf-8').split(',')
+            self.app.logger.info(f'Received {data_decoded} from server')
 
-		except:
+        except:
 
-			self.app.logger.warning(f'Failed to send "{message}" to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+            self.app.logger.warning(f'Failed to send "{message}" to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
 
-		finally:
+        finally:
 
-			self.sock.close()
-			self.app.logger.info(f'Closed client socket')
-			
-			return data_decoded
+            #self.sock.close()
+            #self.app.logger.info(f'Closed client socket')
+            
+            return data_decoded
+            
+    def disconnect(self):
+            self.sock.close()
+            self.app.logger.info(f'Closed client socket')
+    
