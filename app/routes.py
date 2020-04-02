@@ -106,7 +106,6 @@ def cartridge():
 def laser():
 	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
 	# plcSer.send_data("G2")
-	tcpclient.send('PW,1,3')
 	app.logger.info('Loading laser page...')
 	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default='')
 
@@ -211,6 +210,16 @@ def laser_start(message):
 @socketio.on('confirm', namespace='/laser/api')
 def laser_confirm(message):
 	app.logger.info('Laser Etch QC confirm button input received')
-	plcSer.send_data('G2')
+
+	plcSer.send_data("R")
+	time.sleep(0.1)
+	plcSer.send_data("S")
+	while True:
+		if (plcSer.dataReady()):
+			sdata = plcSer.get()
+			if (sdata[:2] == "G2"): # Reach the scan location
+				break
+
+	tcpclient.send('PW,1,3')
 	data = tcpclient.send('T1')
-	emit('confirm_data', {'data': data})
+	emit('start_data', {'data': data})
