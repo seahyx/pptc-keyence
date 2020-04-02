@@ -207,6 +207,10 @@ def laser_disconnect():
 @socketio.on('start', namespace='/laser/api')
 def laser_start(message):
 	app.logger.info('Laser Etch QC start button input received')
-	plcSer.send_data("G2")
+
+@socketio.on('confirm', namespace='/laser/api')
+def laser_confirm(message):
+	app.logger.info('Laser Etch QC confirm button input received')
+	plcSer.send_data('G2')
 	data = tcpclient.send('T1')
-	emit('start_data', {'data': data})
+	emit('confirm_data', {'data': data})
