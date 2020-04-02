@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% set active_page = 'cartridge' %}
+
+{% block content %}
+
+	<div class='container padding'>
+
+		<!-- Large container wrapper, fits width of page -->
+		<div class='container flex-center fill-available'>
+
+			<!-- Centered vertical container -->
+			<div class='container fit-content'>
+
+				<!-- Status code container -->
+				<div class='container status-container flex-center bordered'>
+					<p>Set Cartridge on Stage, then click Start</p>
+				</div>
+
+				<!-- Horizontal container to contain both sides -->
+				<div class='container flex-center flex-horizontal align-start fit-content'>
+					
+					<!-- Left side container -->
+					<div class='container'>
+						<!-- Cartridge display -->
+						<div class='container cart-container flex-center bordered'>
+
+							<!-- Underlay - colours the circles -->
+							<div class='grid cart-underlay'>
+								<!-- Grid items - top->bottom, left->right -->
+								<!-- There are 10 rows and 12 columns -->
+								<div class='gr-cart-item i21'></div>
+								<div class='gr-cart-item i22'></div>
+
+								<div class='gr-cart-item i17'></div>
+								<div class='gr-cart-item i18'></div>
+								<div class='gr-cart-item i19'></div>
+								<div class='gr-cart-item i20'></div>
+
+								<div class='gr-cart-item i13'></div>
+								<div class='gr-cart-item i14'></div>
+								<div class='gr-cart-item i15'></div>
+								<div class='gr-cart-item i16'></div>
+
+								<div class='gr-cart-item i9'></div>
+								<div class='gr-cart-item i10'></div>
+								<div class='gr-cart-item i11'></div>
+								<div class='gr-cart-item i12'></div>
+
+								<div class='gr-cart-item i5'></div>
+								<div class='gr-cart-item i6'></div>
+								<div class='gr-cart-item i7'></div>
+								<div class='gr-cart-item i8'></div>
+
+								<div class='gr-cart-item i1'></div>
+								<div class='gr-cart-item i2'></div>
+								<div class='gr-cart-item i4'></div>
+							</div>
+							<!-- Cartridge image overlay -->
+							<img class='cart-display' src="{{ url_for('static', filename='img/cartridge.svg') }}">
+							<!-- Overlay - function buttons top/bottom -->
+							<div class='grid cart-overlay'>
+								<div class='upper'></div>
+								<div class='lower'></div>
+							</div>
+
+						</div>
+						
+						<!-- Cartridge ID -->
+						<table class='tb-program tb-cart-id'>
+							<tr><th>Cartridge ID</th></tr>
+							<tr><td class='full-border'>id</td></tr>
+						</table>
+					</div>
+
+					<!-- Center container -->
+					<div class='container margin-center'>
+						<!-- Barcode and mask table -->
+						<div class='container'>
+							<table class='tb-program'>
+								<tr>
+									<th class='sn'>S/N</th>
+									<th class='mask'>Expected Mask</th>
+									<th class='barcode'>Barcode</th>
+								</tr>
+								{% for x in range(1, 23) %}
+									<tr>
+										<td class='sn'>{{ x }}</td>
+										<td class='full-border'></td>
+										<td class='full-border'></td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+
+					<!-- Right side container -->
+					<div class='container'>
+						<!-- Cartridge photo -->
+						<div class='cart-img container bordered'></div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<a class='btn btn-green btn-start'>DONE</a>
+		
+	</div>
+
+{% endblock %}
