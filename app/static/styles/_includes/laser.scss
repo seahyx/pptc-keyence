@@ -62,6 +62,10 @@ table.tb-program {
 		min-width: 300px;
 
 		z-index: 1;
+
+		&.laser-empty {
+			visibility: hidden;
+		}
 	}
 
 	// Overlay

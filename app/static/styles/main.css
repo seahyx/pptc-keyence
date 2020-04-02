@@ -993,6 +993,10 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   z-index: 1;
 }
 
+.laser-tube .laser-display.laser-empty {
+  visibility: hidden;
+}
+
 .laser-tube .laser-overlay {
   position: absolute;
   top: 0.5333333333rem;
