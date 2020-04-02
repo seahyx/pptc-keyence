@@ -13,10 +13,8 @@ const laser_modal = document.querySelector('#laser-modal');
 const btn_select_cancel = document.querySelector('#btn-select-cancel');
 const btn_select_confirm = document.querySelector('#btn-select-confirm');
 const td_laser_select = document.querySelector('#td-laser-select');
-
-btn_start.addEventListener('click', () => {
-	laser_modal.setAttribute('data-enabled', '');
-})
+const in_work_order = document.querySelector('#laser-work-order');
+const in_part_number = document.querySelector('#laser-part-number');
 
 window.addEventListener('click', (event) => {
 	if (event.target === laser_modal) {
@@ -39,15 +37,27 @@ btn_select_confirm.addEventListener('click', (event) => {
 
 var socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
 
+btn_start.addEventListener('click', () => {
+
+	if (!in_work_order.value || !in_part_number.value) {
+		alert('Please enter the work order and/or part number.');
+		return
+	}
+
+	laser_modal.setAttribute('data-enabled', '');
+	socketio.emit('start', {data: `${in_work_order.value},${in_part_number.value}`})
+
+})
+
 btn_select_confirm.addEventListener('click', () => {
-	socketio.emit('start', {data: 'Testing testing 123'});
+	socketio.emit('confirm', {data: `${in_work_order.value},${in_part_number.value}`});
 })
 
 socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg.data}`);
 });
 
-socketio.on('start_data', function(msg) {
+socketio.on('confirm_data', function(msg) {
 
 	console.log(`Received data from event 'start_data': ${msg.data}`);
 
