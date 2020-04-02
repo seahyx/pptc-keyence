@@ -9,6 +9,7 @@ from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 from app.tcpclient import TCPClient
 from app.test.tcpserver import TCPServer
+from app.serialClient import serialClient
 import logging
 import os
 
@@ -33,6 +34,7 @@ app = Flask(__name__)
 
 # Debug mode (development environment)
 app.debug = True
+app.debug = False
 
 # Init modules
 app.config.from_object(Config)
@@ -48,6 +50,10 @@ tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP
 if app.debug:
 	tcpserver = TCPServer(app)
 	# tcpclient = TCPClient(app)
+
+#PLC serial port
+#plcSer = None
+plcSer = serialClient(app, "com3")
 
 from app import routes, models, errors, permissions
 

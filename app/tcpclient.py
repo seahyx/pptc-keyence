@@ -43,6 +43,9 @@ class TCPClient:
             self.app.logger.info(f'Connection failed')
             return False
 
+    def isConnected(self):
+        return self.connected
+        
     def send(self, message):
         ''' Send message
 
