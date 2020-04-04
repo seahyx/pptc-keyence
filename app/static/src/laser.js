@@ -20,17 +20,17 @@ window.addEventListener('click', (event) => {
 	if (event.target === laser_modal) {
 		laser_modal.removeAttribute('data-enabled');
 	}
-})
+});
 btn_select_cancel.addEventListener('click', (event) => {
 	laser_modal.removeAttribute('data-enabled');
-})
+});
 btn_select_confirm.addEventListener('click', (event) => {
 	let instrument_selected = document.querySelector('input[type="radio"][name="laser-modal-radio"]:checked');
 	if (instrument_selected !== null) {
 		td_laser_select.innerText = instrument_selected.value;
 	}
 	laser_modal.removeAttribute('data-enabled');
-})
+});
 
 
 // SocketIO
@@ -47,11 +47,15 @@ btn_start.addEventListener('click', () => {
 	laser_modal.setAttribute('data-enabled', '');
 	socketio.emit('start', {data: `${in_work_order.value},${in_part_number.value}`})
 
-})
+});
 
 btn_select_confirm.addEventListener('click', () => {
 	socketio.emit('confirm', {data: `${in_work_order.value},${in_part_number.value}`});
-})
+});
+
+socketio.on('alert', function(msg) {
+	alert(msg);
+});
 
 socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg.data}`);
