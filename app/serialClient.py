@@ -5,7 +5,7 @@ import sys
 import queue
 
 
-class serialClient:
+class SerialClient:
 	
 	def __init__(self, app, port, baudrate=9600, parity=serial.PARITY_EVEN, 
 				stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1):
