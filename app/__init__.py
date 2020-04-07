@@ -1,15 +1,15 @@
-from flask import Flask
+from flask import Flask, session
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_socketio import SocketIO
+from flask_session import Session
 from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 from app.tcpclient import TCPClient
-from app.test.tcpserver import TCPServer
-from app.serialClient import serialClient
+from app.serialclient import SerialClient
 import logging
 import os
 
@@ -33,8 +33,8 @@ dictConfig({
 app = Flask(__name__)
 
 # Debug mode (development environment)
-app.debug = True
 app.debug = False
+debug_mode = True
 
 # Init modules
 app.config.from_object(Config)
@@ -43,17 +43,18 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 socketio = SocketIO(app)
+Session(app)
 
 # For debug
-tcpserver = None
-tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
-if app.debug:
-	tcpserver = TCPServer(app)
-	# tcpclient = TCPClient(app)
+tcpclient = None
+if debug_mode:
+	tcpclient = TCPClient(app, 'localhost', 8500)
+else:
+	tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
 
 #PLC serial port
 #plcSer = None
-plcSer = serialClient(app, "com3")
+plcSer = SerialClient(app, "com3")
 
 from app import routes, models, errors, permissions
 
@@ -67,10 +68,10 @@ if len(userlist) == 0:
 
 # Connection handshake with Vision System
 tcpclient.send('R0')
-# tcpclient.send('PW,1,001')
+tcpclient.send('PW,1,001')
 
 # Production email logging and file logs
-if not app.debug:
+if not debug_mode:
 	# Send email to admins when server encounter errors in production
 	if app.config['MAIL_SERVER']:
 		auth = None
