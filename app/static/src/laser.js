@@ -15,20 +15,15 @@ const btn_select_confirm = document.querySelector('#btn-select-confirm');
 const td_laser_select = document.querySelector('#td-laser-select');
 const in_work_order = document.querySelector('#laser-work-order');
 const in_part_number = document.querySelector('#laser-part-number');
+const laser_rack_id = document.querySelector('#laser-rack-id');
 
 window.addEventListener('click', (event) => {
 	if (event.target === laser_modal) {
 		laser_modal.removeAttribute('data-enabled');
 	}
 });
+
 btn_select_cancel.addEventListener('click', (event) => {
-	laser_modal.removeAttribute('data-enabled');
-});
-btn_select_confirm.addEventListener('click', (event) => {
-	let instrument_selected = document.querySelector('input[type="radio"][name="laser-modal-radio"]:checked');
-	if (instrument_selected !== null) {
-		td_laser_select.innerText = instrument_selected.value;
-	}
 	laser_modal.removeAttribute('data-enabled');
 });
 
@@ -50,7 +45,15 @@ btn_start.addEventListener('click', () => {
 });
 
 btn_select_confirm.addEventListener('click', () => {
+	
+	let instrument_selected = document.querySelector('input[type="radio"][name="laser-modal-radio"]:checked');
+	if (instrument_selected !== null) {
+		td_laser_select.innerText = instrument_selected.value;
+	}
+	laser_modal.removeAttribute('data-enabled');
+
 	socketio.emit('confirm', {data: `${in_work_order.value},${in_part_number.value}`});
+
 });
 
 socketio.on('alert', function(msg) {
@@ -61,7 +64,13 @@ socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg.data}`);
 });
 
-socketio.on('confirm_data', function(msg) {
+socketio.on('1d_barcode', function(msg) {
+	console.log(`Received data from event '1d_barcode': ${msg.data}`);
+	laser_rack_id.innerText = msg.data;
+
+});
+
+socketio.on('start_data', function(msg) {
 
 	console.log(`Received data from event 'start_data': ${msg.data}`);
 

@@ -7,13 +7,14 @@ from app.models import User
 from app.permissions import PermissionsManager
 from werkzeug.urls import url_parse
 import time
+from timeit import default_timer as timer
 # import socket
 
 # Function to get ip address of host
 # def get_ip_address():
-# 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# 	s.connect(("8.8.8.8", 80))
-# 	return s.getsockname()[0]
+#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#     s.connect(("8.8.8.8", 80))
+#     return s.getsockname()[0]
 
 # host_ip = get_ip_address()
 
@@ -179,10 +180,10 @@ def change_pass(username):
 	if form.validate_on_submit():
 		user.set_password(form.password.data)
 		db.session.commit()
-
+		
 		app.logger.info(f'Password for user {user.username} has been successfully changed')
 		flash(f'Password for user {user.username} has been successfully changed')
-
+		
 		app.logger.info('Redirecting to dashboard page...')
 		return(redirect(url_for('dashboard')))
 
@@ -215,11 +216,24 @@ def laser_confirm(message):
 	plcSer.send_data("R")
 	time.sleep(0.1)
 	plcSer.send_data("S")
+	start = timer()
+	
 	while True:
 		if (plcSer.dataReady()):
 			sdata = plcSer.get()
 			if (sdata[:2] == "G2"): # Reach the scan location
 				break
+		else:
+			end = timer()
+			if (end - start > 2.0):
+				app.logger.warn('Timeout going to scan position')
+				break
+			else:
+				time.sleep(0.1)
+
+	sdata = 'MSG - 433 - SG' # testing. To be removed
+	app.logger.info('Laser Etch QC received '+sdata)
+	emit('1d_barcode', {'data': sdata})
 
 	tcpclient.send('PW,1,3')
 	data = tcpclient.send('T1')
