@@ -46,7 +46,7 @@ class Config(object):
 
 	# Vision System TCP Server
 	VISION_TCP_ADDR                = config.get('Vision TCP Addr', 'localhost')
-	VISION_TCP_PORT                = int(config.get('Vision TCP Port', 10000))
+	VISION_TCP_PORT                = int(config.get('Vision TCP Port', 8500))
 
 	# Database
 	SQLALCHEMY_DATABASE_URI        = environ.get('DATABASE_URL') or 'sqlite:///' + path.join(basedir, 'app.db')
