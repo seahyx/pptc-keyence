@@ -20,7 +20,7 @@ class TCPClient:
 	sock = None
 	app = None
 
-	def __init__(self, app, address='192.168.1.90', port=8500):
+	def __init__(self, app, address='localhost', port=8500):
 
 		# Get app
 		self.app = app
