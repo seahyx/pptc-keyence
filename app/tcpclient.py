@@ -81,9 +81,6 @@ class TCPClient:
 
 		finally:
 
-			#self.sock.close()
-			#self.app.logger.info(f'Closed client socket')
-
 			return data_decoded
 
 	def disconnect(self):
