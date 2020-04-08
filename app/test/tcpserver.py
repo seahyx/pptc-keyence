@@ -55,7 +55,7 @@ while True:
 					print('Exit signal received, breaking server loop')
 					break
 
-				print(f'Sending \"{data.decode("utf-8")}\" back to the client')
+				print(f'Sending {repr(data.decode("utf-8"))} back to the client')
 				connection.sendall(data)
 
 			else:
