@@ -45,7 +45,7 @@ class TCPClient:
 
 	def isConnected(self):
 		return self.connected
-		
+
 	def send(self, message):
 		''' Send message
 
@@ -53,39 +53,39 @@ class TCPClient:
 		:param message: Message to be sent
 		'''
 
-		message += "\r"
+		message += '\r'
 		# Connect to server
 		if not self.connected:
 			self.connected = self.connect()
 			if not self.connected:
+				self.app.logger.warning(f'Failed to send message {repr(message)}')
 				return None
 
 		data_decoded = ['']
 
 		try:
 			# Send data
-			self.app.logger.info(f'Sending "{message}" to server')
+			self.app.logger.info(f'Sending {repr(message)} to server')
 			self.sock.sendall(str.encode(message))
 
 			# Look for the response
 			data = self.sock.recv(1024)
-			
+
 			# Response is received
 			data_decoded = data.decode('utf-8').split(',')
-			self.app.logger.info(f'Received {data_decoded} from server')
+			self.app.logger.info(f'Received {repr(data_decoded)} from server')
 
 		except:
 
-			self.app.logger.warning(f'Failed to send "{message}" to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
+			self.app.logger.warning(f'Failed to send {repr(message)} to {self.SERVER_ADDRESS[0]}, port {self.SERVER_ADDRESS[1]}')
 
 		finally:
 
 			#self.sock.close()
 			#self.app.logger.info(f'Closed client socket')
-			
+
 			return data_decoded
-			
+
 	def disconnect(self):
 			self.sock.close()
 			self.app.logger.info(f'Closed client socket')
-	
