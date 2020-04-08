@@ -70,9 +70,9 @@ socketio.on('1d_barcode', function(msg) {
 
 });
 
-socketio.on('start_data', function(msg) {
+socketio.on('confirm_data', function(msg) {
 
-	console.log(`Received data from event 'start_data': ${msg.data}`);
+	console.log(`Received data from event 'confirm_data': ${msg.data}`);
 
 	if (current_display === DisplayEnum.TUBE) {
 

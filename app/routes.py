@@ -231,10 +231,10 @@ def laser_confirm(message):
 			else:
 				time.sleep(0.1)
 
-	sdata = 'MSG - 433 - SG' # testing. To be removed
+	sdata = 'MSG - 433 - SG' # for testing. To be replaced
 	app.logger.info('Laser Etch QC received '+sdata)
 	emit('1d_barcode', {'data': sdata})
 
 	tcpclient.send('PW,1,3')
 	data = tcpclient.send('T1')
-	emit('start_data', {'data': data})
+	emit('confirm_data', {'data': data})
