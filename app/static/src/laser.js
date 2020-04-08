@@ -8,14 +8,14 @@ const DisplayEnum = {
 
 let current_display = DisplayEnum.TUBE;
 
-const btn_start = document.querySelector('#btn-start');
-const laser_modal = document.querySelector('#laser-modal');
-const btn_select_cancel = document.querySelector('#btn-select-cancel');
+const btn_start          = document.querySelector('#btn-start');
+const laser_modal        = document.querySelector('#laser-modal');
+const btn_select_cancel  = document.querySelector('#btn-select-cancel');
 const btn_select_confirm = document.querySelector('#btn-select-confirm');
-const td_laser_select = document.querySelector('#td-laser-select');
-const in_work_order = document.querySelector('#laser-work-order');
-const in_part_number = document.querySelector('#laser-part-number');
-const laser_rack_id = document.querySelector('#laser-rack-id');
+const td_laser_select    = document.querySelector('#td-laser-select');
+const in_work_order      = document.querySelector('#laser-work-order');
+const in_part_number     = document.querySelector('#laser-part-number');
+const laser_rack_id      = document.querySelector('#laser-rack-id');
 
 window.addEventListener('click', (event) => {
 	if (event.target === laser_modal) {
