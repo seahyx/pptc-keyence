@@ -707,6 +707,7 @@ table.tb-program td.full-border {
 
 table.tb-program td input {
   margin: 0;
+  padding: 0;
   border: none;
   text-align: center;
   background-color: transparent;
