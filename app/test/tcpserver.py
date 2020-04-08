@@ -40,7 +40,7 @@ while True:
 			# Receive the message, should not be longer than buffersize per message
 			data = connection.recv(1024)
 
-			message = data.decode('utf-8').split(',')
+			message = data.decode('utf-8').replace('\r', '').split(',')
 			print(f'Received {message} from client')
 
 			if data:
