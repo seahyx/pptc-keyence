@@ -48,25 +48,39 @@ class SerialClient:
 		return self.data
 		
 	def send_data(self, data):
-		self.app.logger.info (f'sending {data}')
+
+		if not self.ser:
+			self.app.logger.warn(f'Serial port not initialized, data {repr(data)} not sent')
+			return
+
+		self.app.logger.info(f'Sending {repr(data)}')
 		return (self.ser.write(str.encode(data+"\r\n")))
 
 	def close(self):
-		print ("Closing serial port")
+		
+		if not self.ser:
+			self.app.logger.warn(f'Serial port not initialized, port is closed')
+			return
+		
+		self.app.logger.info('Closing serial port')
 		self.ser.close()
 		self.thread.stop()
 
 	def handle_data (self, data):
-		print (data, flush=True)
+
+		if not self.ser:
+			self.app.logger.warn(f'Serial port not initialized, no data is handled')
+			return
+		
+		self.app.logger.info(f'Received data {repr(data)}')
 		self.data = data
 		self.dataready = True
 		
 	def read_from_port(self):
-		#self.app.logger.info(f"Reading serial from port")
+		self.app.logger.info(f'Reading serial from port')
 		while True:
 			reading = self.ser.readline().decode()
 			if (len(reading) > 1):
 				self.handle_data(reading)
 			else:
 				time.sleep(0.1)
-		
