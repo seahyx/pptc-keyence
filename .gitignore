@@ -139,5 +139,11 @@ tsconfig.json
 # Database files
 *.db
 
+# Database Migrations
+migrations/
+
 # Log files
 *.log.*
+
+# Flask session
+flask_session/
