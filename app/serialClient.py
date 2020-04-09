@@ -14,16 +14,18 @@ class SerialClient:
 		self.data = None
 
 		self.app.logger.info(f'Attempting open to port {port}')
-		self.ser = serial.Serial(
-			port=port,
-			baudrate=baudrate,
-			parity=parity,
-			stopbits=stopbits,
-			bytesize=bytesize,
-			timeout=timeout
-		)
-		
+
 		try:
+
+			self.ser = serial.Serial(
+				port=port,
+				baudrate=baudrate,
+				parity=parity,
+				stopbits=stopbits,
+				bytesize=bytesize,
+				timeout=timeout
+			)
+
 			if self.ser.isOpen():
 				self.ser.close()
 			
@@ -32,7 +34,10 @@ class SerialClient:
 			self.thread = threading.Thread(target=self.read_from_port, args=())
 			self.thread.daemon = True
 			self.thread.start()
+
 		except:
+
+			self.app.logger.info(f'Failed to open port {port}')
 			return
 
 	def dataReady(self):
