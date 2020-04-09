@@ -53,7 +53,7 @@ class Config(object):
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 	# Flask-Session
-	SESSION_TYPE                   = environ.get('SESSION_TYPE') or 'sqlalchemy'
+	SESSION_TYPE                   = environ.get('SESSION_TYPE') or 'filesystem'
 
 	# Flask Debug Tool
 	DEBUG_TB_INTERCEPT_REDIRECTS   = False
