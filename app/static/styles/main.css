@@ -613,6 +613,11 @@ a.bordered:active {
   opacity: 1;
 }
 
+/* --- Extras --- */
+.hidden {
+  display: none;
+}
+
 .background {
   min-height: 100vh;
   background-image: url("/static/img/dna.jpg");
