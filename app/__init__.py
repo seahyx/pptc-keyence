@@ -45,6 +45,33 @@ login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
 
+# Insert root user if none exists
+from app.models import User
+try:
+	userlist = User.query.all()
+	
+	if len(userlist) == 0:
+		app.logger.info('Creating root user')
+		user = User(username='root', account_type=0, password_hash='pbkdf2:sha256:150000$Sn5LeTtv$b9bfc8a77bc8e232c90f494dc09c64c2b9604901b3b34a1ea6d03ebea3083cdf')
+		db.session.add(user)
+		db.session.commit()
+		
+except:
+	app.logger.warn('Error, no user table')
+
+	with app.app_context():
+		from flask_migrate import init as db_init, migrate as db_migrate, upgrade as db_upgrade
+		app.logger.info('Initializing database...')
+		db_init()
+		db_migrate(message='Initializing database')
+		db_upgrade()
+		app.logger.info('Database initialized')
+
+	app.logger.info('Creating root user')
+	user = User(username='root', account_type=0, password_hash='pbkdf2:sha256:150000$Sn5LeTtv$b9bfc8a77bc8e232c90f494dc09c64c2b9604901b3b34a1ea6d03ebea3083cdf')
+	db.session.add(user)
+	db.session.commit()
+
 # For debug
 tcpclient = None
 if debug_mode:
@@ -57,14 +84,6 @@ else:
 plc_ser = SerialClient(app, "com3")
 
 from app import routes, models, errors, permissions
-
-# Insert root user if none exists
-from app.models import User
-userlist = User.query.all()
-if len(userlist) == 0:
-	user = User(username='root', account_type=0, password_hash='pbkdf2:sha256:150000$Sn5LeTtv$b9bfc8a77bc8e232c90f494dc09c64c2b9604901b3b34a1ea6d03ebea3083cdf')
-	db.session.add(user)
-	db.session.commit()
 
 # Connection handshake with Vision System
 tcpclient.send('R0')
