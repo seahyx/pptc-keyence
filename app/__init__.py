@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -42,7 +42,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-socketio = SocketIO(app)
+socketio = SocketIO(app, manage_session=False)
 Session(app)
 
 # For debug
@@ -53,8 +53,8 @@ else:
 	tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
 
 #PLC serial port
-#plcSer = None
-plcSer = SerialClient(app, "com3")
+# plcSer = None
+plc_ser = SerialClient(app, "com3")
 
 from app import routes, models, errors, permissions
 
