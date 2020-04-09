@@ -12,6 +12,8 @@ class SerialClient:
 		self.app = app
 		self.dataready = False
 		self.data = None
+
+		self.app.logger.info(f'Attempting open to port {port}')
 		self.ser = serial.Serial(
 			port=port,
 			baudrate=baudrate,
@@ -20,7 +22,7 @@ class SerialClient:
 			bytesize=bytesize,
 			timeout=timeout
 		)
-		self.app.logger.info(f'Attempting open to port {port}')
+		
 		try:
 			if self.ser.isOpen():
 				self.ser.close()
