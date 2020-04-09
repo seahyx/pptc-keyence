@@ -13,7 +13,7 @@
 
 				<!-- Status code container -->
 				<div class='container status-container flex-center bordered'>
-					<p></p>
+					<p>SUCCESS</p>
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
@@ -76,7 +76,7 @@
 
 
 							<!-- TROUGH Display -->
-							<div class='container laser-trough' style='display: none;'>
+							<div class='container laser-trough hidden'>
 
 								<!-- Underlay - colours the troughs -->
 								<div class='grid laser-underlay'>
@@ -104,16 +104,16 @@
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-laser-id'>
 							<tr>
-								<td class='sn'><label for='laser-work-order'>Work Order</label></td>
-								<td class='full-border'><input id='laser-work-order' type='number'></td>
+								<td class='sn'>Work Order</td>
+								<td class='full-border' id='laser-work-order'>{{ work_order }}</td>
 							</tr>
 							<tr>
-								<td class='sn'><label for='laser-part-number'>Part Number</label></td>
-								<td class='full-border'><input id='laser-part-number' type='number'></td>
+								<td class='sn'>Part Number</td>
+								<td class='full-border' id='laser-part-number'>{{ part_number }}</td>
 							</tr>
 							<tr>
 								<td class='sn'>Rack ID</td>
-								<td class='full-border'></td>
+								<td class='full-border' id='laser-rack-id'>{{ rack_id }}</td>
 							</tr>
 						</table>
 					</div>
@@ -128,7 +128,7 @@
 									<th class='sn'>Laser Instrument</th>
 								</tr>
 								<tr>
-									<td id='td-laser-select' class='full-border'>{{ instrument_default }}</td>
+									<td id='td-laser-instrument' class='full-border'>{{ laser_instrument }}</td>
 								</tr>
 							</table>
 						</div>
@@ -192,6 +192,6 @@
 
 	</div>
 
-	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
+	<script src="{{ url_for('static', filename='src/laser-process.js') }}" defer></script>
 
 {% endblock %}
