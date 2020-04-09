@@ -1,22 +1,34 @@
-from flask import render_template, jsonify, flash, redirect, url_for, request
+from flask import render_template, jsonify, flash, redirect, url_for, request, session
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_socketio import emit
-from app import app, db, socketio, tcpclient, plcSer
+from flask_socketio import emit, disconnect
+from app import app, db, socketio, tcpclient, plc_ser
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
 from werkzeug.urls import url_parse
-import time
 from timeit import default_timer as timer
-# import socket
+from functools import wraps
+import time
 
-# Function to get ip address of host
-# def get_ip_address():
-#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#     s.connect(("8.8.8.8", 80))
-#     return s.getsockname()[0]
 
-# host_ip = get_ip_address()
+# Consts
+class Laser:
+	NAMESPACE   = '/laser/api'
+	WORK_ORDER  = 'laser_work_order'
+	PART_NUMBER = 'laser_part_number'
+	INSTRUMENT  = 'laser_instrument'
+	RACK_ID     = 'laser_rack_id'
+	DATA        = 'laser_data'
+
+
+class Cartridge:
+	NAMESPACE   = '/cartridge/api'
+	WORK_ORDER  = 'cartridge_work_order'
+	PART_NUMBER = 'cartridge_part_number'
+	INSTRUMENT  = 'cartridge_instrument'
+	RACK_ID     = 'cartridge_rack_id'
+	DATA        = 'cartridge_data'
+
 
 permissions = PermissionsManager()
 permissions.redirect_view = 'index'
@@ -105,11 +117,38 @@ def cartridge():
 @app.route('/laser/')
 @login_required
 def laser():
-	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
-	plcSer.send_data("G2")
 	app.logger.info('Loading laser page...')
-	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, instrument_default='')
 
+	# Default laser instruments available
+	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
+
+	# Get previously used work order/part number
+	work_order = session.get(Laser.WORK_ORDER, '')
+	part_number = session.get(Laser.PART_NUMBER, '')
+
+	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, work_order=work_order, part_number=part_number)
+
+@app.route('/laser/process/')
+@login_required
+def laser_process():
+	app.logger.info('Loading laser-process page...')
+
+	work_order  = session.get(Laser.WORK_ORDER)
+	part_number = session.get(Laser.PART_NUMBER)
+	rack_id     = session.get(Laser.RACK_ID)
+	data        = session.get(Laser.DATA)
+
+	if not work_order or not part_number or not rack_id or not data:
+		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, data: {data}')
+		return(redirect(url_for('laser')))
+
+	return render_template(
+		'laser-process.html',
+		title='Laser Etch QC - Processing',
+		work_order=work_order,
+		part_number=part_number,
+		rack_id=rack_id
+		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -191,50 +230,77 @@ def change_pass(username):
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
 
 
+# SocketIO login checker
+
+def authenticated_only(f):
+	@wraps(f)
+	def wrapped(*args, **kwargs):
+		if not current_user.is_authenticated:
+			disconnect()
+		else:
+			return f(*args, **kwargs)
+	return wrapped
+
 # SocketIO interfaces
 
 # Laser Etch QC
 
-@socketio.on('connect', namespace='/laser/api')
+@socketio.on('connect', namespace=Laser.NAMESPACE)
 def laser_connect():
 	app.logger.info('Connected to Laser Etch QC client interface')
-	emit('response', {'data': 'Connected to Laser Etch QC api'})
+	emit('response', 'Connected to Laser Etch QC api')
 
-@socketio.on('disconnect', namespace='/laser/api')
+@socketio.on('disconnect', namespace=Laser.NAMESPACE)
 def laser_disconnect():
 	app.logger.info('Disconnected from Laser Etch QC client interface')
 
-@socketio.on('start', namespace='/laser/api')
-def laser_start(message):
-	app.logger.info('Laser Etch QC start button input received')
+@socketio.on('start', namespace=Laser.NAMESPACE)
+def laser_start(work_order, part_number):
+	app.logger.info(f'Laser Etch QC start, work order: {work_order}, part number: {part_number}')
 	# TODO: Validate work order/part number
 
-@socketio.on('confirm', namespace='/laser/api')
-def laser_confirm(message):
-	app.logger.info('Laser Etch QC confirm button input received')
+@socketio.on('confirm', namespace=Laser.NAMESPACE)
+def laser_confirm(work_order, part_number, laser_instrument):
+	app.logger.info(f'Laser Etch QC confirm, work order: {work_order}, part number: {part_number}, laser instrument: {laser_instrument}')
 
-	plcSer.send_data("R")
+	# Save variables
+	session[Laser.WORK_ORDER] = work_order
+	session[Laser.PART_NUMBER] = part_number
+	session[Laser.INSTRUMENT] = laser_instrument
+
+	plc_ser.send_data("R")
 	time.sleep(0.1)
-	plcSer.send_data("S")
+	plc_ser.send_data("S")
 	start = timer()
 	
 	while True:
-		if (plcSer.dataReady()):
-			sdata = plcSer.get()
-			if (sdata[:2] == "G2"): # Reach the scan location
+		if plc_ser.data_ready:
+			sdata = plc_ser.get()
+			if sdata[:2] == "G2": # Reach the scan location
 				break
 		else:
 			end = timer()
-			if (end - start > 2.0):
-				app.logger.warn('Timeout going to scan position')
+			if end - start > 2.0:
+				app.logger.warning('Timeout, going to scan position')
 				break
 			else:
 				time.sleep(0.1)
 
+	# Get Rack ID
 	sdata = 'MSG - 433 - SG' # for testing. To be replaced
-	app.logger.info('Laser Etch QC received '+sdata)
-	emit('1d_barcode', {'data': sdata})
+	session[Laser.RACK_ID] = sdata
+	app.logger.info('Laser Etch QC received ' + sdata)
 
+	# Get barcodes
 	tcpclient.send('PW,1,3')
 	data = tcpclient.send('T1')
-	emit('confirm_data', {'data': data})
+	session[Laser.DATA] = data
+
+	app.logger.info('Redirecting page to laser_process')
+
+	emit('redirect', url_for('laser_process'))
+
+@socketio.on('process-loaded', namespace=Laser.NAMESPACE)
+def laser_process_init():
+	data = session.get(Laser.DATA)
+	emit('process-init', data)
