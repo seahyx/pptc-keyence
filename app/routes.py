@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request, session
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_socketio import emit, disconnect
-from app import app, db, socketio, tcpclient, plc_ser
+from app import app, db, socketio, tcpclient, plc_ser, configfile
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
@@ -120,7 +120,7 @@ def laser():
 	app.logger.info('Loading laser page...')
 
 	# Default laser instruments available
-	laser_instruments = ['ROFB-ETCHER-001', 'ROFB-ETCHER-004', 'ROFB-ETCHER-005', 'ROFB-ETCHER-006']
+	laser_instruments = configfile.laserEtchQC['Instrument']
 
 	# Get previously used work order/part number
 	work_order = session.get(Laser.WORK_ORDER, '')
@@ -136,10 +136,11 @@ def laser_process():
 	work_order  = session.get(Laser.WORK_ORDER)
 	part_number = session.get(Laser.PART_NUMBER)
 	rack_id     = session.get(Laser.RACK_ID)
+	instrument  = session.get(Laser.INSTRUMENT)
 	data        = session.get(Laser.DATA)
 
 	if not work_order or not part_number or not rack_id or not data:
-		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, data: {data}')
+		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, instrument: {instrument}, data: {data}')
 		return(redirect(url_for('laser')))
 
 	return render_template(
@@ -147,7 +148,8 @@ def laser_process():
 		title='Laser Etch QC - Processing',
 		work_order=work_order,
 		part_number=part_number,
-		rack_id=rack_id
+		rack_id=rack_id,
+		laser_instrument=instrument
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])

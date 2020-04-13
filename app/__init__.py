@@ -1,5 +1,6 @@
 from flask import Flask
 from config import Config
+from configfile import ConfigFile
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -44,6 +45,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
+configfile = ConfigFile('main.cfg')
 
 # Insert root user if none exists
 from app.models import User
@@ -77,17 +79,23 @@ tcpclient = None
 if debug_mode:
 	tcpclient = TCPClient(app, 'localhost', 8500)
 else:
-	tcpclient = TCPClient(app, app.config['VISION_TCP_ADDR'], app.config['VISION_TCP_PORT'])
+	tcpclient = TCPClient(app, configfile.VISION_TCP_ADDR, configfile.VISION_TCP_PORT)
 
 #PLC serial port
 # plcSer = None
-plc_ser = SerialClient(app, "com3")
+plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
+			configfile.PLC_PARITY, configfile.PLC_STOPBITS)
+
+# barcode reader serial port
+barcode_ser = SerialClient(app, configfile.BARCODE_PORT, configfile.BARCODE_BAUDRATE, configfile.BARCODE_BYTESIZE,
+			configfile.BARCODE_PARITY, configfile.BARCODE_STOPBITS)
+
 
 from app import routes, models, errors, permissions
 
 # Connection handshake with Vision System
 tcpclient.send('R0')
-tcpclient.send('PW,1,001')
+# tcpclient.send('PW,1,001')
 
 # Production email logging and file logs
 if not debug_mode:

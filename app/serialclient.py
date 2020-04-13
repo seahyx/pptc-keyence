@@ -47,8 +47,8 @@ class SerialClient:
 
 	'''
 	
-	def __init__(self, app, port, baudrate=9600, parity=serial.PARITY_EVEN, 
-				stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1):
+	def __init__(self, app, port, baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, 
+				stopbits=serial.STOPBITS_ONE, timeout=1):
 		self.app = app
 		self.data_ready = False
 		self.data = None

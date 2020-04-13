@@ -15,7 +15,6 @@ btn_select_cancel.addEventListener('click', (event) => {
 	laser_modal.removeAttribute('data-enabled');
 });
 
-
 // SocketIO
 
 let socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
@@ -34,6 +33,14 @@ btn_start.addEventListener('click', () => {
 
 });
 
+// Validate part number data 
+in_part_number.addEventListener('onchange', () => {
+	if(len(in_part_number.value) < 8) {
+		alert ('Invalid data');
+		return
+	}
+	// socketio.emit('partnumber', in_part_number.value);
+})
 // Confirm button
 
 btn_select_confirm.addEventListener('click', () => {
