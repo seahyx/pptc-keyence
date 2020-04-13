@@ -147,3 +147,4 @@ migrations/
 
 # Flask session
 flask_session/
+config - old.py
