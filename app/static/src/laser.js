@@ -15,12 +15,38 @@ btn_select_cancel.addEventListener('click', (event) => {
 	laser_modal.removeAttribute('data-enabled');
 });
 
+// Validate part number data
+
+var invalidChars = [
+	'-',
+	'+',
+	'e',
+];
+
+in_part_number.addEventListener('input', () => {
+	in_part_number.value = in_part_number.value.replace(/[e\+\-]/gi, '');
+});
+
+in_part_number.addEventListener('keydown', (e) => {
+	if (invalidChars.includes(e.key)) {
+		e.preventDefault();
+	}
+});
+
+in_part_number.addEventListener('change', () => {
+	if (in_part_number.value.length < Globals.in_part_number_min_len) {
+		alert('Part number is invalid, please try again');
+		return
+	}
+	// socketio.emit('partnumber', in_part_number.value);
+})
+
+
 // SocketIO
 
 let socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
 
 // Start button, validate work order/part number
-
 btn_start.addEventListener('click', () => {
 
 	if (!in_work_order.value || !in_part_number.value) {
@@ -33,16 +59,8 @@ btn_start.addEventListener('click', () => {
 
 });
 
-// Validate part number data 
-in_part_number.addEventListener('onchange', () => {
-	if(len(in_part_number.value) < 8) {
-		alert ('Invalid data');
-		return
-	}
-	// socketio.emit('partnumber', in_part_number.value);
-})
-// Confirm button
 
+// Confirm button
 btn_select_confirm.addEventListener('click', () => {
 
 	// Change laser instrument selected
