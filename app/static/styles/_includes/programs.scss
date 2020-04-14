@@ -83,6 +83,17 @@ table.tb-program {
 	background-color: white;
 
 	z-index: 5;
+
+	&.pass {
+		background-color: $status-pass;
+	}
+	&.error {
+		background-color: $status-error;
+	}
+
+	& p {
+		font-weight: bold;
+	}
 }
 
 .gr-cartridge-item, .gr-laser-item {
@@ -96,10 +107,10 @@ table.tb-program {
 
 	background-color: $gr-item-off;
 
-	&.error {
-		background-color: $gr-item-error;
-	}
 	&.pass {
 		background-color: $gr-item-pass;
+	}
+	&.error {
+		background-color: $gr-item-error;
 	}
 }

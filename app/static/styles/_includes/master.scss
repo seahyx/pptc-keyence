@@ -40,8 +40,8 @@ $btn-color            : hsl(204, 86%, 53%) !default;
 $btn-color-light      : lighten($btn-color, 15%) !default;
 $btn-color-dark       : darken($btn-color, 15%) !default;
 
-$btn-red-color        : hsl(0, 79%, 45%) !default;
 $btn-green-color      : hsl(143, 79%, 45%) !default;
+$btn-red-color        : hsl(0, 79%, 45%) !default;
 
 // Programs
 $btn-border-radius    : 4px !default;
@@ -49,9 +49,12 @@ $border-color         : $grey-color !default;
 
 $table-text-align     : left !default;
 
+$status-pass          : hsl(143, 79%, 65%) !default;
+$status-error         : hsl(0, 79%, 65%) !default;
+
 $gr-item-off          : $grey-color-light;
-$gr-item-error        : hsl(0, 79%, 45%) !default;
 $gr-item-pass         : hsl(143, 79%, 45%) !default;
+$gr-item-error        : hsl(0, 79%, 45%) !default;
 
 // Width of the content area - if needed
 $content-width : 800px !default;

@@ -416,22 +416,6 @@ ul.flash {
   background-color: #999999;
 }
 
-.btn.btn-green {
-  background-image: linear-gradient(to right, #18cd5e, #32e777);
-}
-
-.btn.btn-green:hover {
-  background-image: linear-gradient(to right, #32e777, #5fec95);
-}
-
-.btn.btn-green:active {
-  background-image: linear-gradient(to right, #13a049, #18cd5e);
-}
-
-.btn.btn-green:disabled {
-  background-image: none;
-}
-
 .btn.btn-red {
   background-image: linear-gradient(to right, #cd1818, #e73232);
 }
@@ -445,6 +429,22 @@ ul.flash {
 }
 
 .btn.btn-red:disabled {
+  background-image: none;
+}
+
+.btn.btn-green {
+  background-image: linear-gradient(to right, #18cd5e, #32e777);
+}
+
+.btn.btn-green:hover {
+  background-image: linear-gradient(to right, #32e777, #5fec95);
+}
+
+.btn.btn-green:active {
+  background-image: linear-gradient(to right, #13a049, #18cd5e);
+}
+
+.btn.btn-green:disabled {
   background-image: none;
 }
 
@@ -737,16 +737,28 @@ table.tb-program td input {
   z-index: 5;
 }
 
+.status-container.pass {
+  background-color: #5fec95;
+}
+
+.status-container.error {
+  background-color: #ec5f5f;
+}
+
+.status-container p {
+  font-weight: bold;
+}
+
 .gr-cartridge-item, .gr-laser-item {
   background-color: #999999;
 }
 
-.gr-cartridge-item.error, .gr-laser-item.error {
-  background-color: #cd1818;
-}
-
 .gr-cartridge-item.pass, .gr-laser-item.pass {
   background-color: #18cd5e;
+}
+
+.gr-cartridge-item.error, .gr-laser-item.error {
+  background-color: #cd1818;
 }
 
 .cart-container {
