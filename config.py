@@ -4,7 +4,7 @@ basedir = path.abspath(path.dirname(__file__))
 import sys
 
 class Config(object):
-	''' Configuration settings storage '''
+	''' Configuration settings '''
 
 	# Database
 	SQLALCHEMY_DATABASE_URI        = environ.get('DATABASE_URL') or 'sqlite:///' + path.join(basedir, 'app.db')
