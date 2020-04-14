@@ -982,7 +982,7 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   background-color: white;
 }
 
-.laser-tube .laser-underlay {
+.laser-tube-display .laser-underlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -994,16 +994,16 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   grid-template-rows: auto auto auto auto;
 }
 
-.laser-tube .laser-display {
+.laser-tube-display .laser-display {
   min-width: 300px;
   z-index: 1;
 }
 
-.laser-tube .laser-display.laser-empty {
+.laser-tube-display .laser-display.laser-empty {
   visibility: hidden;
 }
 
-.laser-tube .laser-overlay {
+.laser-tube-display .laser-overlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -1014,21 +1014,21 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   z-index: 2;
 }
 
-.laser-tube .laser-overlay .left {
+.laser-tube-display .laser-overlay .left {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 5;
 }
 
-.laser-tube .laser-overlay .right {
+.laser-tube-display .laser-overlay .right {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 5;
 }
 
-.laser-trough .laser-underlay {
+.laser-trough-display .laser-underlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -1038,12 +1038,12 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   grid-template-columns: auto auto auto auto;
 }
 
-.laser-trough .laser-display {
+.laser-trough-display .laser-display {
   min-width: 300px;
   z-index: 1;
 }
 
-.laser-trough .laser-overlay {
+.laser-trough-display .laser-overlay {
   position: absolute;
   top: 0.5333333333rem;
   bottom: 0.5333333333rem;
@@ -1054,14 +1054,14 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
   z-index: 2;
 }
 
-.laser-trough .laser-overlay .left {
+.laser-trough-display .laser-overlay .left {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 5;
 }
 
-.laser-trough .laser-overlay .right {
+.laser-trough-display .laser-overlay .right {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 1;

@@ -409,11 +409,11 @@ ul.flash {
 		}
 	}
 
-	&.btn-green {
-		@include btn-gradient($btn-green-color);
-	}
 	&.btn-red {
 		@include btn-gradient($btn-red-color);
+	}
+	&.btn-green {
+		@include btn-gradient($btn-green-color);
 	}
 	
 	&.btn-big {
