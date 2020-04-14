@@ -1,18 +1,19 @@
-const btn_start          = document.querySelector('#btn-start');
-const laser_modal        = document.querySelector('#laser-modal');
-const btn_select_cancel  = document.querySelector('#btn-select-cancel');
-const btn_select_confirm = document.querySelector('#btn-select-confirm');
-const in_work_order      = document.querySelector('#laser-work-order');
-const in_part_number     = document.querySelector('#laser-part-number');
+const btn_start           = document.querySelector('#btn-start');
+const laser_modal_select  = document.querySelector('#laser-modal');
+const laser_modal_loading = document.querySelector('#laser-loading');
+const btn_select_cancel   = document.querySelector('#btn-select-cancel');
+const btn_select_confirm  = document.querySelector('#btn-select-confirm');
+const in_work_order       = document.querySelector('#laser-work-order');
+const in_part_number      = document.querySelector('#laser-part-number');
 
 window.addEventListener('click', (event) => {
-	if (event.target === laser_modal) {
-		laser_modal.removeAttribute('data-enabled');
+	if (event.target === laser_modal_select) {
+		laser_modal_select.removeAttribute('data-enabled');
 	}
 });
 
 btn_select_cancel.addEventListener('click', (event) => {
-	laser_modal.removeAttribute('data-enabled');
+	laser_modal_select.removeAttribute('data-enabled');
 });
 
 // Validate part number data
@@ -54,7 +55,7 @@ btn_start.addEventListener('click', () => {
 		return
 	}
 
-	laser_modal.setAttribute('data-enabled', '');
+	laser_modal_select.setAttribute('data-enabled', '');
 	socketio.emit('start', in_work_order.value, in_part_number.value)
 
 });
@@ -75,7 +76,9 @@ btn_select_confirm.addEventListener('click', () => {
 	}
 	
 	// Hide Modal
-	laser_modal.removeAttribute('data-enabled');
+	laser_modal_select.removeAttribute('data-enabled');
+
+	laser_modal_loading.setAttribute('data-enabled', '');
 
 	// Send data to server
 	socketio.emit('confirm', in_work_order.value, in_part_number.value, instrument_selected.value);

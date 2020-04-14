@@ -30,7 +30,7 @@
 
 							<!-- EMPTY PLACEHOLDER Display -->
 							<div class='container laser-tube-display'>
-							
+
 								<!-- Cartridge display overlay -->
 								<img class='laser-display laser-empty' src="{{ url_for('static', filename='img/laser.svg') }}">
 
@@ -121,6 +121,25 @@
 						<a id='btn-select-cancel' class='btn btn-small'>Cancel</a>
 						<a id='btn-select-confirm' class='btn btn-small btn-green'>Confirm</a>
 					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		
+		<!-- Loading modal -->
+		<div id='laser-loading' class='modal laser-modal'>
+
+			<div class='container modal-wrapper padding'>
+			
+				<!-- Modal content -->
+				<div class='modal-content container padding bordered flex-center'>
+
+					<h2>Loading...</h2>
+
+					{% include 'spinner.html' %}
 
 				</div>
 

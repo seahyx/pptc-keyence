@@ -618,6 +618,52 @@ a.bordered:active {
   display: none;
 }
 
+.spinner {
+  animation: rotator 1.6s linear infinite;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 1.6s ease-in-out infinite, colors 6.4s ease-in-out infinite;
+}
+
+@keyframes colors {
+  0% {
+    stroke: #2b63df;
+  }
+  50% {
+    stroke: #afc5f3;
+  }
+  100% {
+    stroke: #2b63df;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+
 .background {
   min-height: 100vh;
   background-image: url("/static/img/dna.jpg");
