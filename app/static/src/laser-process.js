@@ -45,9 +45,6 @@ class StatusBarManager {
 const status_bar           = document.querySelector('#laser-status');
 
 const btn_done             = document.querySelector('#btn-done');
-const laser_modal          = document.querySelector('#laser-modal');
-const btn_select_cancel    = document.querySelector('#btn-select-cancel');
-const btn_select_confirm   = document.querySelector('#btn-select-confirm');
 const in_work_order        = document.querySelector('#laser-work-order');
 const in_part_number       = document.querySelector('#laser-part-number');
 const laser_rack_id        = document.querySelector('#laser-rack-id');
@@ -57,15 +54,15 @@ const laser_trough_display = document.querySelector('#laser-trough-display');
 const laser_tube_barcode   = document.querySelector('#laser-tube-barcode');
 const laser_trough_barcode = document.querySelector('#laser-trough-barcode');
 
+// Done button
 
-window.addEventListener('click', (event) => {
-	if (event.target === laser_modal) {
-		laser_modal.removeAttribute('data-enabled');
+btn_done.addEventListener('click', () => {
+	let confirmation = confirm('Are you sure you want to finish?');
+
+	if (confirmation) {
+		window.location = Globals.done_url;
 	}
-});
 
-btn_select_cancel.addEventListener('click', (event) => {
-	laser_modal.removeAttribute('data-enabled');
 });
 
 
