@@ -3,8 +3,6 @@ pip install virtualenvwrapper-win
 
 mkvirtualenv pptc-keyence
 
-workon pptc-keyence
-
 pip install -r requirements.txt
 
 flask db init
