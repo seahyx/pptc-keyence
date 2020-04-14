@@ -11,6 +11,7 @@ from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
 from app.tcpclient import TCPClient
 from app.serialclient import SerialClient
+from app.csvreader import CSVReader
 import logging
 import os
 
@@ -35,7 +36,7 @@ app = Flask(__name__)
 
 # Debug mode (development environment)
 app.debug = False
-debug_mode = True
+debug_mode = False
 
 # Init modules
 app.config.from_object(Config)
@@ -46,6 +47,7 @@ login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
 configfile = ConfigFile('main.cfg')
+csvreader = CSVReader(configfile.laserEtchQC['PNFile'])
 
 # Insert root user if none exists
 from app.models import User
@@ -96,6 +98,9 @@ from app import routes, models, errors, permissions
 # Connection handshake with Vision System
 tcpclient.send('R0')
 # tcpclient.send('PW,1,001')
+
+# Initialize motor
+plc_ser.send_data('H')
 
 # Production email logging and file logs
 if not debug_mode:

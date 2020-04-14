@@ -84,6 +84,10 @@ class SerialClient:
 	def get(self):
 		self.data_ready = False
 		return self.data
+
+	def purge(self):
+		self.data_ready = False
+		return
 		
 	def send_data(self, data):
 

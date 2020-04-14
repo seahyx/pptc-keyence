@@ -140,7 +140,7 @@ function load_data(data, rack_type, statusBarManager) {
 		
 					// 1 means barcode is invalid
 
-					get_tube_barcode_row(x + 1).innerText = '';
+					get_tube_barcode_row(x + 1).innerText = data[current_data_count + 1];
 					display_element.classList.toggle('pass', false)
 					display_element.classList.toggle('error', true)
 

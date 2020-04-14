@@ -45,6 +45,9 @@ class ConfigFile():
 		self.laserEtchQC = []
 		self.laserEtchQC = {'Prefix': self.laserEtchQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
 		self.laserEtchQC['Instrument'] = self.laserEtchQCConfig.get('LASER INSTRUMENT', 'Instrument').split(';')
+		self.laserEtchQC['WOLength'] = self.laserEtchQCConfig.getint('WORK ORDER', 'Length')
+		self.laserEtchQC['PNLength'] = self.laserEtchQCConfig.getint('PART NUMBER', 'Length')
+		self.laserEtchQC['PNFile'] = self.laserEtchQCConfig.get('PATH', 'PN Data Lookup')
 		print(self.laserEtchQC)
 
 		self.cartridgeAssemblyQC = []

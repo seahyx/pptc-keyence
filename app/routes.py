@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request, session
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_socketio import emit, disconnect
-from app import app, db, socketio, tcpclient, plc_ser, configfile
+from app import app, db, socketio, tcpclient, plc_ser, barcode_ser, configfile, csvreader
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
@@ -19,6 +19,7 @@ class Laser:
 	INSTRUMENT  = 'laser_instrument'
 	RACK_ID     = 'laser_rack_id'
 	DATA        = 'laser_data'
+	ERRORCODE	= 0
 	class RACK_TYPE:
 		TUBE   = 1
 		TROUGH = 2
@@ -30,6 +31,7 @@ class Cartridge:
 	INSTRUMENT  = 'cartridge_instrument'
 	RACK_ID     = 'cartridge_rack_id'
 	DATA        = 'cartridge_data'
+	ERRORCODE	= 0
 
 
 permissions = PermissionsManager()
@@ -124,8 +126,9 @@ def laser():
 	# Default laser instruments available
 	laser_instruments = configfile.laserEtchQC['Instrument']
 
-	# Minimum length for part number
-	part_number_min_len = 8
+	# Minimum length for part number and work order
+	part_number_min_len = configfile.laserEtchQC['PNLength']
+	work_order_len = configfile.laserEtchQC['WOLength']
 
 	return render_template(
 		'laser.html',
@@ -141,10 +144,12 @@ def laser_process():
 	work_order  = session.get(Laser.WORK_ORDER)
 	part_number = session.get(Laser.PART_NUMBER)
 	rack_id     = session.get(Laser.RACK_ID)
+	rack_type   = session.get(Laser.RACK_TYPE)
 	instrument  = session.get(Laser.INSTRUMENT)
 	data        = session.get(Laser.DATA)
+	errorcode	= session.get(Laser.ERRORCODE)
 
-	rack_type   = Laser.RACK_TYPE.TUBE
+	# rack_type   = Laser.RACK_TYPE.TUBE
 
 	if not work_order or not part_number or not rack_id or not data:
 		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, instrument: {instrument}, data: {data}')
@@ -158,7 +163,8 @@ def laser_process():
 		rack_id          = rack_id,
 		laser_instrument = instrument,
 		data             = data,
-		rack_type        = rack_type
+		rack_type        = rack_type,
+		errorcode        = errorcode
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
@@ -274,13 +280,30 @@ def laser_start(work_order, part_number):
 def laser_confirm(work_order, part_number, laser_instrument):
 	app.logger.info(f'Laser Etch QC confirm, work order: {work_order}, part number: {part_number}, laser instrument: {laser_instrument}')
 
+	errorcode = 0 # Default no error
+
 	# Save variables
 	session[Laser.WORK_ORDER] = work_order
 	session[Laser.PART_NUMBER] = part_number
 	session[Laser.INSTRUMENT] = laser_instrument
 
+	mask, racktype = csvreader.search(part_number)
+	if (mask == None):
+		print ('Invalid Part Number')
+		errorcode = 1
+	else:
+		if (racktype == 'Tube'):
+			session[Laser.RACK_TYPE] = Laser.RACK_TYPE.TUBE
+			tcpclient.send('PW,1,3')
+		else:
+			session[Laser.RACK_TYPE] = Laser.RACK_TYPE.TROUGH
+			tcpclient.send('PW,1,2')
+
+	plc_ser.send_data("G2")
+	time.sleep(0.1)
 	plc_ser.send_data("R")
 	time.sleep(0.1)
+	plc_ser.purge()
 	plc_ser.send_data("S")
 	start = timer()
 	
@@ -291,24 +314,51 @@ def laser_confirm(work_order, part_number, laser_instrument):
 				break
 		else:
 			end = timer()
-			if end - start > 2.0:
+			if end - start > 7.0:
 				app.logger.warning('Timeout, going to scan position')
 				break
 			else:
 				time.sleep(0.1)
 
 	# Get Rack ID
-	sdata = 'MSG - 433 - SG' # for testing. To be replaced
-	session[Laser.RACK_ID] = sdata
-	app.logger.info('Laser Etch QC received ' + sdata)
+	barcode_ser.purge()
+	barcode_ser.send_data("LON")
+	start = timer()
+	
+	while True:
+		if barcode_ser.data_ready:
+			sdata = barcode_ser.get()
+			break
+		else:
+			end = timer()
+			if end - start > 3.0:
+				app.logger.warning('Timeout getting barcode')
+				break
+			else:
+				time.sleep(0.1)
+	
+	session[Laser.RACK_ID] = sdata[:-2]
+	app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
+	if (sdata[:5] == 'ERROR'):
+		print ('Can not read 1D barcode')
+		errorcode = 2
+	else:
+		if (sdata[:2] not in configfile.laserEtchQC['Prefix']):
+			errorcode = 3
+			print ('Invalid Rack ID')
 
-	# Get barcodes
-	tcpclient.send('PW,1,3')
-	data = tcpclient.send('T1')
-	session[Laser.DATA] = data
+	print (errorcode)
+	if (errorcode == 0):
+		# Get barcodes
+		data = tcpclient.send('T1')
+		session[Laser.DATA] = data
 
-	app.logger.info('Redirecting page to laser_process')
+		app.logger.info('Redirecting page to laser_process')
+	else:
+		session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
 
+	session[Laser.ERRORCODE] = errorcode
+	plc_ser.send_data('GB')
 	emit('redirect', url_for('laser_process'))
 
 @socketio.on('process-loaded', namespace=Laser.NAMESPACE)
