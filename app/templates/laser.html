@@ -165,25 +165,25 @@
 
 				<!-- Modal content -->
 				<div class='modal-content container padding bordered'>
-	
+
 					<h2>Select Laser Etcher</h2>
-	
+
 					<div class='container margin-bottom'>
-						
+
 						{% for instrument in instruments %}
 							<div class='container flex-horizontal'>
 								<input id='{{ instrument }}' name='laser-modal-radio' type='radio' value='{{ instrument }}'>
 								<label for='{{ instrument }}'>{{ instrument }}</label>
 							</div>
 						{% endfor %}
-						
+
 					</div>
 
 					<div class='container flex-horizontal space-between max-width'>
 						<a id='btn-select-cancel' class='btn btn-small'>Cancel</a>
 						<a id='btn-select-confirm' class='btn btn-small btn-green'>Confirm</a>
 					</div>
-	
+
 				</div>
 
 			</div>
@@ -191,6 +191,14 @@
 		</div>
 
 	</div>
+
+
+	<!-- Pass Variables -->
+	<script type='text/javascript' defer>
+	let Globals = {
+		in_part_number_min_len: {{ part_number_min_len }}
+	};
+	</script>
 
 	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
 
