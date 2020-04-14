@@ -122,11 +122,14 @@ def laser():
 	# Default laser instruments available
 	laser_instruments = configfile.laserEtchQC['Instrument']
 
-	# Get previously used work order/part number
-	work_order = session.get(Laser.WORK_ORDER, '')
-	part_number = session.get(Laser.PART_NUMBER, '')
+	# Minimum length for part number
+	part_number_min_len = 8
 
-	return render_template('laser.html', title='Laser Etch QC', instruments=laser_instruments, work_order=work_order, part_number=part_number)
+	return render_template(
+		'laser.html',
+		title='Laser Etch QC',
+		instruments=laser_instruments,
+		part_number_min_len=part_number_min_len)
 
 @app.route('/laser/process/')
 @login_required
@@ -145,11 +148,12 @@ def laser_process():
 
 	return render_template(
 		'laser-process.html',
-		title='Laser Etch QC - Processing',
-		work_order=work_order,
-		part_number=part_number,
-		rack_id=rack_id,
-		laser_instrument=instrument
+		title            = 'Laser Etch QC - Processing',
+		work_order       = work_order,
+		part_number      = part_number,
+		rack_id          = rack_id,
+		laser_instrument = instrument,
+		data             = data
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
