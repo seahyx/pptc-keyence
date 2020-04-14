@@ -27,13 +27,56 @@ btn_select_cancel.addEventListener('click', (event) => {
 });
 
 
+// Initialization
+
+data = Globals.data;
+
+console.log(data);
+
+// Load data
+if (data !== null) {
+
+	// Tube display
+	if (current_display === DisplayEnum.TUBE) {
+
+		for (let x = 0; x < laser_tube_count; x++) {
+	
+			console.log(`Iterating through tube number ${x + 1}`)
+			
+			let current_data_count = 1 + (x * 2);
+			let display_item = get_tube_display_item(x + 1)
+			
+			if (data[current_data_count] === '0') {
+				
+				// 0 means barcode is valid
+	
+				console.log(`Status: PASS\nValue: ${data[current_data_count + 1]}`)
+				get_barcode_row(x + 1).innerText = data[current_data_count + 1];
+				display_item.classList.toggle('error', false)
+				display_item.classList.toggle('pass', true)
+	
+			} else {
+	
+				// 1 means barcode is invalid
+				
+				console.log(`Status: FAIL`)
+				get_barcode_row(x + 1).innerText = '';
+				display_item.classList.toggle('pass', false)
+				display_item.classList.toggle('error', true)
+	
+			}
+	
+		}
+	
+	}
+
+}
+
+
+
 // SocketIO
 
 var socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
-
-// Init
-
-socketio.emit('process-loaded')
 
 // Responses
 
@@ -51,44 +94,8 @@ socketio.on('redirect', function(url) {
 	window.location = url;
 })
 
-socketio.on('process-init', function(data) {
 
-	console.log(`Received data from event 'confirm_data': ${data}`);
-
-	if (current_display === DisplayEnum.TUBE) {
-
-		for (let x = 0; x < laser_tube_count; x++) {
-
-			console.log(`Iterating through tube number ${x + 1}`)
-			
-			let current_data_count = 1 + (x * 2);
-			let display_item = get_tube_display_item(x + 1)
-			
-			if (data[current_data_count] === '0') {
-				
-				// 0 means barcode is valid
-
-				console.log(`Status: PASS\nValue: ${data[current_data_count + 1]}`)
-				get_barcode_row(x + 1).innerText = data[current_data_count + 1];
-				display_item.classList.toggle('error', false)
-				display_item.classList.toggle('pass', true)
-
-			} else {
-
-				// 1 means barcode is invalid
-				
-				console.log(`Status: FAIL`)
-				get_barcode_row(x + 1).innerText = '';
-				display_item.classList.toggle('pass', false)
-				display_item.classList.toggle('error', true)
-
-			}
-
-		}
-
-	}
-
-});
+// Functions
 
 function get_barcode_row(sn) {
 	return document.querySelector(`#barcode-${sn} .full-border`);
