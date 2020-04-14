@@ -4,7 +4,10 @@ basedir = path.abspath(path.dirname(__file__))
 import sys
 
 class Config(object):
-	''' Configuration settings '''
+	''' General configuration settings
+	
+	Contains general configuration settings for flask and its modules. For program-specific configuration settings, view ``configfile.py``.
+	'''
 
 	# Database
 	SQLALCHEMY_DATABASE_URI        = environ.get('DATABASE_URL') or 'sqlite:///' + path.join(basedir, 'app.db')
