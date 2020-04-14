@@ -19,7 +19,9 @@ class Laser:
 	INSTRUMENT  = 'laser_instrument'
 	RACK_ID     = 'laser_rack_id'
 	DATA        = 'laser_data'
-
+	class RACK_TYPE:
+		TUBE   = 1
+		TROUGH = 2
 
 class Cartridge:
 	NAMESPACE   = '/cartridge/api'
@@ -142,6 +144,8 @@ def laser_process():
 	instrument  = session.get(Laser.INSTRUMENT)
 	data        = session.get(Laser.DATA)
 
+	rack_type   = Laser.RACK_TYPE.TUBE
+
 	if not work_order or not part_number or not rack_id or not data:
 		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, instrument: {instrument}, data: {data}')
 		return(redirect(url_for('laser')))
@@ -153,7 +157,8 @@ def laser_process():
 		part_number      = part_number,
 		rack_id          = rack_id,
 		laser_instrument = instrument,
-		data             = data
+		data             = data,
+		rack_type        = rack_type
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
