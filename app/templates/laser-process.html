@@ -216,8 +216,9 @@
 	<!-- Pass Variables -->
 	<script type='text/javascript' defer>
 	var Globals = {
-		data: {{ data|tojson }},
-		rack_type: {{ rack_type }}
+		data      : {{ data|tojson }},
+		rack_type : {{ rack_type }},
+		done_url  : {{ url_for('laser') }}
 	};
 	</script>
 
