@@ -124,11 +124,11 @@ def laser():
 	app.logger.info('Loading laser page...')
 
 	# Default laser instruments available
-	laser_instruments = configfile.laserEtchQC['Instrument']
+	laser_instruments = configfile.laser_etch_QC['Instrument']
 
 	# Minimum length for part number and work order
-	part_number_min_len = configfile.laserEtchQC['PNLength']
-	work_order_len = configfile.laserEtchQC['WOLength']
+	part_number_min_len = configfile.laser_etch_QC['PNLength']
+	work_order_len = configfile.laser_etch_QC['WOLength']
 
 	return render_template(
 		'laser.html',
@@ -351,7 +351,7 @@ def laser_confirm(work_order, part_number, laser_instrument):
 			app.logger.warn('Can not read 1D barcode')
 			errorcode = 2
 		else:
-			if (sdata[:2] not in configfile.laserEtchQC['Prefix']):
+			if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
 				errorcode = 3
 				app.logger.warn('Invalid Rack ID')
 	else:

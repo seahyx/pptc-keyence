@@ -36,7 +36,7 @@ app = Flask(__name__)
 
 # Debug mode (development environment)
 app.debug = False
-debug_mode = False
+debug_mode = True
 
 # Init modules
 app.config.from_object(Config)
@@ -47,7 +47,7 @@ login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
 configfile = ConfigFile(app, 'main.cfg')
-csvreader = CSVReader(configfile.laserEtchQC['PNFile'])
+csvreader = CSVReader(configfile.laser_etch_QC['PNFile'])
 
 # Insert root user if none exists
 from app.models import User
