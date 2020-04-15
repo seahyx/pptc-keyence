@@ -123,6 +123,12 @@ def cartridge():
 def laser():
 	app.logger.info('Loading laser page...')
 
+	# Activate the start button first
+	plc_ser.send_data("G2")
+	time.sleep(0.1)
+	plc_ser.send_data("R")
+	# send an event to activate soft start button
+
 	# Default laser instruments available
 	laser_instruments = configfile.laser_etch_QC['Instrument']
 
@@ -304,10 +310,6 @@ def laser_confirm(work_order, part_number, laser_instrument):
 			session[Laser.RACK_TYPE] = Laser.RACK_TYPE.TROUGH
 			tcpclient.send('PW,1,2')
 
-	plc_ser.send_data("G2")
-	time.sleep(0.1)
-	plc_ser.send_data("R")
-	time.sleep(0.1)
 	plc_ser.purge()
 	plc_ser.send_data("S")
 	start = timer()
