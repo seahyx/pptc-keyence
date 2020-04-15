@@ -8,7 +8,11 @@ class ConfigFile():
 	Reads from config files which paths are provided in main.cfg
 	'''
 
-	def __init__(self, filename):
+	def __init__(self, app, filename):
+
+		self.app = app
+
+		app.logger.info('Loading configuration files...')
 		
 		# Load configuration files
 		config = ConfigParser()
@@ -48,8 +52,10 @@ class ConfigFile():
 		self.laserEtchQC['WOLength'] = self.laserEtchQCConfig.getint('WORK ORDER', 'Length')
 		self.laserEtchQC['PNLength'] = self.laserEtchQCConfig.getint('PART NUMBER', 'Length')
 		self.laserEtchQC['PNFile'] = self.laserEtchQCConfig.get('PATH', 'PN Data Lookup')
-		print(self.laserEtchQC)
+
+		app.logger.info(f'Loading Laser Etch QC config: {self.laserEtchQC}')
 
 		self.cartridgeAssemblyQC = []
 		self.cartridgeAssemblyQC = {'Prefix': self.cartridgeAssemblyQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
-		print(self.cartridgeAssemblyQC)
+
+		app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridgeAssemblyQC}')

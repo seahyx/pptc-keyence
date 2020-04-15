@@ -46,7 +46,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
-configfile = ConfigFile('main.cfg')
+configfile = ConfigFile(app, 'main.cfg')
 csvreader = CSVReader(configfile.laserEtchQC['PNFile'])
 
 # Insert root user if none exists
