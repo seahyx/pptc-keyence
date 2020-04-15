@@ -4,7 +4,7 @@ import csv
 
 class ConfigFile():
 	''' Config settings
-	
+
 	Reads from config files which paths are provided in main.cfg
 	'''
 
@@ -13,7 +13,7 @@ class ConfigFile():
 		self.app = app
 
 		app.logger.info('Loading configuration files...')
-		
+
 		# Load configuration files
 		config = ConfigParser()
 		config.read(filename)
@@ -39,7 +39,7 @@ class ConfigFile():
 		# Cartridge Assembly QC and Laser Etch QC config files
 		cartridgeAssemblyQCFile = config.get('FILES', 'Cartridge Assembly QC File')
 		laserEtchQCFile         = config.get('FILES', 'Laser Etch QC File')
-		
+
 		self.laserEtchQCConfig = ConfigParser()
 		self.laserEtchQCConfig.read(laserEtchQCFile)
 
@@ -59,3 +59,23 @@ class ConfigFile():
 		self.cartridgeAssemblyQC = {'Prefix': self.cartridgeAssemblyQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
 
 		app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridgeAssemblyQC}')
+
+		# Image files
+		self.imageDir = config.get('FILES', 'Display Images Dir')
+
+		# Image filenames
+		self.cam1Normal  = config.get('CAM1', 'Normal Image')
+		self.cam1Left    = config.get('CAM1', 'Left Image')
+		self.cam1Right   = config.get('CAM1', 'Right Image')
+		self.cam1Lower   = config.get('CAM1', 'Lower Image')
+		self.cam1Upper   = config.get('CAM1', 'Upper Image')
+		self.cam1Shape   = config.get('CAM1', 'Shape Image')
+		self.cam1Texture = config.get('CAM1', 'Texture Image')
+
+		self.cam2Normal  = config.get('CAM2', 'Normal Image')
+		self.cam2Left    = config.get('CAM2', 'Left Image')
+		self.cam2Right   = config.get('CAM2', 'Right Image')
+		self.cam2Lower   = config.get('CAM2', 'Lower Image')
+		self.cam2Upper   = config.get('CAM2', 'Upper Image')
+		self.cam2Shape   = config.get('CAM2', 'Shape Image')
+		self.cam2Texture = config.get('CAM2', 'Texture Image')
