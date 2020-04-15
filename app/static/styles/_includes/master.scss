@@ -33,7 +33,8 @@ $brand-color-dark     : darken($brand-color, 15%) !default;
 $flash-bg-color       : lightgreen !default;
 
 $grey-color           : hsl(0, 0%, 45%) !default;
-$grey-color-light     : lighten($grey-color, 15%) !default;
+$grey-color-light     : lighten($grey-color, 30%) !default;
+$grey-color-lighter   : lighten($grey-color, 50%) !default;
 $grey-color-dark      : darken($grey-color, 15%) !default;
 
 $btn-color            : hsl(204, 86%, 53%) !default;
@@ -194,5 +195,4 @@ $table-alt-color : hsl(0, 0%, 90%);
 
 // Import partials.
 @import
-	"base",
-	"spinner";
+	"base";

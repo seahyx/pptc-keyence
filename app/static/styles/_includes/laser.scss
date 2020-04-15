@@ -1,11 +1,36 @@
-
 .laser-img {
 	width: 300px;
-	height: 200px;
+	min-height: 250px;
 
 	margin-bottom: $spacing-unit / 3;
 
 	background-color: white;
+
+	img {
+		max-width: 300px;
+		max-height: 200px;
+	}
+
+	p {
+		text-align: center;
+
+		pointer-events: none;
+	}
+
+	.next, .prev {
+
+		flex-grow: 1;
+
+		background-color: $grey-color-lighter;
+
+		&:hover {
+			background-color: $grey-color-light;
+		}
+
+		&:active {
+			background-color: $grey-color-dark;
+		}
+	}
 }
 
 table.tb-program {

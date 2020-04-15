@@ -22,8 +22,29 @@
 
 					<!-- Left side container -->
 					<div class='container flex-center margin-right'>
+
+
 						<!-- Cartridge image -->
-						<div class='laser-img container bordered'></div>
+						<div class='laser-img container bordered flex-center flex-vertical padding-small'>
+							<img src="{{ url_for('load_image', cam=1, image='normal') }}">
+						
+							<div class='container flex-center flex-horizontal max-width'>
+
+								<div id='btn-prev' class='prev'>
+									<p><strong><</strong></p>
+									</div>
+
+								<div class='flex-center'>
+									<p id='image-title'>normal</p><p id='image-count'>1 / 5</p>
+								</div>
+
+								<div id='btn-next' class='next'>
+									<p><strong>></strong></p>
+								</div>
+
+							</div>
+
+						</div>
 
 						<!-- Cartridge digital container -->
 						<div class='container laser-display-container bordered'>
