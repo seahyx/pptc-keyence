@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, flash, redirect, url_for, request, session
+from flask import render_template, jsonify, flash, redirect, url_for, request, session, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_socketio import emit, disconnect
 from app import app, db, socketio, tcpclient, plc_ser, barcode_ser, configfile, csvreader
@@ -250,16 +250,18 @@ def change_pass(username):
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
 
 
-# SocketIO login checker
+# Image loader - uses codename
+@app.route('/img/<int:cam>/<string:image>')
+def load_image(cam, image):
 
-def authenticated_only(f):
-	@wraps(f)
-	def wrapped(*args, **kwargs):
-		if not current_user.is_authenticated:
-			disconnect()
-		else:
-			return f(*args, **kwargs)
-	return wrapped
+	# Get the associated filename from the config
+	filename = configfile.VISION_IMAGE[f'CAM{cam}'][image.upper()]
+
+	app.logger.info(f'Filename selected: {filename}')
+	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
+
+	return send_from_directory('.\\test\\xg\\hist', filename, as_attachment=True)
+
 
 # SocketIO interfaces
 
