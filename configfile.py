@@ -37,45 +37,50 @@ class ConfigFile():
 		self.PLC_STOPBITS       = config.getint('PLC', 'Stopbits')
 
 		# Cartridge Assembly QC and Laser Etch QC config files
-		cartridgeAssemblyQCFile = config.get('FILES', 'Cartridge Assembly QC File')
-		laserEtchQCFile         = config.get('FILES', 'Laser Etch QC File')
+		cartridge_assembly_QC_file = config.get('FILES', 'Cartridge Assembly QC File')
+		laser_etch_QC_file         = config.get('FILES', 'Laser Etch QC File')
 
-		self.laserEtchQCConfig = ConfigParser()
-		self.laserEtchQCConfig.read(laserEtchQCFile)
+		self.laser_etch_QC_config = ConfigParser()
+		self.laser_etch_QC_config.read(laser_etch_QC_file)
 
-		self.cartridgeAssemblyQCConfig = ConfigParser()
-		self.cartridgeAssemblyQCConfig.read(cartridgeAssemblyQCFile)
+		self.cartridge_assembly_QC_config = ConfigParser()
+		self.cartridge_assembly_QC_config.read(cartridge_assembly_QC_file)
 
-		self.laserEtchQC = []
-		self.laserEtchQC = {'Prefix': self.laserEtchQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
-		self.laserEtchQC['Instrument'] = self.laserEtchQCConfig.get('LASER INSTRUMENT', 'Instrument').split(';')
-		self.laserEtchQC['WOLength'] = self.laserEtchQCConfig.getint('WORK ORDER', 'Length')
-		self.laserEtchQC['PNLength'] = self.laserEtchQCConfig.getint('PART NUMBER', 'Length')
-		self.laserEtchQC['PNFile'] = self.laserEtchQCConfig.get('PATH', 'PN Data Lookup')
+		self.laser_etch_QC = []
+		self.laser_etch_QC = {'Prefix': self.laser_etch_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
+		self.laser_etch_QC['Instrument'] = self.laser_etch_QC_config.get('LASER INSTRUMENT', 'Instrument').split(';')
+		self.laser_etch_QC['WOLength'] = self.laser_etch_QC_config.getint('WORK ORDER', 'Length')
+		self.laser_etch_QC['PNLength'] = self.laser_etch_QC_config.getint('PART NUMBER', 'Length')
+		self.laser_etch_QC['PNFile'] = self.laser_etch_QC_config.get('PATH', 'PN Data Lookup')
 
-		app.logger.info(f'Loading Laser Etch QC config: {self.laserEtchQC}')
+		# app.logger.info(f'Loading Laser Etch QC config: {self.laser_etch_QC}')
 
-		self.cartridgeAssemblyQC = []
-		self.cartridgeAssemblyQC = {'Prefix': self.cartridgeAssemblyQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
+		self.cartridge_assembly_QC = []
+		self.cartridge_assembly_QC = {'Prefix': self.cartridge_assembly_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
 
-		app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridgeAssemblyQC}')
+		# app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridge_assembly_QC}')
 
 		# Image files
-		self.imageDir = config.get('FILES', 'Display Images Dir')
+		self.VISION_IMAGE_DIR = config.get('FILES', 'Vision Image Dir')
 
 		# Image filenames
-		self.cam1Normal  = config.get('CAM1', 'Normal Image')
-		self.cam1Left    = config.get('CAM1', 'Left Image')
-		self.cam1Right   = config.get('CAM1', 'Right Image')
-		self.cam1Lower   = config.get('CAM1', 'Lower Image')
-		self.cam1Upper   = config.get('CAM1', 'Upper Image')
-		self.cam1Shape   = config.get('CAM1', 'Shape Image')
-		self.cam1Texture = config.get('CAM1', 'Texture Image')
-
-		self.cam2Normal  = config.get('CAM2', 'Normal Image')
-		self.cam2Left    = config.get('CAM2', 'Left Image')
-		self.cam2Right   = config.get('CAM2', 'Right Image')
-		self.cam2Lower   = config.get('CAM2', 'Lower Image')
-		self.cam2Upper   = config.get('CAM2', 'Upper Image')
-		self.cam2Shape   = config.get('CAM2', 'Shape Image')
-		self.cam2Texture = config.get('CAM2', 'Texture Image')
+		self.VISION_IMAGE = {
+			'CAM1': {
+				'NORMAL'  : config.get('CAM1', 'Normal Image'),
+				'LEFT'    : config.get('CAM1', 'Left Image'),
+				'RIGHT'   : config.get('CAM1', 'Right Image'),
+				'LOWER'   : config.get('CAM1', 'Lower Image'),
+				'UPPER'   : config.get('CAM1', 'Upper Image'),
+				'SHAPE'   : config.get('CAM1', 'Shape Image'),
+				'TEXTURE' : config.get('CAM1', 'Texture Image')
+			},
+			'CAM2': {
+				'NORMAL'  : config.get('CAM2', 'Normal Image'),
+				'LEFT'    : config.get('CAM2', 'Left Image'),
+				'RIGHT'   : config.get('CAM2', 'Right Image'),
+				'LOWER'   : config.get('CAM2', 'Lower Image'),
+				'UPPER'   : config.get('CAM2', 'Upper Image'),
+				'SHAPE'   : config.get('CAM2', 'Shape Image'),
+				'TEXTURE' : config.get('CAM2', 'Texture Image')
+			}
+		}
