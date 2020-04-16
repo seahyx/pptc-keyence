@@ -25,22 +25,18 @@
 
 
 						<!-- Cartridge image -->
-						<div class='laser-img container bordered flex-center flex-vertical padding-small'>
-							<img src="{{ url_for('load_image', cam=1, image='normal') }}">
-						
+						<div id='laser-img' class='laser-img container bordered flex-center flex-vertical padding-small'>
+							<img>
+
 							<div class='container flex-center flex-horizontal max-width'>
 
-								<div id='btn-prev' class='prev'>
-									<p><strong><</strong></p>
-									</div>
+								<button id='btn-prev' class='btn btn-light prev'><p><</p></button>
 
-								<div class='flex-center'>
+								<div class='image-info flex-center'>
 									<p id='image-title'>normal</p><p id='image-count'>1 / 5</p>
 								</div>
 
-								<div id='btn-next' class='next'>
-									<p><strong>></strong></p>
-								</div>
+								<button id='btn-next' class='btn btn-light next'><p>></p></button>
 
 							</div>
 
@@ -207,7 +203,31 @@
 	var Globals = {
 		data      : {{ data|tojson }},
 		rack_type : {{ rack_type }},
-		done_url  : {{ url_for('laser') }}
+		done_url  : {{ url_for('laser') }},
+		img_titles: [
+			'CAM1 Normal',
+			'CAM1 Left',
+			'CAM1 Right',
+			'CAM1 Lower',
+			'CAM1 Upper',
+			'CAM2 Normal',
+			'CAM2 Left',
+			'CAM2 Right',
+			'CAM2 Lower',
+			'CAM2 Upper',
+			],
+		img_urls  : [
+			{{ url_for('load_image', cam=1, image='normal')|tojson }},
+			{{ url_for('load_image', cam=1, image='left')|tojson }},
+			{{ url_for('load_image', cam=1, image='right')|tojson }},
+			{{ url_for('load_image', cam=1, image='lower')|tojson }},
+			{{ url_for('load_image', cam=1, image='upper')|tojson }},
+			{{ url_for('load_image', cam=2, image='normal')|tojson }},
+			{{ url_for('load_image', cam=2, image='left')|tojson }},
+			{{ url_for('load_image', cam=2, image='right')|tojson }},
+			{{ url_for('load_image', cam=2, image='lower')|tojson }},
+			{{ url_for('load_image', cam=2, image='upper')|tojson }}
+			]
 	};
 	</script>
 
