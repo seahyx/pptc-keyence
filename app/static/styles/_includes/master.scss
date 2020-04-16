@@ -34,7 +34,7 @@ $flash-bg-color       : lightgreen !default;
 
 $grey-color           : hsl(0, 0%, 45%) !default;
 $grey-color-light     : lighten($grey-color, 30%) !default;
-$grey-color-lighter   : lighten($grey-color, 50%) !default;
+$grey-color-lighter   : lighten($grey-color, 45%) !default;
 $grey-color-dark      : darken($grey-color, 15%) !default;
 
 $btn-color            : hsl(204, 86%, 53%) !default;
@@ -160,6 +160,41 @@ $table-alt-color : hsl(0, 0%, 90%);
 		scrollbar-face-color: $thumb-color;
 		scrollbar-track-color: $track-color;
 	}
+}
+
+@mixin btn-flat($color) {
+  $color-light   : lighten($color, 5%);
+  $color-lighter : lighten($color, 15%);
+  $color-dark    : darken($color, 10%);
+
+	&:not([disabled]) {
+
+		background-image: none;
+		background-color: $color;
+
+		&:hover {
+			background-image: none;
+			background-color: $color-light;
+		}
+		&:active {
+			background-image: none;
+			background-color: $color-dark;
+		}
+
+	}
+
+	&:disabled {
+		
+		background-color: $color-lighter;
+
+		&:hover, &:active {
+
+			background-color: $color-lighter;
+
+		}
+
+	}
+
 }
 
 @mixin btn-gradient($color) {

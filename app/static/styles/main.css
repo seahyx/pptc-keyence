@@ -448,6 +448,29 @@ ul.flash {
   background-image: none;
 }
 
+.btn.btn-light:not([disabled]) {
+  background-image: none;
+  background-color: #e6e6e6;
+}
+
+.btn.btn-light:not([disabled]):hover {
+  background-image: none;
+  background-color: #f2f2f2;
+}
+
+.btn.btn-light:not([disabled]):active {
+  background-image: none;
+  background-color: #cccccc;
+}
+
+.btn.btn-light:disabled {
+  background-color: white;
+}
+
+.btn.btn-light:disabled:hover, .btn.btn-light:disabled:active {
+  background-color: white;
+}
+
 .btn.btn-big {
   width: 100%;
   margin: 10px;
