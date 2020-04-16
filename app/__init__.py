@@ -6,6 +6,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_session import Session
+from flask_serial import Serial
+from flask_bootstrap import Bootstrap
+
 from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
@@ -39,6 +42,14 @@ app.debug = False
 debug_mode = False
 
 # Init modules
+app.config['SERIAL_TIMEOUT'] = 0.1
+app.config['SERIAL_PORT'] = configfile.PLC_PORT
+app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
+app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
+app.config['SERIAL_PARITY'] = configfile.PLC_PARITY
+app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
+
+plc_ser = Serial(app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -85,8 +96,9 @@ else:
 
 #PLC serial port
 # plcSer = None
-plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
-			configfile.PLC_PARITY, configfile.PLC_STOPBITS)
+# Use flask-serial to handle
+# plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
+#			configfile.PLC_PARITY, configfile.PLC_STOPBITS)
 
 # barcode reader serial port
 barcode_ser = SerialClient(app, configfile.BARCODE_PORT, configfile.BARCODE_BAUDRATE, configfile.BARCODE_BYTESIZE,
@@ -100,7 +112,7 @@ tcpclient.send('R0')
 # tcpclient.send('PW,1,001')
 
 # Initialize motor
-plc_ser.send_data('H')
+plc_ser.on_send('H')
 
 # Production email logging and file logs
 if not debug_mode:

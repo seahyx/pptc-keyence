@@ -34,9 +34,9 @@ in_part_number.addEventListener('keydown', (e) => {
 	}
 });
 
-in_part_number.addEventListener('change', () => {
-	if (in_part_number.value.length < Globals.in_part_number_min_len) {
-		alert('Part number is invalid, please try again');
+in_work_order.addEventListener('change', () => {
+	if (in_work_order.value.length < Globals.in_work_order_len) {
+		alert('Work order is invalid, please try again');
 		return
 	}
 	// socketio.emit('partnumber', in_part_number.value);

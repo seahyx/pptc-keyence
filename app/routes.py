@@ -125,22 +125,22 @@ def laser():
 
 	# Activate the start button first
 	plc_ser.send_data("G2")
-	time.sleep(0.1)
-	plc_ser.send_data("R")
+	# time.sleep(0.1)
+	# plc_ser.send_data("R")
 	# send an event to activate soft start button
 
 	# Default laser instruments available
 	laser_instruments = configfile.laserEtchQC['Instrument']
 
 	# Minimum length for part number and work order
-	part_number_min_len = configfile.laserEtchQC['PNLength']
+	part_number_len = configfile.laserEtchQC['PNLength']
 	work_order_len = configfile.laserEtchQC['WOLength']
 
 	return render_template(
 		'laser.html',
 		title='Laser Etch QC',
 		instruments=laser_instruments,
-		part_number_min_len=part_number_min_len)
+		work_order_len=part_number_min_len)
 
 @app.route('/laser/process/')
 @login_required

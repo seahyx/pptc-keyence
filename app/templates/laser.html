@@ -94,7 +94,7 @@
 
 		</div>
 
-		<a id='btn-start' class='btn btn-green btn-start' disabled=true>Start</a>
+		<a id='btn-start' class='btn btn-green btn-start'>Start</a>
 
 		<!-- Laser instrument selection modal -->
 		<div id='laser-modal' class='modal laser-modal'>
@@ -153,10 +153,10 @@
 	<!-- Pass Variables -->
 	<script type='text/javascript' defer>
 	let Globals = {
-		in_part_number_min_len: {{ part_number_min_len }}
-	};
+		in_work_order_len: {{ work_order_len }}
+	}
 	</script>
-
+0
 	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
 
 {% endblock %}
