@@ -4,12 +4,16 @@ import csv
 
 class ConfigFile():
 	''' Config settings
-	
+
 	Reads from config files which paths are provided in main.cfg
 	'''
 
-	def __init__(self, filename):
-		
+	def __init__(self, app, filename):
+
+		self.app = app
+
+		app.logger.info('Loading configuration files...')
+
 		# Load configuration files
 		config = ConfigParser()
 		config.read(filename)
@@ -33,23 +37,50 @@ class ConfigFile():
 		self.PLC_STOPBITS       = config.getint('PLC', 'Stopbits')
 
 		# Cartridge Assembly QC and Laser Etch QC config files
-		cartridgeAssemblyQCFile = config.get('FILES', 'Cartridge Assembly QC File')
-		laserEtchQCFile         = config.get('FILES', 'Laser Etch QC File')
-		
-		self.laserEtchQCConfig = ConfigParser()
-		self.laserEtchQCConfig.read(laserEtchQCFile)
+		cartridge_assembly_QC_file = config.get('FILES', 'Cartridge Assembly QC File')
+		laser_etch_QC_file         = config.get('FILES', 'Laser Etch QC File')
 
-		self.cartridgeAssemblyQCConfig = ConfigParser()
-		self.cartridgeAssemblyQCConfig.read(cartridgeAssemblyQCFile)
+		self.laser_etch_QC_config = ConfigParser()
+		self.laser_etch_QC_config.read(laser_etch_QC_file)
 
-		self.laserEtchQC = []
-		self.laserEtchQC = {'Prefix': self.laserEtchQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
-		self.laserEtchQC['Instrument'] = self.laserEtchQCConfig.get('LASER INSTRUMENT', 'Instrument').split(';')
-		self.laserEtchQC['WOLength'] = self.laserEtchQCConfig.getint('WORK ORDER', 'Length')
-		self.laserEtchQC['PNLength'] = self.laserEtchQCConfig.getint('PART NUMBER', 'Length')
-		self.laserEtchQC['PNFile'] = self.laserEtchQCConfig.get('PATH', 'PN Data Lookup')
-		# print(self.laserEtchQC)
+		self.cartridge_assembly_QC_config = ConfigParser()
+		self.cartridge_assembly_QC_config.read(cartridge_assembly_QC_file)
 
-		self.cartridgeAssemblyQC = []
-		self.cartridgeAssemblyQC = {'Prefix': self.cartridgeAssemblyQCConfig.get('PREFIX', 'Allowed Prefixes').split(';')}
-		# print(self.cartridgeAssemblyQC)
+		self.laser_etch_QC = []
+		self.laser_etch_QC = {'Prefix': self.laser_etch_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
+		self.laser_etch_QC['Instrument'] = self.laser_etch_QC_config.get('LASER INSTRUMENT', 'Instrument').split(';')
+		self.laser_etch_QC['WOLength'] = self.laser_etch_QC_config.getint('WORK ORDER', 'Length')
+		self.laser_etch_QC['PNLength'] = self.laser_etch_QC_config.getint('PART NUMBER', 'Length')
+		self.laser_etch_QC['PNFile'] = self.laser_etch_QC_config.get('PATH', 'PN Data Lookup')
+
+		# app.logger.info(f'Loading Laser Etch QC config: {self.laser_etch_QC}')
+
+		self.cartridge_assembly_QC = []
+		self.cartridge_assembly_QC = {'Prefix': self.cartridge_assembly_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
+
+		# app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridge_assembly_QC}')
+
+		# Image files
+		self.VISION_IMAGE_DIR = config.get('FILES', 'Vision Image Dir')
+
+		# Image filenames
+		self.VISION_IMAGE = {
+			'CAM1': {
+				'NORMAL'  : config.get('CAM1', 'Normal Image'),
+				'LEFT'    : config.get('CAM1', 'Left Image'),
+				'RIGHT'   : config.get('CAM1', 'Right Image'),
+				'LOWER'   : config.get('CAM1', 'Lower Image'),
+				'UPPER'   : config.get('CAM1', 'Upper Image'),
+				'SHAPE'   : config.get('CAM1', 'Shape Image'),
+				'TEXTURE' : config.get('CAM1', 'Texture Image')
+			},
+			'CAM2': {
+				'NORMAL'  : config.get('CAM2', 'Normal Image'),
+				'LEFT'    : config.get('CAM2', 'Left Image'),
+				'RIGHT'   : config.get('CAM2', 'Right Image'),
+				'LOWER'   : config.get('CAM2', 'Lower Image'),
+				'UPPER'   : config.get('CAM2', 'Upper Image'),
+				'SHAPE'   : config.get('CAM2', 'Shape Image'),
+				'TEXTURE' : config.get('CAM2', 'Texture Image')
+			}
+		}

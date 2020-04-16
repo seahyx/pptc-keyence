@@ -6,6 +6,7 @@ const RackTypeEnum = {
 	TROUGH: 2
 }
 
+
 class StatusBarManager {
 
 	constructor(status_bar) {
@@ -42,17 +43,89 @@ class StatusBarManager {
 
 }
 
-const status_bar           = document.querySelector('#laser-status');
+class ImageStateManager {
 
-const btn_done             = document.querySelector('#btn-done');
-const in_work_order        = document.querySelector('#laser-work-order');
-const in_part_number       = document.querySelector('#laser-part-number');
-const laser_rack_id        = document.querySelector('#laser-rack-id');
+	constructor(container) {
 
-const laser_tube_display   = document.querySelector('#laser-tube-display');
-const laser_trough_display = document.querySelector('#laser-trough-display');
-const laser_tube_barcode   = document.querySelector('#laser-tube-barcode');
-const laser_trough_barcode = document.querySelector('#laser-trough-barcode');
+		// Image container
+		this.container = container;
+
+		// Obtain components
+		this.img   = container.querySelector('img');
+		this.next  = container.querySelector('#btn-next');
+		this.prev  = container.querySelector('#btn-prev');
+		this.title = container.querySelector('#image-title');
+		this.count = container.querySelector('#image-count');
+
+		// Default image index
+		this.current_image_index = 0;
+
+		// Update image, title, count, and button
+		this.update_everything();
+
+		// Set listeners to the buttons
+		this.next.addEventListener('click', () => {
+			this.set_next_img();
+		})
+
+		this.prev.addEventListener('click', () => {
+			this.set_prev_img();
+		})
+
+	}
+
+	set_next_img() {
+		if (this.current_image_index < Globals.img_urls.length - 1) {
+			this.current_image_index++;
+
+			this.update_everything();
+		}
+	}
+
+	set_prev_img() {
+		if (this.current_image_index > 0) {
+			this.current_image_index--;
+
+			this.update_everything();
+		}
+	}
+
+	update_everything() {
+		this.update_img();
+		this.update_text();
+		this.update_button_attr();
+	}
+
+	update_img() {
+		this.img.setAttribute('src', Globals.img_urls[this.current_image_index]);
+	}
+
+	update_text() {
+		this.title.innerText = Globals.img_titles[this.current_image_index];
+
+		this.count.innerText = `${this.current_image_index + 1} / ${Globals.img_urls.length}`;
+	}
+
+	update_button_attr() {
+		this.prev.toggleAttribute('disabled', this.current_image_index <= 0);
+		this.next.toggleAttribute('disabled', this.current_image_index >= Globals.img_urls.length - 1);
+	}
+
+}
+
+const status_bar            = document.querySelector('#laser-status');
+
+const btn_done              = document.querySelector('#btn-done');
+const in_work_order         = document.querySelector('#laser-work-order');
+const in_part_number        = document.querySelector('#laser-part-number');
+const laser_rack_id         = document.querySelector('#laser-rack-id');
+
+const laser_tube_display    = document.querySelector('#laser-tube-display');
+const laser_trough_display  = document.querySelector('#laser-trough-display');
+const laser_tube_barcode    = document.querySelector('#laser-tube-barcode');
+const laser_trough_barcode  = document.querySelector('#laser-trough-barcode');
+
+const laser_image_container = document.querySelector('#laser-img');
 
 // Done button
 
@@ -69,6 +142,7 @@ btn_done.addEventListener('click', () => {
 // Initialization
 
 statusBarManager = new StatusBarManager(status_bar);
+ImageStateManager = new ImageStateManager(laser_image_container);
 
 load_data(Globals.data, Globals.rack_type, statusBarManager);
 

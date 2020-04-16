@@ -391,7 +391,7 @@ ul.flash {
 }
 
 .btn:active {
-  color: #999999;
+  color: #bfbfbf;
   -webkit-transition: none;
   -moz-transition: none;
   -ms-transition: none;
@@ -406,14 +406,14 @@ ul.flash {
 
 .btn:disabled {
   background-image: none;
-  background-color: #999999;
+  background-color: #bfbfbf;
   color: #737373;
   cursor: default;
 }
 
 .btn:disabled:hover {
   background-image: none;
-  background-color: #999999;
+  background-color: #bfbfbf;
 }
 
 .btn.btn-red {
@@ -448,6 +448,29 @@ ul.flash {
   background-image: none;
 }
 
+.btn.btn-light:not([disabled]) {
+  background-image: none;
+  background-color: #e6e6e6;
+}
+
+.btn.btn-light:not([disabled]):hover {
+  background-image: none;
+  background-color: #f2f2f2;
+}
+
+.btn.btn-light:not([disabled]):active {
+  background-image: none;
+  background-color: #cccccc;
+}
+
+.btn.btn-light:disabled {
+  background-color: white;
+}
+
+.btn.btn-light:disabled:hover, .btn.btn-light:disabled:active {
+  background-color: white;
+}
+
 .btn.btn-big {
   width: 100%;
   margin: 10px;
@@ -475,7 +498,7 @@ input {
   width: -webkit-fill-available;
   padding: 0.5333333333rem;
   margin: 0.5333333333rem;
-  border: 2px solid #999999;
+  border: 2px solid #bfbfbf;
   border-radius: 4px;
   outline: none;
   -webkit-transition: all 0.15s ease;
@@ -502,7 +525,7 @@ input:active {
   -webkit-appearance: none;
   display: inline-block;
   position: relative;
-  border: 2px solid #999999;
+  border: 2px solid #bfbfbf;
   padding: 6px;
   margin-top: 12px;
 }
@@ -530,7 +553,7 @@ select {
 
 /* --- img --- */
 img {
-  height: auto;
+  height: 100%;
   margin: 10px;
 }
 
@@ -616,52 +639,6 @@ a.bordered:active {
 /* --- Extras --- */
 .hidden {
   display: none;
-}
-
-.spinner {
-  animation: rotator 1.6s linear infinite;
-}
-
-@keyframes rotator {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(270deg);
-  }
-}
-
-.path {
-  stroke-dasharray: 187;
-  stroke-dashoffset: 0;
-  transform-origin: center;
-  animation: dash 1.6s ease-in-out infinite, colors 6.4s ease-in-out infinite;
-}
-
-@keyframes colors {
-  0% {
-    stroke: #2b63df;
-  }
-  50% {
-    stroke: #afc5f3;
-  }
-  100% {
-    stroke: #2b63df;
-  }
-}
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 187;
-  }
-  50% {
-    stroke-dashoffset: 46.75;
-    transform: rotate(135deg);
-  }
-  100% {
-    stroke-dashoffset: 187;
-    transform: rotate(450deg);
-  }
 }
 
 .background {
@@ -796,7 +773,7 @@ table.tb-program td input {
 }
 
 .gr-cartridge-item, .gr-laser-item {
-  background-color: #999999;
+  background-color: #bfbfbf;
 }
 
 .gr-cartridge-item.pass, .gr-laser-item.pass {
@@ -1017,9 +994,27 @@ table.tb-program .mask {
 
 .laser-img {
   width: 300px;
-  height: 200px;
+  min-height: 250px;
   margin-bottom: 0.5333333333rem;
   background-color: white;
+}
+
+.laser-img img {
+  max-width: 300px;
+  max-height: 200px;
+}
+
+.laser-img p {
+  text-align: center;
+  pointer-events: none;
+}
+
+.laser-img .image-info {
+  width: 150px;
+}
+
+.laser-img .next, .laser-img .prev {
+  flex-grow: 1;
 }
 
 table.tb-program.tb-laser-id {
@@ -1140,4 +1135,50 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
 
 .label-container.label-checkbox {
   padding-bottom: 0.5333333333rem;
+}
+
+.spinner {
+  animation: rotator 1.6s linear infinite;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 1.6s ease-in-out infinite, colors 6.4s ease-in-out infinite;
+}
+
+@keyframes colors {
+  0% {
+    stroke: #2b63df;
+  }
+  50% {
+    stroke: #afc5f3;
+  }
+  100% {
+    stroke: #2b63df;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
 }

@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, flash, redirect, url_for, request, session
+from flask import render_template, jsonify, flash, redirect, url_for, request, session, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_socketio import emit, disconnect
 from app import app, db, socketio, tcpclient, plc_ser, barcode_ser, configfile, csvreader
@@ -130,7 +130,7 @@ def laser():
 	# send an event to activate soft start button
 
 	# Default laser instruments available
-	laser_instruments = configfile.laserEtchQC['Instrument']
+	laser_instruments = configfile.laser_etch_QC['Instrument']
 
 	# Minimum length for part number and work order
 	part_number_len = configfile.laserEtchQC['PNLength']
@@ -256,16 +256,18 @@ def change_pass(username):
 	return(render_template('change-pass.html', title='Change password', form=form, user=user))
 
 
-# SocketIO login checker
+# Image loader - uses codename
+@app.route('/img/<int:cam>/<string:image>')
+def load_image(cam, image):
 
-def authenticated_only(f):
-	@wraps(f)
-	def wrapped(*args, **kwargs):
-		if not current_user.is_authenticated:
-			disconnect()
-		else:
-			return f(*args, **kwargs)
-	return wrapped
+	# Get the associated filename from the config
+	filename = configfile.VISION_IMAGE[f'CAM{cam}'][image.upper()]
+
+	app.logger.info(f'Filename selected: {filename}')
+	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
+
+	return send_from_directory('.\\test\\xg\\hist', filename, as_attachment=True)
+
 
 # SocketIO interfaces
 
@@ -353,7 +355,7 @@ def laser_confirm(work_order, part_number, laser_instrument):
 			app.logger.warn('Can not read 1D barcode')
 			errorcode = 2
 		else:
-			if (sdata[:2] not in configfile.laserEtchQC['Prefix']):
+			if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
 				errorcode = 3
 				app.logger.warn('Invalid Rack ID')
 	else:

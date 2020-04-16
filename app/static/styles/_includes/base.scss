@@ -415,6 +415,9 @@ ul.flash {
 	&.btn-green {
 		@include btn-gradient($btn-green-color);
 	}
+	&.btn-light {
+		@include btn-flat($grey-color-lighter);
+	}
 	
 	&.btn-big {
 		width: 100%;
@@ -499,7 +502,7 @@ select {
 /* --- img --- */
 
 img {
-	height: auto;
+	height: 100%;
 	margin: 10px;
 }
 

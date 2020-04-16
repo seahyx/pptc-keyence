@@ -11,4 +11,4 @@ def make_shell_context():
 #  is essential to telling the system that we want the app visible to the 
 #  outside world.
 if __name__ == "__main__":
-	socketio.run(app)
+	socketio.run(app, use_reloader=False)

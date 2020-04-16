@@ -1,11 +1,29 @@
-
 .laser-img {
 	width: 300px;
-	height: 200px;
+	min-height: 250px;
 
 	margin-bottom: $spacing-unit / 3;
 
 	background-color: white;
+
+	img {
+		max-width: 300px;
+		max-height: 200px;
+	}
+
+	p {
+		text-align: center;
+
+		pointer-events: none;
+	}
+
+	.image-info {
+		width: 150px;
+	}
+
+	.next, .prev {
+		flex-grow: 1;
+	}
 }
 
 table.tb-program {
