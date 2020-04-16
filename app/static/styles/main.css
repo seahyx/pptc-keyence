@@ -1009,17 +1009,12 @@ table.tb-program .mask {
   pointer-events: none;
 }
 
+.laser-img .image-info {
+  width: 150px;
+}
+
 .laser-img .next, .laser-img .prev {
   flex-grow: 1;
-  background-color: #f2f2f2;
-}
-
-.laser-img .next:hover, .laser-img .prev:hover {
-  background-color: #bfbfbf;
-}
-
-.laser-img .next:active, .laser-img .prev:active {
-  background-color: #4d4d4d;
 }
 
 table.tb-program.tb-laser-id {

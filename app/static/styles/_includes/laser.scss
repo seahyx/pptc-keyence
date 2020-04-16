@@ -17,19 +17,12 @@
 		pointer-events: none;
 	}
 
+	.image-info {
+		width: 150px;
+	}
+
 	.next, .prev {
-
 		flex-grow: 1;
-
-		background-color: $grey-color-lighter;
-
-		&:hover {
-			background-color: $grey-color-light;
-		}
-
-		&:active {
-			background-color: $grey-color-dark;
-		}
 	}
 }
 
