@@ -7,7 +7,6 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_session import Session
 from flask_serial import Serial
-from flask_bootstrap import Bootstrap
 
 from logging.config import dictConfig
 from logging.handlers import SMTPHandler
@@ -42,14 +41,6 @@ app.debug = False
 debug_mode = True
 
 # Init modules
-app.config['SERIAL_TIMEOUT'] = 0.1
-app.config['SERIAL_PORT'] = configfile.PLC_PORT
-app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
-app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
-app.config['SERIAL_PARITY'] = configfile.PLC_PARITY
-app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
-
-plc_ser = Serial(app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -59,6 +50,15 @@ socketio = SocketIO(app, manage_session=False)
 Session(app)
 configfile = ConfigFile(app, 'main.cfg')
 csvreader = CSVReader(configfile.laser_etch_QC['PNFile'])
+
+app.config['SERIAL_TIMEOUT']  = 0.1
+app.config['SERIAL_PORT']     = configfile.PLC_PORT
+app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
+app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
+app.config['SERIAL_PARITY']   = configfile.PLC_PARITY
+app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
+
+plc_ser = Serial(app)
 
 # Insert root user if none exists
 from app.models import User

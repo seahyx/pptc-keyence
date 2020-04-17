@@ -375,8 +375,3 @@ def laser_confirm(work_order, part_number, laser_instrument):
 	session[Laser.ERRORCODE] = errorcode
 	plc_ser.send_data('GB')
 	emit('redirect', url_for('laser_process'))
-
-@socketio.on('process-loaded', namespace=Laser.NAMESPACE)
-def laser_process_init():
-	data = session.get(Laser.DATA)
-	emit('process-init', data)
