@@ -178,6 +178,7 @@ function load_data(data, rack_type, statusBarManager) {
 	
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
+	let errorcode = 0;
 
 	// Set rack type
 	switch_rack_type(rack_type);
@@ -219,8 +220,8 @@ function load_data(data, rack_type, statusBarManager) {
 					display_element.classList.toggle('error', true)
 
 					// Display fail in status bar
-					statusBarManager.set_fail();
-					
+					statusBarManager.set_fail('FAIL - Correct error then rescan');
+					errorcode = -5
 					console.log(`Tube number: ${x + 1}\nStatus: FAIL`)
 		
 				}
@@ -257,7 +258,8 @@ function load_data(data, rack_type, statusBarManager) {
 					display_element.classList.toggle('error', true)
 
 					// Display fail in status bar
-					statusBarManager.set_fail();
+					errorcode = -5
+					statusBarManager.set_fail('FAIL - Correct error then rescan');
 					
 					console.log(`Trough number: ${x + 1}\nStatus: FAIL`)
 		

@@ -40,12 +40,11 @@ in_part_number.addEventListener('keydown', (e) => {
 });
 
 in_work_order.addEventListener('change', () => {
-	if (in_work_order.value.length < Globals.in_work_order_len) {
+	if (in_work_order.value.length != Globals.in_work_order_len) {
 		alert('Work order is invalid, please try again');
-		socketio.emit('PLC-serial', 'G2')	
+		//socketio.emit('PLC-serial', 'G2')	
 		return
 	}
-	// socketio.emit('partnumber', in_part_number.value);
 })
 
 
@@ -57,7 +56,7 @@ btn_start.addEventListener('click', () => {
 		return
 	}
 
-	laser_modal_select.setAttribute('data-enabled', '');
+	// laser_modal_select.setAttribute('data-enabled', '');
 	socketio.emit('start', in_work_order.value, in_part_number.value)
 
 });
@@ -83,7 +82,7 @@ btn_select_confirm.addEventListener('click', () => {
 	laser_modal_loading.setAttribute('data-enabled', '');
 
 	// Send data to server
-	socketio.emit('confirm', in_work_order.value, in_part_number.value, instrument_selected.value);
+	socketio.emit('confirm', instrument_selected.value);
 
 });
 
@@ -95,6 +94,16 @@ socketio.on('alert', function(msg) {
 	alert(msg);
 });
 
+socketio.on('partnumber-result', function(msg)) {
+	console.log(`Part Number: ${msg}`);
+	if (msg == 'Y') { // Valid part number
+		laser_modal_select.setAttribute('data-enabled', '');
+	}
+	else {
+		alert ('Invalid Part Number');
+	}
+}
+
 socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg}`);
 });
@@ -102,9 +111,6 @@ socketio.on('response', function(msg) {
 
 socketio.on('connect', function(msg) {
 	console.log(`Received data: ${msg}`);
-	if (msg) {
-		socketio.emit('PLC-serial', 'G2')	
-	}
 	
 });
 
@@ -116,14 +122,18 @@ socketio.on('redirect', function(url) {
 socketio.on('plc-message', function(data) {
 	//let msg = data.data;
 	console.log(`PLC sent ${data}`)
-	if (data == 'R') {
+
+	if (data == 'R') { // Start button pressed
 		if (!in_work_order.value || !in_part_number.value) {
 			alert('Please enter the work order and/or part number.');
-			socketio.emit('PLC-serial', 'G2')	
+			//socketio.emit('PLC-serial', 'G2')	
 			return
 		}
 
 		laser_modal_select.setAttribute('data-enabled', '');
-		socketio.emit('start', in_work_order.value, in_part_number.value)
+		socketio.emit('start', in_work_order.value, in_part_number.value);
+	}
+	elif (data == 'G2') { // Reach scan position
+		socketio.emit('scan-position');
 	}
 })

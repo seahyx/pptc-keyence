@@ -7,7 +7,7 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_session import Session
 
-use_flask_serial = False
+use_flask_serial = True
 if use_flask_serial:
 	from flask_serial import Serial
 	from flask_bootstrap import Bootstrap
