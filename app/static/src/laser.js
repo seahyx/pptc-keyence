@@ -6,6 +6,11 @@ const btn_select_confirm  = document.querySelector('#btn-select-confirm');
 const in_work_order       = document.querySelector('#laser-work-order');
 const in_part_number      = document.querySelector('#laser-part-number');
 
+
+// SocketIO
+
+var socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
+
 window.addEventListener('click', (event) => {
 	if (event.target === laser_modal_select) {
 		laser_modal_select.removeAttribute('data-enabled');
@@ -37,15 +42,12 @@ in_part_number.addEventListener('keydown', (e) => {
 in_work_order.addEventListener('change', () => {
 	if (in_work_order.value.length < Globals.in_work_order_len) {
 		alert('Work order is invalid, please try again');
+		socketio.emit('PLC-serial', 'G2')	
 		return
 	}
 	// socketio.emit('partnumber', in_part_number.value);
 })
 
-
-// SocketIO
-
-let socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
 
 // Start button, validate work order/part number
 btn_start.addEventListener('click', () => {
@@ -97,7 +99,31 @@ socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg}`);
 });
 
+
+socketio.on('connect', function(msg) {
+	console.log(`Received data: ${msg}`);
+	if (msg) {
+		socketio.emit('PLC-serial', 'G2')	
+	}
+	
+});
+
 socketio.on('redirect', function(url) {
 	console.log(`Redirecting to ${url}`);
 	window.location = url;
+})
+
+socketio.on('plc-message', function(data) {
+	//let msg = data.data;
+	console.log(`PLC sent ${data}`)
+	if (data == 'R') {
+		if (!in_work_order.value || !in_part_number.value) {
+			alert('Please enter the work order and/or part number.');
+			socketio.emit('PLC-serial', 'G2')	
+			return
+		}
+
+		laser_modal_select.setAttribute('data-enabled', '');
+		socketio.emit('start', in_work_order.value, in_part_number.value)
+	}
 })

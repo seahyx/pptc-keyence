@@ -10,7 +10,6 @@ from timeit import default_timer as timer
 from functools import wraps
 import time
 
-
 # Consts
 class Laser:
 	NAMESPACE   = '/laser/api'
@@ -36,7 +35,8 @@ class Cartridge:
 
 permissions = PermissionsManager()
 permissions.redirect_view = 'index'
-
+app.start_pressed = False
+app.use_flask_serial = False
 # Context processor runs and adds global values
 # for the template before any page is rendered
 @app.context_processor
@@ -122,9 +122,8 @@ def cartridge():
 @login_required
 def laser():
 	app.logger.info('Loading laser page...')
-
 	# Activate the start button first
-	plc_ser.send_data("G2")
+	# plc_ser.on_send("G2")
 	# time.sleep(0.1)
 	# plc_ser.send_data("R")
 	# send an event to activate soft start button
@@ -133,14 +132,14 @@ def laser():
 	laser_instruments = configfile.laser_etch_QC['Instrument']
 
 	# Minimum length for part number and work order
-	part_number_len = configfile.laserEtchQC['PNLength']
-	work_order_len = configfile.laserEtchQC['WOLength']
+	part_number_len = configfile.laser_etch_QC['PNLength']
+	work_order_len = configfile.laser_etch_QC['WOLength']
 
 	return render_template(
 		'laser.html',
 		title='Laser Etch QC',
 		instruments=laser_instruments,
-		work_order_len=part_number_min_len)
+		work_order_len=work_order_len)
 
 @app.route('/laser/process/')
 @login_required
@@ -276,15 +275,37 @@ def load_image(cam, image):
 @socketio.on('connect', namespace=Laser.NAMESPACE)
 def laser_connect():
 	app.logger.info('Connected to Laser Etch QC client interface')
-	emit('response', 'Connected to Laser Etch QC api')
-
+	app.start_pressed = False
+	emit('connect', 'Connected to Laser Etch QC api')
+	
 @socketio.on('disconnect', namespace=Laser.NAMESPACE)
 def laser_disconnect():
 	app.logger.info('Disconnected from Laser Etch QC client interface')
 
+@socketio.on('PLC-serial', namespace=Laser.NAMESPACE)
+def send_wait_serial(data):
+	app.logger.info(f'Sending {data} to PLC')
+	if app.use_flask_serial:
+		plc_ser.on_send(data)
+	else:
+		plc_ser.send_data(data)
+	socketio.start_background_task(wait_for_start)
+
+def wait_for_start():
+	while (not app.start_pressed):
+		if (plc_ser.data_ready):
+			sdata = plc_ser.get()
+			if (sdata[0] == 'R'):
+				socketio.emit('plc-message', 'R', namespace=Laser.NAMESPACE)
+				app.start_pressed = False
+				break
+		time.sleep(0.1)
+	app.start_pressed = False
+
 @socketio.on('start', namespace=Laser.NAMESPACE)
 def laser_start(work_order, part_number):
 	app.logger.info(f'Laser Etch QC start, work order: {work_order}, part number: {part_number}')
+	app.start_pressed = True
 	# TODO: Validate work order/part number
 
 @socketio.on('confirm', namespace=Laser.NAMESPACE)
@@ -310,73 +331,96 @@ def laser_confirm(work_order, part_number, laser_instrument):
 			session[Laser.RACK_TYPE] = Laser.RACK_TYPE.TROUGH
 			tcpclient.send('PW,1,2')
 
-	plc_ser.purge()
-	plc_ser.send_data("S")
+	if not app.use_flask_serial:
+		plc_ser.purge()
+		plc_ser.send_data("S")
+	else:
+		plc_ser.on_send('S\r\n')
 	start = timer()
-	
-	while True:
-		if plc_ser.data_ready:
-			sdata = plc_ser.get()
-			if sdata[:2] == "G2": # Reach the scan location
-				break
-		else:
-			end = timer()
-			if end - start > 7.0:
-				app.logger.warning('Timeout, going to scan position')
+	if not app.use_flask_serial:
+		while True:
+			if plc_ser.data_ready:
+				sdata = plc_ser.get()
+				if sdata[:2] == "G2": # Reach the scan location
+					break
+			else:
+				end = timer()
+				if end - start > 7.0:
+					app.logger.warning('Timeout, going to scan position')
+					break
+				else:
+					time.sleep(0.1)
+
+		# Get Rack ID
+		barcode_ser.purge()
+		barcode_ser.send_data("LON")
+		start = timer()
+
+		sdata = None
+		
+		while True:
+			if barcode_ser.data_ready:
+				sdata = barcode_ser.get()
 				break
 			else:
-				time.sleep(0.1)
+				end = timer()
+				if end - start > 3.0:
+					app.logger.warning('Timeout getting barcode')
+					break
+				else:
+					time.sleep(0.1)
+		
+		# TODO: Handle sdata error
 
-	# Get Rack ID
-	barcode_ser.purge()
-	barcode_ser.send_data("LON")
-	start = timer()
-
-	sdata = None
-	
-	while True:
-		if barcode_ser.data_ready:
-			sdata = barcode_ser.get()
-			break
-		else:
-			end = timer()
-			if end - start > 3.0:
-				app.logger.warning('Timeout getting barcode')
-				break
+		if sdata:
+			session[Laser.RACK_ID] = sdata[:-2]
+			app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
+			if (sdata[:5] == 'ERROR'):
+				app.logger.warn('Can not read 1D barcode')
+				errorcode = 2
 			else:
-				time.sleep(0.1)
-	
-	# TODO: Handle sdata error
-
-	if sdata:
-		session[Laser.RACK_ID] = sdata[:-2]
-		app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
-		if (sdata[:5] == 'ERROR'):
-			app.logger.warn('Can not read 1D barcode')
-			errorcode = 2
+				if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
+					errorcode = 3
+					app.logger.warn('Invalid Rack ID')
 		else:
-			if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
-				errorcode = 3
-				app.logger.warn('Invalid Rack ID')
-	else:
-		errorcode = -1
+			errorcode = -1
 
-	app.logger.warn(errorcode)
+		app.logger.warn(errorcode)
 
-	if (errorcode == 0):
-		# Get barcodes
-		data = tcpclient.send('T1')
-		session[Laser.DATA] = data
+		if (errorcode == 0):
+			# Get barcodes
+			data = tcpclient.send('T1')
+			session[Laser.DATA] = data
 
-		app.logger.info('Redirecting page to laser_process')
-	else:
-		session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
+			app.logger.info('Redirecting page to laser_process')
+		else:
+			session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
+			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
-	session[Laser.ERRORCODE] = errorcode
-	plc_ser.send_data('GB')
-	emit('redirect', url_for('laser_process'))
+		session[Laser.ERRORCODE] = errorcode
+		plc_ser.send_data('GB')
+		app.logger.info("Sending GB")
+		emit('redirect', url_for('laser_process'))
 
-@socketio.on('process-loaded', namespace=Laser.NAMESPACE)
-def laser_process_init():
-	data = session.get(Laser.DATA)
-	emit('process-init', data)
+#@plc_ser.on_message()
+#def handle_message(msg):
+	#print(str(msg))
+#	app.logger.info(f'socketio handling message {msg.decode("utf-8").strip()}')
+
+	#socketio.send('Testing testing 123', namespace=Laser.NAMESPACE)
+	#print ("after sending")
+#	socketio.emit('plc-message', {'data': msg.decode("utf-8")}, namespace=Laser.NAMESPACE, broadcast=True)
+#	print ("after emit")
+
+#@plc_ser.on_log()
+#def handle_logging(level, info):
+#	app.logger.info(info)
+
+@socketio.on('plc-message', namespace=Laser.NAMESPACE)
+def dotest(msg):
+	app.logger.info(msg)
+
+@socketio.on_error_default
+def default_error_handler(e):
+	app.logger.error(request.event['message'])
+	app.logger.error(request.event['args'])
