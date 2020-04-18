@@ -23,6 +23,9 @@ class Laser:
 	class RACK_TYPE:
 		TUBE   = 1
 		TROUGH = 2
+	class ITEM_QTY:
+		TUBE	= 24
+		TROUGH	= 4
 
 class Cartridge:
 	NAMESPACE   = '/cartridge/api'
@@ -154,7 +157,7 @@ def laser_process():
 	rack_type   = session.get(Laser.RACK_TYPE)
 	instrument  = session.get(Laser.INSTRUMENT)
 	data        = session.get(Laser.DATA)
-	errorcode  	= session.get(Laser.ERRORCODE)
+	errno  	= session.get(Laser.ERRORCODE)
 
 	# rack_type   = Laser.RACK_TYPE.TUBE
 
@@ -174,7 +177,7 @@ def laser_process():
 		laser_instrument = instrument,
 		data             = data,
 		rack_type        = rack_type,
-		errorcode        = errorcode
+		errno        = errno
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
@@ -332,7 +335,7 @@ def laser_start(work_order, part_number):
 @socketio.on('confirm', namespace=Laser.NAMESPACE)
 def laser_confirm(laser_instrument):
 	app.logger.info(f'Laser Etch QC confirm, laser instrument: {laser_instrument}')
-	errorcode = 0 # Default no error
+	errno = 0 # Default no error
 
 	# Save variables
 	session[Laser.INSTRUMENT] = laser_instrument
@@ -382,17 +385,17 @@ def laser_confirm(laser_instrument):
 			app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
 			if (sdata[:5] == 'ERROR'):
 				app.logger.warn('Can not read 1D barcode')
-				errorcode = 2
+				errno = 2
 			else:
 				if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
-					errorcode = 3
+					errno = 3
 					app.logger.warn('Invalid Rack ID')
 		else:
-			errorcode = -1
+			errno = -1
 
-		app.logger.warn(errorcode)
+		app.logger.warn(errno)
 
-		if (errorcode == 0):
+		if (errno == 0):
 			# Get barcodes
 			data = tcpclient.send('T1')
 			session[Laser.DATA] = data
@@ -402,7 +405,7 @@ def laser_confirm(laser_instrument):
 			session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
 			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
-		session[Laser.ERRORCODE] = errorcode
+		session[Laser.ERRORCODE] = errno
 		plc_ser.send_data('GB')
 		app.logger.info("Sending GB")
 		emit('redirect', url_for('laser_process'))
@@ -413,7 +416,7 @@ def read_barcodes():
 	barcode_ser.purge()
 	barcode_ser.send_data("LON")
 
-	errorcode = 0
+	errno = 0
 	start = timer()
 	sdata = None
 	while True:
@@ -424,7 +427,7 @@ def read_barcodes():
 			end = timer()
 			if end - start > 2.0:
 				app.logger.warn('Timeout getting barcode')
-				errorcode = -2
+				errno = -2
 				break
 			else:
 				time.sleep(0.1)
@@ -436,27 +439,61 @@ def read_barcodes():
 		app.logger.info('Rack ID: ' + sdata)
 		if (sdata == 'ERROR'):
 			app.logger.error('Error reading Rack ID barcode')
-			errorcode = -3
+			errno = -3
 		else:
 			# Check the prefix
 			if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
-				errorcode = -4
+				errno = -4
 				app.logger.error('Invalid Rack ID')
 	else:
-		errorcode = -1
+		errno = -1
 
-	if (errorcode == 0):
+	if (errno == 0):
 		# Get barcodes
-		data = tcpclient.send('T1')
-		session[Laser.DATA] = data
+		items = tcpclient.send('T1')
+		items.pop(0)
+		totalitem = int(len(items)/2)
+		masklen = -len(session[Laser.MASK])
+		newdata = []
+		newdata.append('T1')
+		#app.logger.info(items)
+		#app.logger.info(totalitem)
+
+		if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
+			if (totalitem != Laser.ITEM_QTY.TROUGH):
+				errno = -6
+		elif (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TUBE):
+			if (totalitem != Laser.ITEM_QTY.TUBE):
+				errno = -6
+		
+		if (errno == 0):
+			for i in range(totalitem):
+
+				if (items[i*2] == '0'): #success
+					app.logger.info('ok barcode')
+					if (items[i*2+1][masklen:] == session[Laser.MASK]):
+						newdata.append('0')
+						newdata.append(items[i*2+1])
+					else:
+						newdata.append('1')
+						newdata.append(items[i*2+1])
+						app.logger.info(newdata)
+						# errno = 5
+				else:
+					newdata.append('1')
+					newdata.append(items[i*2+1])
+			app.logger.info(newdata)
+			session[Laser.DATA] = newdata
+		else:
+			session[Laser.DATA] = ['T1','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
 
 		app.logger.info('Redirecting page to laser_process')
 	else:
-		session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
+		session[Laser.DATA] = ['T1','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
 		# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
-	session[Laser.ERRORCODE] = errorcode
-	plc_ser.send_data('GB')
+	session[Laser.ERRORCODE] = errno
+	plc_ser.on_send('GB')
 	app.logger.info("Go to home position")
 	emit('redirect', url_for('laser_process'))
 
@@ -476,7 +513,7 @@ def handle_logging(level, info):
 def dotest(msg):
 	app.logger.info(msg)
 
-@socketio.on_error_default
-def default_error_handler(e):
-	app.logger.error(request.event['message'])
-	app.logger.error(request.event['args'])
+#@socketio.on_error_default
+#def default_error_handler(e):
+#	app.logger.error(request.event['message'])
+#	app.logger.error(request.event['args'])
