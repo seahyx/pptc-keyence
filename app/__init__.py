@@ -126,7 +126,7 @@ if use_flask_serial:
 	plc_ser.on_send('H\r\n')
 else:
 	plc_ser.send_data('H')
-app.logger.info('Sending H')
+app.logger.info('Initialize motor to home position')
 
 # Production email logging and file logs
 if not debug_mode:
