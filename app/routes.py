@@ -133,14 +133,14 @@ def laser():
 	laser_instruments = configfile.laser_etch_QC['Instrument']
 
 	# Minimum length for part number and work order
-	part_number_len = configfile.laserEtchQC['PNLength']
-	work_order_len = configfile.laserEtchQC['WOLength']
+	part_number_len = configfile.laser_etch_QC['PNLength']
+	work_order_len = configfile.laser_etch_QC['WOLength']
 
 	return render_template(
 		'laser.html',
 		title='Laser Etch QC',
 		instruments=laser_instruments,
-		work_order_len=part_number_min_len)
+		work_order_len=work_order_len)
 
 @app.route('/laser/process/')
 @login_required
@@ -266,7 +266,7 @@ def load_image(cam, image):
 	app.logger.info(f'Filename selected: {filename}')
 	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
 
-	return send_from_directory('.\\test\\xg\\hist', filename, as_attachment=True)
+	return send_from_directory(configfile.VISION_IMAGE_DIR, filename, as_attachment=True)
 
 
 # SocketIO interfaces
