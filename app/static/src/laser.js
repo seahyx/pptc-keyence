@@ -94,7 +94,7 @@ socketio.on('alert', function(msg) {
 });
 
 socketio.on('response', function(msg) {
-	console.log(`Received data: ${msg}`);
+	console.log(`Received message: ${msg}`);
 });
 
 socketio.on('redirect', function(url) {
