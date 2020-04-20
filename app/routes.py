@@ -270,7 +270,7 @@ def load_image(cam, image):
 	app.logger.info(f'Filename selected: {filename}')
 	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
 
-	return send_from_directory('.\\test\\xg\\hist', filename, as_attachment=True)
+	return send_from_directory(configfile.VISION_IMAGE_DIR, filename, as_attachment=True)
 
 
 # SocketIO interfaces

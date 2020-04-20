@@ -24,8 +24,17 @@
 
 
 						<!-- Cartridge image -->
-						<div class='laser-img container bordered flex-center padding-small'>
-							
+						<div class='laser-img-container container bordered flex-center padding-small'>
+
+							<!-- Image with zoom elements -->
+							<div class='laser-zoom-container flex-center'>
+
+								<div class='zoom-lens'></div>
+								<img class='laser-img'>
+								<div class='zoom-result'></div>
+
+							</div>
+
 						</div>
 
 						<!-- Cartridge display container -->
@@ -75,7 +84,7 @@
 							</table>
 						</div>
 						<!-- Barcode and mask table -->
-						<div class='container'>
+						<div class='container bordered padding-small'>
 							<table class='tb-program tb-laser-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>
@@ -155,12 +164,12 @@
 
 
 	<!-- Pass Variables -->
-	<script type='text/javascript' defer>
-	var Globals = {
+	<script type='text/javascript'>
+	let Globals = {
 		in_work_order_len: {{ work_order_len }}
 	}
 	</script>
-0
+
 	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
 
 {% endblock %}

@@ -25,9 +25,18 @@
 
 
 						<!-- Cartridge image -->
-						<div id='laser-img' class='laser-img container bordered flex-center flex-vertical padding-small'>
-							<img>
+						<div id='laser-img-container' class='laser-img-container container bordered flex-center flex-vertical padding-small'>
 
+							<!-- Image with zoom elements -->
+							<div class='laser-zoom-container container flex-center'>
+
+								<div class='zoom-lens'></div>
+								<img class='laser-img'>
+								<div class='zoom-result'></div>
+
+							</div>
+
+							<!-- Image navigation -->
 							<div class='container flex-center flex-horizontal max-width'>
 
 								<button id='btn-prev' class='btn btn-light prev'><p><</p></button>
@@ -43,7 +52,7 @@
 						</div>
 
 						<!-- Cartridge digital container -->
-						<div class='container laser-display-container bordered'>
+						<div class='container laser-display-container bordered padding-small'>
 
 
 							<!-- TUBE Display -->
@@ -153,7 +162,7 @@
 
 						<!-- TUBE -->
 						<!-- Barcode and mask table -->
-						<div id='laser-tube-barcode' class='container laser-tube-barcode'>
+						<div id='laser-tube-barcode' class='container bordered padding-small laser-tube-barcode'>
 							<table class='tb-program tb-laser-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>
@@ -199,7 +208,7 @@
 
 
 	<!-- Pass Variables -->
-	<script type='text/javascript' defer>
+	<script type='text/javascript'>
 	var Globals = {
 		data      : {{ data|tojson }},
 		rack_type : {{ rack_type }},
@@ -230,6 +239,8 @@
 			]
 	};
 	</script>
+	
+	<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>
 
 	<script src="{{ url_for('static', filename='src/laser-process.js') }}" defer></script>
 
