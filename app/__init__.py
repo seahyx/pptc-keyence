@@ -17,6 +17,9 @@ from app.csvreader import CSVReader
 import logging
 import os
 
+import eventlet
+eventlet.monkey_patch(thread=True, time=True)
+
 # Logging configuration
 dictConfig({
 		'version': 1,
