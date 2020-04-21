@@ -46,12 +46,14 @@ class ConfigFile():
 		self.cartridge_assembly_QC_config = ConfigParser()
 		self.cartridge_assembly_QC_config.read(cartridge_assembly_QC_file)
 
-		self.laser_etch_QC = []
-		self.laser_etch_QC = {'Prefix': self.laser_etch_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
-		self.laser_etch_QC['Instrument'] = self.laser_etch_QC_config.get('LASER INSTRUMENT', 'Instrument').split(';')
-		self.laser_etch_QC['WOLength'] = self.laser_etch_QC_config.getint('WORK ORDER', 'Length')
-		self.laser_etch_QC['PNLength'] = self.laser_etch_QC_config.getint('PART NUMBER', 'Length')
-		self.laser_etch_QC['PNFile'] = self.laser_etch_QC_config.get('PATH', 'PN Data Lookup')
+		self.laser_etch_QC 					= []
+		self.laser_etch_QC 					= {'Prefix': self.laser_etch_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
+		self.laser_etch_QC['Instrument'] 	= self.laser_etch_QC_config.get('LASER INSTRUMENT', 'Instrument').split(';')
+		self.laser_etch_QC['WOLength'] 		= self.laser_etch_QC_config.getint('WORK ORDER', 'Length')
+		self.laser_etch_QC['PNLength'] 		= self.laser_etch_QC_config.getint('PART NUMBER', 'Length')
+		self.laser_etch_QC['PNFile'] 		= self.laser_etch_QC_config.get('PATH', 'PN Data Lookup')
+		self.laser_etch_QC['LogFile'] 		= self.laser_etch_QC_config.get('PATH', 'Log File')
+		self.laser_etch_QC['ImageDir'] 		= self.laser_etch_QC_config.get('PATH', 'Image Dir')
 
 		# app.logger.info(f'Loading Laser Etch QC config: {self.laser_etch_QC}')
 

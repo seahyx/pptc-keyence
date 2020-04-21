@@ -6,7 +6,6 @@ const RackTypeEnum = {
 	TROUGH: 2
 }
 
-
 class StatusBarManager {
 
 	constructor(status_bar) {
@@ -24,7 +23,7 @@ class StatusBarManager {
 		this.status_bar.classList.toggle('error', false);
 	}
 
-	set_success(success_msg = 'SUCCESS') {
+	set_success(success_msg = 'PASS') {
 		this.reset()
 		this.set_text(success_msg);
 		this.status_bar.classList.toggle('pass', true);
@@ -196,7 +195,7 @@ function load_data(data, rack_type, statusBarManager) {
 			for (let x = 0; x < laser_tube_count; x++) {
 				
 				// Position of data in the data array which are in pairs of 2, excluding the first arbitrary element
-				let current_data_count = 1 + (x * 2);
+				let current_data_count = (x * 2);
 
 				// Element reference for the tube display
 				let display_element = get_tube_display_item(x + 1)
@@ -234,7 +233,7 @@ function load_data(data, rack_type, statusBarManager) {
 			for (let x = 0; x < laser_trough_count; x++) {
 				
 				// Position of data in the data array which are in pairs of 2, excluding the first arbitrary element
-				let current_data_count = 1 + (x * 2);
+				let current_data_count = (x * 2);
 
 				// Element reference for the trough display
 				let display_element = get_trough_display_item(x + 1)
@@ -253,7 +252,7 @@ function load_data(data, rack_type, statusBarManager) {
 		
 					// 1 means barcode is invalid
 
-					get_trough_barcode_row(x + 1).innerText = '';
+					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
 					display_element.classList.toggle('pass', false)
 					display_element.classList.toggle('error', true)
 
@@ -272,7 +271,7 @@ function load_data(data, rack_type, statusBarManager) {
 			// Invalid rack type error handling
 
 			console.log(`Rack type is invalid, rack_type: ${rack_type}`);
-			statusBarManager.set_fail('ERROR: INVALID RACK TYPE');
+			statusBarManager.set_fail('FAIL - Invalid rack type');
 
 		}
 
@@ -285,21 +284,21 @@ function load_data(data, rack_type, statusBarManager) {
 			// No data
 	
 			console.log('No data received, nothing displayed');
-			statusBarManager.set_fail('ERROR: NO DATA RECEIVED');
+			statusBarManager.set_fail('FAIL - No Vision data received');
 
 		} else if (data != null) {
 			
 			// No rack type
 	
 			console.log('No rack type received, nothing displayed');
-			statusBarManager.set_fail('ERROR: NO RACK TYPE RECEIVED');
+			statusBarManager.set_fail('FAIL - Invalid rack type');
 
 		} else {
 
 			// No data and rack type
 	
 			console.log('No data and rack type received, nothing displayed');
-			statusBarManager.set_fail('ERROR: NO DATA OR RACK TYPE RECEIVED');
+			statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
 		}
 
 	}

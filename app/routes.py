@@ -5,6 +5,7 @@ from app import app, db, socketio, tcpclient, plc_ser, barcode_ser, configfile, 
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
+from logfile import Log_file
 from werkzeug.urls import url_parse
 from timeit import default_timer as timer
 from functools import wraps
@@ -340,11 +341,11 @@ def laser_confirm(laser_instrument):
 	# Save variables
 	session[Laser.INSTRUMENT] = laser_instrument
 
-	if not app.use_flask_serial:
+	if app.use_flask_serial:
+		plc_ser.on_send('S\r\n')
+	else:
 		plc_ser.purge()
 		plc_ser.send_data("S")
-	else:
-		plc_ser.on_send('S\r\n')
 		start = timer()
 		while True:
 			if plc_ser.data_ready:
@@ -446,6 +447,7 @@ def read_barcodes():
 				errno = -4
 				app.logger.error('Invalid Rack ID')
 	else:
+		session[Laser.RACK_ID] = ''
 		errno = -1
 
 	if (errno == 0):
@@ -455,10 +457,7 @@ def read_barcodes():
 		totalitem = int(len(items)/2)
 		masklen = -len(session[Laser.MASK])
 		newdata = []
-		newdata.append('T1')
-		#app.logger.info(items)
-		#app.logger.info(totalitem)
-
+		
 		if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
 			if (totalitem != Laser.ITEM_QTY.TROUGH):
 				errno = -6
@@ -470,31 +469,50 @@ def read_barcodes():
 			for i in range(totalitem):
 
 				if (items[i*2] == '0'): #success
-					app.logger.info('ok barcode')
+					# app.logger.info('ok barcode')
 					if (items[i*2+1][masklen:] == session[Laser.MASK]):
 						newdata.append('0')
 						newdata.append(items[i*2+1])
 					else:
 						newdata.append('1')
 						newdata.append(items[i*2+1])
-						app.logger.info(newdata)
-						# errno = 5
+						# app.logger.info(newdata)
+						errno = -5
 				else:
 					newdata.append('1')
 					newdata.append(items[i*2+1])
+					errno = -7
 			app.logger.info(newdata)
 			session[Laser.DATA] = newdata
 		else:
-			session[Laser.DATA] = ['T1','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+			if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
+				session[Laser.DATA] = ['1','','1','','1','','1','']
+			else:
+				session[Laser.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
 
-		app.logger.info('Redirecting page to laser_process')
 	else:
-		session[Laser.DATA] = ['T1','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+		if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
+			session[Laser.DATA] = ['1','','1','','1','','1','']
+		else:
+			session[Laser.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
 		# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
 	session[Laser.ERRORCODE] = errno
-	plc_ser.on_send('GB')
+	# writing to log file
+	logdata = (session[Laser.WORK_ORDER], session[Laser.PART_NUMBER], session[Laser.RACK_ID])
+	if (errno == 0): # pass
+		logdata = logdata + ('PASS',)
+	else:
+		logdata = logdata + ('FAIL',)
+
+	tmpdata = session[Laser.DATA]
+	for i in range (int(len(tmpdata)/2)):
+		logdata = logdata +(tmpdata[i*2 + 1], )
+
+	Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, session[Laser.RACK_TYPE])
 	app.logger.info("Go to home position")
+	plc_ser.on_send('GB\r\n')
+	app.logger.info('Redirecting page to laser_process')
 	emit('redirect', url_for('laser_process'))
 
 @plc_ser.on_message()

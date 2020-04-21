@@ -23,7 +23,7 @@ class CSVReader:
     def search (self, value):
         print (value)
         if self._open:
-            return next(((mask, racktype) for PN, a, mask, racktype in c._data if (PN == '1503842')),(None, None)) 
+            return next(((mask, racktype) for PN, a, mask, racktype in self._data if (PN == value)),(None, None)) 
             # for row in self._data:
                 # print (row[0])
                 # if (row[0] == value):

@@ -72,7 +72,7 @@ class TCPClient:
 			data = self.sock.recv(1024)
 
 			# Response is received
-			data_decoded = data.decode('utf-8').split(',')
+			data_decoded = data.decode('utf-8').strip().split(',')
 			self.app.logger.info(f'Received {repr(data_decoded)} from server')
 
 		except:
