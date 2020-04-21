@@ -554,7 +554,6 @@ select {
 /* --- img --- */
 img {
   height: 100%;
-  margin: 10px;
 }
 
 /* --- Table --- */
@@ -992,28 +991,71 @@ table.tb-program .mask {
   grid-row-end: 11;
 }
 
-.laser-img {
+.laser-img-container {
   width: 300px;
   min-height: 250px;
   margin-bottom: 0.5333333333rem;
   background-color: white;
 }
 
-.laser-img img {
-  max-width: 300px;
-  max-height: 200px;
-}
-
-.laser-img p {
+.laser-img-container p {
   text-align: center;
   pointer-events: none;
 }
 
-.laser-img .image-info {
+.laser-img-container .laser-zoom-container {
+  position: relative;
+  min-width: 300px;
+}
+
+.laser-img-container .laser-zoom-container .zoom-lens {
+  position: absolute;
+  border: 1px solid transparent;
+  width: 60px;
+  height: 40px;
+  z-index: 1;
+  -webkit-transition: border 1s 2s;
+  -moz-transition: border 1s 2s;
+  -ms-transition: border 1s 2s;
+  -o-transition: border 1s 2s;
+  transition: border 1s 2s;
+}
+
+.laser-img-container .laser-zoom-container .zoom-lens:hover {
+  border: 1px solid white;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.laser-img-container .laser-zoom-container .laser-img, .laser-img-container .laser-zoom-container .zoom-result {
+  height: 200px;
+}
+
+.laser-img-container .laser-zoom-container .laser-img {
+  object-fit: contain;
+}
+
+.laser-img-container .laser-zoom-container .zoom-result {
+  position: absolute;
+  width: 300px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.laser-img-container .laser-zoom-container .zoom-result.activated {
+  visibility: visible;
+  pointer-events: all;
+}
+
+.laser-img-container .image-info {
   width: 150px;
 }
 
-.laser-img .next, .laser-img .prev {
+.laser-img-container .next, .laser-img-container .prev {
   flex-grow: 1;
 }
 

@@ -105,7 +105,7 @@ socketio.on('partnumber-result', function(msg) {
 })
 
 socketio.on('response', function(msg) {
-	console.log(`Received data: ${msg}`);
+	console.log(`Received message: ${msg}`);
 });
 
 
