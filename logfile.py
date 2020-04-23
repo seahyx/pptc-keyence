@@ -3,7 +3,7 @@ from os import path
 from datetime import datetime
 
 racks = {'Cartridge':0, 'Tube':1, 'Trough':2}
-fileformats = {0:'%s %14s  %s    %8s %15s %13s         %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s',
+fileformats = {0:'%s %14s  %s    %8s %-8s %15s %13s         %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s',
         1:'%s %s %s %15s %s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s',
         2:'%s %s %s %15s %s %-15s %-15s %-15s %-15s'}
     

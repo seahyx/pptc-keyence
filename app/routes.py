@@ -30,11 +30,11 @@ class Laser:
 
 class Cartridge:
 	NAMESPACE   = '/cartridge/api'
-	WORK_ORDER  = 'cartridge_work_order'
-	PART_NUMBER = 'cartridge_part_number'
-	INSTRUMENT  = 'cartridge_instrument'
 	RACK_ID     = 'cartridge_rack_id'
+	WORK_ORDER  = 'cartridge_work_order'
 	DATA        = 'cartridge_data'
+	RACK_TYPE	= 'rack_type'
+	ITEM_QTY	= 21
 	ERRORCODE	= 0
 
 
@@ -123,16 +123,34 @@ def cartridge():
 	tcpclient.send('PW,1,1')
 	return render_template('cartridge.html', title='Cartridge Assembly QC')
 
+@app.route('/cartridge/process/')
+@login_required
+def cartridge_process():
+	app.logger.info('Loading cartridge-process page...')
+
+	work_order  = session.get(Cartridge.WORK_ORDER)
+	rack_id     = session.get(Cartridge.RACK_ID)
+	data        = session.get(Cartridge.DATA)
+	errno  	= session.get(Cartridge.ERRORCODE)
+
+	if not work_order or not rack_id or not data:
+		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, work_order: {work_order}, rack_id: {rack_id}, data: {data}')
+		return(redirect(url_for('cartridge')))
+
+	return render_template(
+		'cartridge-process.html',
+		title        = 'Cartridge Assembly QC - Processing',
+		work_order    = work_order,
+		rack_id      = rack_id,
+		data         = data,
+		errno        = errno
+		)
+
 
 @app.route('/laser/')
 @login_required
 def laser():
 	app.logger.info('Loading laser page...')
-	# Activate the start button first
-	# plc_ser.on_send("G2")
-	# time.sleep(0.1)
-	# plc_ser.send_data("R")
-	# send an event to activate soft start button
 
 	# Default laser instruments available
 	laser_instruments = configfile.laser_etch_QC['Instrument']
@@ -276,14 +294,149 @@ def load_image(cam, image):
 
 # SocketIO interfaces
 
+#Cartridge Assembly QC
+
+@socketio.on('connect', namespace=Cartridge.NAMESPACE)
+def laser_connect():
+	app.logger.info('Connected to Cartridge Assembly QC client interface')
+	emit('connect', 'Connected to Cartridge Assembly QC api')
+	
+@socketio.on('disconnect', namespace=Cartridge.NAMESPACE)
+def laser_disconnect():
+	app.logger.info('Disconnected from Cartridge Assembly QC client interface')
+
+@socketio.on('PLC-serial', namespace=Cartridge.NAMESPACE)
+def send_wait_serial(data):
+	app.logger.info(f'Sending {data} to PLC')
+	plc_ser.on_send(data+'\r\n')
+
+
+@socketio.on('scan-position', namespace=Cartridge.NAMESPACE)
+def read_1dbarcodes():
+	app.logger.info('Reading 1d barcode')
+	# Get Rack ID
+	barcode_ser.purge()
+	barcode_ser.send_data("LON")
+
+	errno = 0
+	start = timer()
+	while True:
+		if barcode_ser.data_ready:
+			tdata = barcode_ser.get().strip()
+			if (',' in tdata):
+				rack_id, work_order = tdata.split(',')
+			else:
+				rack_id = ''
+				work_order = ''
+				errno = -2
+
+			break
+		else:
+			end = timer()
+			if end - start > 2.0:
+				app.logger.warn('Timeout getting barcode')
+				rack_id = ''
+				work_order = ''
+				errno = -2
+				break
+			else:
+				time.sleep(0.1)
+	session[Cartridge.RACK_ID] = rack_id
+	session[Cartridge.WORK_ORDER] = work_order
+	session[Cartridge.ERRORCODE] = errno
+
+	# TODO: Send the data back to browser
+	plc_ser.on_send('G3\r\n')
+	emit('get_rack_id', rack_id)
+	plc_ser.on_send('S\r\n')
+
+@socketio.on('scan-position2', namespace=Cartridge.NAMESPACE)
+def read_2dbarcodes():
+	app.logger.info('Reading 2d barcode')
+	if (session[Cartridge.ERRORCODE] != 0):
+		errno = session[Cartridge.ERRORCODE]
+	else:
+		errno = 0
+	# Get barcodes
+	items = tcpclient.send('T1')
+	items.pop(0)
+	totalitem = int(len(items)/2)
+	
+	newdata = []
+	rack_id = session[Cartridge.RACK_ID]
+	if ('-' in rack_id):
+		a, section = rack_id.split('-')
+		
+		if (totalitem != Cartridge.ITEM_QTY):
+			errno = -6
+			session[Cartridge.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
+		
+		else:
+			sections = configfile.cartridge_assembly_QC_config.sections()
+			app.logger.info(section)
+			if (section not in sections): # Invalid rack id
+				app.logger.warn('Invalid cartridge id: '+section)
+				errno = -2
+				session[Cartridge.DATA] = items
+			else:
+				i=1
+				masks = []
+				for j in range (21):
+					if (i==3):
+						i = 4
+					keyword = 'Position_'+str(i)
+					masks.append(configfile.cartridge_assembly_QC_config.get(section, keyword))
+					i += 1
+
+				for i in range(totalitem):
+					if (items[i*2] == '0'): #success
+						masklen = -len(masks[i])
+						if (items[i*2+1][masklen:] == masks[i]):
+							newdata.append('0')
+							newdata.append(items[i*2+1])
+						else:
+							newdata.append('1')
+							newdata.append(items[i*2+1])
+							# app.logger.info(newdata)
+							errno = -5
+					else:
+						newdata.append('1')
+						newdata.append(items[i*2+1])
+						errno = -7
+				app.logger.info(newdata)
+				session[Cartridge.DATA] = newdata
+	else: # Invalid rack id
+		app.logger.info ('Invalid cartridge id: '+rack_id)
+		errno = -2
+		session[Cartridge.DATA] = items
+
+	# writing to log file
+	if (errno == 0): # pass
+		logdata = (rack_id, 'PASS', session[Cartridge.WORK_ORDER])
+	else:
+		logdata = (rack_id, 'FAIL', session[Cartridge.WORK_ORDER])
+
+	tmpdata = session[Cartridge.DATA]
+	for i in range (int(len(tmpdata)/2)):
+		logdata = logdata +(tmpdata[i*2 + 1], )
+
+	Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
+	app.logger.info("Go to home position")
+	plc_ser.on_send('GB\r\n')
+	app.logger.info('Redirecting page to cartridge_process')
+	emit('redirect', url_for('cartridge_process'))
+
+#
 # Laser Etch QC
+#
 
 @socketio.on('connect', namespace=Laser.NAMESPACE)
 def laser_connect():
 	app.logger.info('Connected to Laser Etch QC client interface')
 	app.start_pressed = False
 	emit('connect', 'Connected to Laser Etch QC api')
-	
+
 @socketio.on('disconnect', namespace=Laser.NAMESPACE)
 def laser_disconnect():
 	app.logger.info('Disconnected from Laser Etch QC client interface')
@@ -518,10 +671,13 @@ def read_barcodes():
 @plc_ser.on_message()
 def handle_message(msg):
 	senddata = msg.decode("utf-8").strip()
-	if (senddata in ('H0', 'G2', 'R')):
+	if (senddata in ('H0', 'G2')):
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
-	elif (senddata in ('H0', 'G1', 'G3', 'R')):
+	elif (senddata in ('H0', 'G1', 'G3')):
+		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
+	elif (senddata in ('R')):
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
+		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
 
 @plc_ser.on_log()
 def handle_logging(level, info):

@@ -68,7 +68,7 @@
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-cart-id'>
 							<tr><th>Cartridge ID</th></tr>
-							<tr><td class='full-border'>id</td></tr>
+							<tr><td id='rack-id' class='full-border'>id</td></tr>
 						</table>
 					</div>
 
@@ -105,8 +105,10 @@
 
 		</div>
 
-		<a class='btn btn-green btn-start'>START</a>
+		<a id='btn-start' class='btn btn-green btn-start'>START</a>
 		
 	</div>
-
+	
+	<script src="{{ url_for('static', filename='src/cartridge.js') }}" defer></script>
+	
 {% endblock %}

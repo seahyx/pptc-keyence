@@ -59,6 +59,8 @@ class ConfigFile():
 
 		self.cartridge_assembly_QC = []
 		self.cartridge_assembly_QC = {'Prefix': self.cartridge_assembly_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
+		self.cartridge_assembly_QC['LogFile'] 		= self.cartridge_assembly_QC_config.get('PATH', 'Log File')
+		self.cartridge_assembly_QC['ImageDir'] 		= self.cartridge_assembly_QC_config.get('PATH', 'Image Dir')
 
 		# app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridge_assembly_QC}')
 

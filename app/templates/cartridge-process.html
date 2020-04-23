@@ -12,8 +12,8 @@
 			<div class='container fit-content'>
 
 				<!-- Status code container -->
-				<div class='container status-container flex-center bordered'>
-					<p>Set Cartridge on Stage, then click Start</p>
+				<div id='cartridge-status' class='container status-container flex-center bordered'>
+					<p>Processing</p>
 				</div>
 
 				<!-- Horizontal container to contain both sides -->
@@ -68,7 +68,7 @@
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-cart-id'>
 							<tr><th>Cartridge ID</th></tr>
-							<tr><td class='full-border'>id</td></tr>
+							<tr><td id='rack_id' class='full-border'>id</td></tr>
 						</table>
 					</div>
 
@@ -94,6 +94,7 @@
 					</div>
 
 					<!-- Right side container -->
+					// to be changed
 					<div class='container'>
 						<!-- Cartridge photo -->
 						<div class='cart-img container bordered'></div>
@@ -105,8 +106,46 @@
 
 		</div>
 
-		<a class='btn btn-green btn-start'>DONE</a>
+		<a id='btn-done' class='btn btn-green btn-start'>DONE</a>
 		
 	</div>
 
+
+	<!-- Pass Variables -->
+	<script type='text/javascript'>
+		var Globals = {
+			data      : {{ data|tojson }},
+			rack_type : {{ rack_type }},
+			done_url  : {{ url_for('cartridge') }},
+			img_titles: [
+				'CAM1 Normal',
+				'CAM1 Left',
+				'CAM1 Right',
+				'CAM1 Lower',
+				'CAM1 Upper',
+				'CAM2 Normal',
+				'CAM2 Left',
+				'CAM2 Right',
+				'CAM2 Lower',
+				'CAM2 Upper',
+				],
+			img_urls  : [
+				{{ url_for('load_image', cam=1, image='normal')|tojson }},
+				{{ url_for('load_image', cam=1, image='left')|tojson }},
+				{{ url_for('load_image', cam=1, image='right')|tojson }},
+				{{ url_for('load_image', cam=1, image='lower')|tojson }},
+				{{ url_for('load_image', cam=1, image='upper')|tojson }},
+				{{ url_for('load_image', cam=2, image='normal')|tojson }},
+				{{ url_for('load_image', cam=2, image='left')|tojson }},
+				{{ url_for('load_image', cam=2, image='right')|tojson }},
+				{{ url_for('load_image', cam=2, image='lower')|tojson }},
+				{{ url_for('load_image', cam=2, image='upper')|tojson }}
+				]
+		};
+		</script>
+		
+		<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>
+	
+		<script src="{{ url_for('static', filename='src/cartridge-process.js') }}" defer></script>
+	
 {% endblock %}
