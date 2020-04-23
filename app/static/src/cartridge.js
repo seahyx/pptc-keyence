@@ -58,7 +58,7 @@ socketio.on('plc-message', function(data) {
 
 	if (data == 'R') { // Start button pressed
 
-		cartridge_modal_loading.setAttribute('data-enabled', '');
+		//cartridge_modal_loading.setAttribute('data-enabled', '');
 		socketio.emit('PLC-serial', 'S')	
 	}
 	else if (data == 'G1') { // Reach scan position

@@ -218,11 +218,11 @@ const laser_image_container = document.querySelector('#laser-img-container');
 // Done button
 
 btn_done.addEventListener('click', () => {
-	let confirmation = confirm('Are you sure you want to finish?');
+	/* let confirmation = confirm('Are you sure you want to finish?');
 
-	if (confirmation) {
+	if (confirmation) { -->  */
 		window.location = Globals.done_url;
-	}
+	//}
 
 });
 

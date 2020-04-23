@@ -42,6 +42,7 @@ permissions = PermissionsManager()
 permissions.redirect_view = 'index'
 app.start_pressed = False
 app.use_flask_serial = True
+app.nspace = ''
 
 # Context processor runs and adds global values
 # for the template before any page is rendered
@@ -672,12 +673,14 @@ def read_barcodes():
 def handle_message(msg):
 	senddata = msg.decode("utf-8").strip()
 	if (senddata in ('H0', 'G2')):
+		app.nspace = Laser.NAMESPACE
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
 	elif (senddata in ('H0', 'G1', 'G3')):
+		app.nspace = Cartridge.NAMESPACE
 		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
 	elif (senddata in ('R')):
-		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
-		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
+		app.logger.info(app.nspace)
+		socketio.emit('plc-message', senddata, namespace=app.nspace)
 
 @plc_ser.on_log()
 def handle_logging(level, info):
