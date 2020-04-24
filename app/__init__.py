@@ -60,7 +60,7 @@ Session(app)
 # Serial setup
 
 # PLC serial
-use_flask_serial = False
+use_flask_serial = True
 plc_ser = None
 if use_flask_serial:
 

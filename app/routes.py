@@ -7,7 +7,8 @@ from app.models import User
 from app.permissions import PermissionsManager
 from logfile import Log_file
 from werkzeug.urls import url_parse
-from time import time as current_time
+from time import sleep, time as current_time
+from timeit import default_timer as timer
 
 # Consts
 class Laser:
@@ -289,6 +290,7 @@ def load_image(cam, image):
 	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
 
 	return send_from_directory(configfile.VISION_IMAGE_DIR, filename, as_attachment=True)
+	#return send_from_directory('D:\\Seafile\\OngoingProjects\\Illumina\\2D Barcode System\\pptc-keyence\\app\\test\\xg\\hist', filename, as_attachment=True)
 
 
 # SocketIO interfaces
@@ -296,12 +298,12 @@ def load_image(cam, image):
 #Cartridge Assembly QC
 
 @socketio.on('connect', namespace=Cartridge.NAMESPACE)
-def laser_connect():
+def cartridge_connect():
 	app.logger.info('Connected to Cartridge Assembly QC client interface')
 	emit('connect', 'Connected to Cartridge Assembly QC api')
 	
 @socketio.on('disconnect', namespace=Cartridge.NAMESPACE)
-def laser_disconnect():
+def cartridge_disconnect():
 	app.logger.info('Disconnected from Cartridge Assembly QC client interface')
 
 @socketio.on('PLC-serial', namespace=Cartridge.NAMESPACE)
@@ -339,7 +341,7 @@ def read_1dbarcodes():
 				errno = -2
 				break
 			else:
-				time.sleep(0.1)
+				sleep(0.1)
 	session[Cartridge.CARTRIDGE_ID] = cartridge_id
 	session[Cartridge.WORK_ORDER] = work_order
 	session[Cartridge.ERRORCODE] = errno
@@ -364,7 +366,7 @@ def read_2dbarcodes():
 	newdata = []
 	cartridge_id = session[Cartridge.CARTRIDGE_ID]
 	if ('-' in cartridge_id):
-		a, section = rack_id.split('-')
+		a, section = cartridge_id.split('-')
 		
 		if (totalitem != Cartridge.ITEM_QTY):
 			errno = -6
@@ -425,13 +427,13 @@ def read_2dbarcodes():
 		logdata = (cartridge_id, 'FAIL', session[Cartridge.WORK_ORDER])
 
 	tmpdata = session[Cartridge.DATA]
-	for i in range (int(len(tmpdata)/2)):
-		logdata = logdata +(tmpdata[i*3 + 1], )
+	for i in range (int(len(tmpdata)/3)):
+		logdata = logdata +(tmpdata[i*3 + 2], )
 
 	Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
-	app.logger.info('Redirecting page to cartridge_process')
+	app.logger.info('Redirecting page to cartridge-process')
 	emit('redirect', url_for('cartridge_process'))
 
 #
@@ -466,7 +468,7 @@ if not app.use_flask_serial:
 					socketio.emit('plc-message', 'R', namespace=Laser.NAMESPACE)
 					app.start_pressed = False
 					break
-			time.sleep(0.1)
+			sleep(0.1)
 		app.start_pressed = False
 
 @socketio.on('start', namespace=Laser.NAMESPACE)
@@ -518,7 +520,7 @@ def laser_confirm(laser_instrument):
 					app.logger.warning('Timeout, going to scan position')
 					break
 				else:
-					time.sleep(0.1)
+					sleep(0.1)
 
 		# Get Rack ID
 		barcode_ser.purge()
@@ -537,7 +539,7 @@ def laser_confirm(laser_instrument):
 					app.logger.warning('Timeout getting barcode')
 					break
 				else:
-					time.sleep(0.1)
+					sleep(0.1)
 		
 		# TODO: Handle sdata error
 
@@ -591,7 +593,7 @@ def read_barcodes():
 				errno = -2
 				break
 			else:
-				time.sleep(0.1)
+				sleep(0.1)
 	
 	# TODO: Handle sdata error
 

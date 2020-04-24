@@ -40,7 +40,7 @@ socketio.on('connect', function(msg) {
 	}
 });
 
-socketio.on('get_rack_id', function(msg) {
+socketio.on('get_cartridge_id', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
 		rack_id.innerHTML = msg
@@ -62,6 +62,7 @@ socketio.on('plc-message', function(data) {
 		socketio.emit('PLC-serial', 'S')	
 	}
 	else if (data == 'G1') { // Reach scan position
+		console.log('Received G1')
 		socketio.emit('scan-position');
 	}
 	else if (data == 'G3') {
