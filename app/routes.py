@@ -30,10 +30,9 @@ class Laser:
 
 class Cartridge:
 	NAMESPACE   = '/cartridge/api'
-	RACK_ID     = 'cartridge_rack_id'
+	CARTRIDGE_ID     = 'cartridge_id'
 	WORK_ORDER  = 'cartridge_work_order'
 	DATA        = 'cartridge_data'
-	RACK_TYPE	= 'rack_type'
 	ITEM_QTY	= 21
 	ERRORCODE	= 0
 
@@ -129,20 +128,19 @@ def cartridge():
 def cartridge_process():
 	app.logger.info('Loading cartridge-process page...')
 
-	work_order  = session.get(Cartridge.WORK_ORDER)
-	rack_id     = session.get(Cartridge.RACK_ID)
+	cartridge_id     = session.get(Cartridge.CARTRIDGE_ID)
 	data        = session.get(Cartridge.DATA)
 	errno  	= session.get(Cartridge.ERRORCODE)
 
-	if not work_order or not rack_id or not data:
+	if not cartridge_id or not data:
 		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, work_order: {work_order}, rack_id: {rack_id}, data: {data}')
+		# Need to log the info
 		return(redirect(url_for('cartridge')))
 
 	return render_template(
 		'cartridge-process.html',
 		title        = 'Cartridge Assembly QC - Processing',
-		work_order    = work_order,
-		rack_id      = rack_id,
+		cartridge_id      = cartridge_id,
 		data         = data,
 		errno        = errno
 		)
@@ -186,7 +184,7 @@ def laser_process():
 		return(redirect(url_for('laser')))
 	
 	if not rack_type:
-		rack_type = 0
+		rack_type = -1
 
 	return render_template(
 		'laser-process.html',
@@ -325,9 +323,9 @@ def read_1dbarcodes():
 		if barcode_ser.data_ready:
 			tdata = barcode_ser.get().strip()
 			if (',' in tdata):
-				rack_id, work_order = tdata.split(',')
+				cartridge_id, work_order = tdata.split(',')
 			else:
-				rack_id = ''
+				cartridge_id = ''
 				work_order = ''
 				errno = -2
 
@@ -336,19 +334,19 @@ def read_1dbarcodes():
 			end = timer()
 			if end - start > 2.0:
 				app.logger.warn('Timeout getting barcode')
-				rack_id = ''
+				cartridge_id = ''
 				work_order = ''
 				errno = -2
 				break
 			else:
 				time.sleep(0.1)
-	session[Cartridge.RACK_ID] = rack_id
+	session[Cartridge.CARTRIDGE_ID] = cartridge_id
 	session[Cartridge.WORK_ORDER] = work_order
 	session[Cartridge.ERRORCODE] = errno
 
 	# TODO: Send the data back to browser
 	plc_ser.on_send('G3\r\n')
-	emit('get_rack_id', rack_id)
+	emit('get_cartridge_id', cartridge_id)
 	plc_ser.on_send('S\r\n')
 
 @socketio.on('scan-position2', namespace=Cartridge.NAMESPACE)
@@ -364,13 +362,15 @@ def read_2dbarcodes():
 	totalitem = int(len(items)/2)
 	
 	newdata = []
-	rack_id = session[Cartridge.RACK_ID]
-	if ('-' in rack_id):
+	cartridge_id = session[Cartridge.CARTRIDGE_ID]
+	if ('-' in cartridge_id):
 		a, section = rack_id.split('-')
 		
 		if (totalitem != Cartridge.ITEM_QTY):
 			errno = -6
-			session[Cartridge.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+			session[Cartridge.DATA] = ['1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','',
+					'1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','',
+					'1','','','1','','','1','','','1','','','1','','']
 			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 		
 		else:
@@ -395,32 +395,38 @@ def read_2dbarcodes():
 						masklen = -len(masks[i])
 						if (items[i*2+1][masklen:] == masks[i]):
 							newdata.append('0')
+							newdata.append(masks[i])
 							newdata.append(items[i*2+1])
 						else:
 							newdata.append('1')
+							newdata.append(masks[i])
 							newdata.append(items[i*2+1])
 							# app.logger.info(newdata)
 							errno = -5
 					else:
 						newdata.append('1')
+						newdata.append(masks[i])
 						newdata.append(items[i*2+1])
 						errno = -7
 				app.logger.info(newdata)
 				session[Cartridge.DATA] = newdata
 	else: # Invalid rack id
-		app.logger.info ('Invalid cartridge id: '+rack_id)
-		errno = -2
-		session[Cartridge.DATA] = items
+		app.logger.info ('Invalid cartridge id: '+session[Cartridge.CARTRIDGE_ID])
+		for i in range(Cartridge.ITEM_QTY):
+			newdata.append('1')
+			newdata.append('') # mask
+			newdata.append(items[i*2+1])
+		session[Cartridge.DATA] = newdata
 
 	# writing to log file
 	if (errno == 0): # pass
-		logdata = (rack_id, 'PASS', session[Cartridge.WORK_ORDER])
+		logdata = (cartridge_id, 'PASS', session[Cartridge.WORK_ORDER])
 	else:
-		logdata = (rack_id, 'FAIL', session[Cartridge.WORK_ORDER])
+		logdata = (cartridge_id, 'FAIL', session[Cartridge.WORK_ORDER])
 
 	tmpdata = session[Cartridge.DATA]
 	for i in range (int(len(tmpdata)/2)):
-		logdata = logdata +(tmpdata[i*2 + 1], )
+		logdata = logdata +(tmpdata[i*3 + 1], )
 
 	Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
 	app.logger.info("Go to home position")
