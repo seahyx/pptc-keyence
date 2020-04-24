@@ -7,9 +7,7 @@ from app.models import User
 from app.permissions import PermissionsManager
 from logfile import Log_file
 from werkzeug.urls import url_parse
-from timeit import default_timer as timer
-from functools import wraps
-import time
+from time import time as current_time
 
 # Consts
 class Laser:
@@ -177,9 +175,7 @@ def laser_process():
 	rack_type   = session.get(Laser.RACK_TYPE)
 	instrument  = session.get(Laser.INSTRUMENT)
 	data        = session.get(Laser.DATA)
-	errno  	= session.get(Laser.ERRORCODE)
-
-	# rack_type   = Laser.RACK_TYPE.TUBE
+	errno     	= session.get(Laser.ERRORCODE)
 
 	if not work_order or not part_number or not rack_id or not data:
 		app.logger.warning(f'Insufficient data received, redirecting back to laser page, work_order: {work_order}, part_number: {part_number}, rack_id: {rack_id}, instrument: {instrument}, data: {data}')
@@ -187,6 +183,9 @@ def laser_process():
 	
 	if not rack_type:
 		rack_type = 0
+
+	# Add a time tag to the user to ensure that images always load new on load
+	image_uid = str(int(current_time() * 1000));
 
 	return render_template(
 		'laser-process.html',
@@ -197,7 +196,8 @@ def laser_process():
 		laser_instrument = instrument,
 		data             = data,
 		rack_type        = rack_type,
-		errno        = errno
+		errno            = errno,
+		image_uid        = image_uid,
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
@@ -649,6 +649,7 @@ def read_barcodes():
 			session[Laser.DATA] = ['1','','1','','1','','1','']
 		else:
 			session[Laser.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+
 		# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
 	session[Laser.ERRORCODE] = errno

@@ -212,6 +212,7 @@
 		data      : {{ data|tojson }},
 		rack_type : {{ rack_type }},
 		done_url  : {{ url_for('laser') }},
+		image_uid : {{ image_uid }},
 		img_titles: [
 			'CAM1 Normal',
 			'CAM1 Left',
@@ -237,6 +238,11 @@
 			{{ url_for('load_image', cam=2, image='upper')|tojson }}
 			]
 	};
+
+	// Give each image url a unique query id for each page load, so images always get refreshed
+	for (let i = 0; i < Globals.img_urls.length; i++) {
+		Globals.img_urls[i] += '?' + Globals.image_uid;
+	}
 	</script>
 	
 	<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>
