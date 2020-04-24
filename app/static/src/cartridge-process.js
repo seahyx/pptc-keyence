@@ -196,17 +196,14 @@ class ImageStateManager {
 
 }
 
-const status_bar            = document.querySelector('#laser-status');
+const status_bar            = document.querySelector('#cartridge-status');
 
 const btn_done              = document.querySelector('#btn-done');
-const in_work_order         = document.querySelector('#laser-work-order');
-const in_part_number        = document.querySelector('#laser-part-number');
-const laser_rack_id         = document.querySelector('#laser-rack-id');
+const cartridge_id         = document.querySelector('#cartridge-id');
 
-const laser_tube_display    = document.querySelector('#laser-tube-display');
-const laser_trough_display  = document.querySelector('#laser-trough-display');
-const laser_tube_barcode    = document.querySelector('#laser-tube-barcode');
-const laser_trough_barcode  = document.querySelector('#laser-trough-barcode');
+const cartridge_display    = document.querySelector('#cartridge-display');
+const cartridge_mask	   = document.querySelector('#cartridge-mask')
+const cartridge_barcode    = document.querySelector('#cartridge-barcode');
 
 const laser_image_container = document.querySelector('#laser-img-container');
 
@@ -262,9 +259,6 @@ function load_data(data, rack_type, statusBarManager) {
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
 	let errorcode = 0;
-
-	// Set rack type
-	switch_rack_type(rack_type);
 
 	// Load data, != checks against null and undefined
 	if (data != null && rack_type != null) {
@@ -389,40 +383,10 @@ function load_data(data, rack_type, statusBarManager) {
 	
 }
 
-function switch_rack_type(rack_type) {
-
-	if (rack_type === RackTypeEnum.TUBE) {
-
-		laser_tube_display.classList.toggle('hidden', false)
-		laser_tube_barcode.classList.toggle('hidden', false)
-		
-		laser_trough_display.classList.toggle('hidden', true)
-		laser_trough_barcode.classList.toggle('hidden', true)
-
-	} else if (rack_type === RackTypeEnum.TROUGH) {
-
-		laser_tube_display.classList.toggle('hidden', true)
-		laser_tube_barcode.classList.toggle('hidden', true)
-		
-		laser_trough_display.classList.toggle('hidden', false)
-		laser_trough_barcode.classList.toggle('hidden', false)
-		
-	}
-
-}
-
 function get_tube_display_item(sn) {
-	return laser_tube_display.querySelector(`.gr-laser-item.i${sn}`);
-}
-
-function get_trough_display_item(sn) {
-	return laser_trough_display.querySelector(`.gr-laser-item.i${sn}`);
+	return cartridge_tube_display.querySelector(`.gr-laser-item.i${sn}`);
 }
 
 function get_tube_barcode_row(sn) {
-	return laser_tube_barcode.querySelector(`#barcode-${sn} .full-border`);
-}
-
-function get_trough_barcode_row(sn) {
-	return laser_trough_barcode.querySelector(`#barcode-${sn} .full-border`);
+	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .full-border`);
 }
