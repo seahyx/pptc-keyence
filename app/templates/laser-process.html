@@ -59,35 +59,37 @@
 
 								<!-- Underlay - colours the circles -->
 								<div class='grid laser-underlay'>
-									<!-- Grid items - top->bottom, left->right -->
-									<!-- There are 4 rows and 6 columns -->
-									<div class='gr-laser-item i19'></div>
-									<div class='gr-laser-item i20'></div>
-									<div class='gr-laser-item i21'></div>
-									<div class='gr-laser-item i22'></div>
-									<div class='gr-laser-item i23'></div>
-									<div class='gr-laser-item i24'></div>
 
-									<div class='gr-laser-item i13'></div>
-									<div class='gr-laser-item i14'></div>
-									<div class='gr-laser-item i15'></div>
-									<div class='gr-laser-item i16'></div>
-									<div class='gr-laser-item i17'></div>
-									<div class='gr-laser-item i18'></div>
+									<!-- Grid items -->
+									<div class="gr-laser-item i24"></div>
+									<div class="gr-laser-item i23"></div>
+									<div class="gr-laser-item i22"></div>
+									<div class="gr-laser-item i21"></div>
 
-									<div class='gr-laser-item i7'></div>
-									<div class='gr-laser-item i8'></div>
+									<div class="gr-laser-item i17"></div>
+									<div class="gr-laser-item i18"></div>
+									<div class="gr-laser-item i19"></div>
+									<div class="gr-laser-item i20"></div>
+
+									<div class="gr-laser-item i16"></div>
+									<div class="gr-laser-item i15"></div>
+									<div class="gr-laser-item i14"></div>
+									<div class="gr-laser-item i13"></div>
+									
 									<div class='gr-laser-item i9'></div>
 									<div class='gr-laser-item i10'></div>
 									<div class='gr-laser-item i11'></div>
 									<div class='gr-laser-item i12'></div>
 
+									<div class="gr-laser-item i8"></div>
+									<div class="gr-laser-item i7"></div>
+									<div class="gr-laser-item i6"></div>
+									<div class="gr-laser-item i5"></div>
+
 									<div class='gr-laser-item i1'></div>
 									<div class='gr-laser-item i2'></div>
 									<div class='gr-laser-item i3'></div>
 									<div class='gr-laser-item i4'></div>
-									<div class='gr-laser-item i5'></div>
-									<div class='gr-laser-item i6'></div>
 
 								</div>
 								<!-- Cartridge display overlay -->
@@ -108,10 +110,10 @@
 								<div class='grid laser-underlay'>
 									<!-- Grid items - top->bottom, left->right -->
 									<!-- There are 4 columns -->
-									<div class='gr-laser-item i1'></div>
-									<div class='gr-laser-item i2'></div>
-									<div class='gr-laser-item i3'></div>
 									<div class='gr-laser-item i4'></div>
+									<div class='gr-laser-item i3'></div>
+									<div class='gr-laser-item i2'></div>
+									<div class='gr-laser-item i1'></div>
 
 								</div>
 								<!-- Cartridge display overlay -->
@@ -212,6 +214,7 @@
 		data      : {{ data|tojson }},
 		rack_type : {{ rack_type }},
 		done_url  : {{ url_for('laser') }},
+		image_uid : {{ image_uid }},
 		img_titles: [
 			'CAM1 Normal',
 			'CAM1 Left',
@@ -237,6 +240,11 @@
 			{{ url_for('load_image', cam=2, image='upper')|tojson }}
 			]
 	};
+
+	// Give each image url a unique query id for each page load, so images always get refreshed
+	for (let i = 0; i < Globals.img_urls.length; i++) {
+		Globals.img_urls[i] += '?' + Globals.image_uid;
+	}
 	</script>
 	
 	<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>

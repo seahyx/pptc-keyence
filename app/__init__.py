@@ -7,11 +7,6 @@ from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_session import Session
 
-use_flask_serial = True
-if use_flask_serial:
-	from flask_serial import Serial
-	from flask_bootstrap import Bootstrap
-
 from logging.config import dictConfig
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
@@ -50,26 +45,55 @@ debug_mode = False
 
 # Init modules
 app.config.from_object(Config)
+
+configfile = ConfigFile(app, 'main.cfg')
+csvreader = CSVReader(configfile.laser_etch_QC['PNFile'])
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 socketio = SocketIO(app, manage_session=False)
 Session(app)
-configfile = ConfigFile(app, 'main.cfg')
-csvreader = CSVReader(configfile.laser_etch_QC['PNFile'])
 
+
+# Serial setup
+
+# PLC serial
+use_flask_serial = False
+plc_ser = None
 if use_flask_serial:
+
+	from flask_serial import Serial
+
 	app.config['SERIAL_TIMEOUT'] = 0.1
-	app.config['SERIAL_PORT'] = configfile.PLC_PORT
+	app.config['SERIAL_PORT']     = configfile.PLC_PORT
 	app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
 	app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
-	app.config['SERIAL_PARITY'] = configfile.PLC_PARITY
+	app.config['SERIAL_PARITY']   = configfile.PLC_PARITY
 	app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
 
 	plc_ser = Serial(app)
-	bootstrap = Bootstrap(app)
 
+else:
+	# SerialClient fallback
+	plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
+				configfile.PLC_PARITY, configfile.PLC_STOPBITS)
+
+# Barcode reader serial
+barcode_ser = SerialClient(app, configfile.BARCODE_PORT, configfile.BARCODE_BAUDRATE, configfile.BARCODE_BYTESIZE,
+			configfile.BARCODE_PARITY, configfile.BARCODE_STOPBITS)
+
+
+# Setup tcpclient
+tcpclient = None
+if debug_mode:
+	tcpclient = TCPClient(app, 'localhost', 8500)
+else:
+	tcpclient = TCPClient(app, configfile.VISION_TCP_ADDR, configfile.VISION_TCP_PORT)
+
+
+# Database setup
 # Insert root user if none exists
 from app.models import User
 try:
@@ -97,23 +121,6 @@ except:
 	db.session.add(user)
 	db.session.commit()
 
-# For debug
-tcpclient = None
-if debug_mode:
-	tcpclient = TCPClient(app, 'localhost', 8500)
-else:
-	tcpclient = TCPClient(app, configfile.VISION_TCP_ADDR, configfile.VISION_TCP_PORT)
-
-#PLC serial port
-# plcSer = None
-# Use flask-serial to handle
-if not use_flask_serial:
-	plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
-				configfile.PLC_PARITY, configfile.PLC_STOPBITS)
-
-# barcode reader serial port
-barcode_ser = SerialClient(app, configfile.BARCODE_PORT, configfile.BARCODE_BAUDRATE, configfile.BARCODE_BYTESIZE,
-			configfile.BARCODE_PARITY, configfile.BARCODE_STOPBITS)
 
 from app import routes, models, errors, permissions
 
