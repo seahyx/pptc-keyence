@@ -131,6 +131,9 @@ def cartridge_process():
 	data        = session.get(Cartridge.DATA)
 	errno  	= session.get(Cartridge.ERRORCODE)
 
+	image_uid = str(int(current_time() * 1000))
+	app.logger.info (f'image_uid: '+ image_uid)
+
 	if not cartridge_id or not data:
 		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, work_order: {work_order}, rack_id: {rack_id}, data: {data}')
 		# Need to log the info
@@ -141,7 +144,8 @@ def cartridge_process():
 		title        = 'Cartridge Assembly QC - Processing',
 		cartridge_id      = cartridge_id,
 		data         = data,
-		errno        = errno
+		errno        = errno,
+		image_uid 	 = image_uid,
 		)
 
 
@@ -184,7 +188,7 @@ def laser_process():
 		rack_type = -1
 
 	# Add a time tag to the user to ensure that images always load new on load
-	image_uid = str(int(current_time() * 1000));
+	image_uid = str(int(current_time() * 1000))
 
 	return render_template(
 		'laser-process.html',

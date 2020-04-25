@@ -44,8 +44,8 @@ class ImageStateManager {
 		this.container = container;
 
 		// Obtain components
-		this.zoom_container = container.querySelector('.laser-zoom-container');
-		this.img         = this.zoom_container.querySelector('.laser-img');
+		this.zoom_container = container.querySelector('.cartridge-zoom-container');
+		this.img         = this.zoom_container.querySelector('.cartridge-img');
 		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
 		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
 		this.next        = container.querySelector('#btn-next');
@@ -210,11 +210,12 @@ const laser_image_container = document.querySelector('#laser-img-container');
 // Done button
 
 btn_done.addEventListener('click', () => {
-	let confirmation = confirm('Are you sure you want to finish?');
+	//let confirmation = confirm('Are you sure you want to finish?');
 
-	if (confirmation) {
-		window.location = Globals.done_url;
-	}
+	//if (confirmation) {
+	console.log(Globals.done_url)
+	window.location = Globals.done_url;
+	//}
 
 });
 
@@ -254,117 +255,62 @@ socketio.on('redirect', function(url) {
 function load_data(data, rack_type, statusBarManager) {
 
 	// Debugging purposes
-	console.log(`data: ${data},\nrack_id: ${rack_type}`);
+	console.log(`data: ${data}`);
 	
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
 	let errorcode = 0;
 
 	// Load data, != checks against null and undefined
-	if (data != null && rack_type != null) {
+	if (data != null) {
 
 		// Set default status to success
 		statusBarManager.set_success();
-
-		if (rack_type === RackTypeEnum.TUBE) {
-
-			// Tube display/barcode
-
-			for (let x = 0; x < laser_tube_count; x++) {
-				
-				// Position of data in the data array which are in pairs of 2, excluding the first arbitrary element
-				let current_data_count = (x * 2);
-
-				// Element reference for the tube display
-				let display_element = get_tube_display_item(x + 1)
-				
-				if (data[current_data_count] === '0') {
-					
-					// 0 means barcode is valid
-
-					get_tube_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('error', false)
-					display_element.classList.toggle('pass', true)
-		
-					console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`)
-		
-				} else {
-		
-					// 1 means barcode is invalid
-
-					get_tube_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('pass', false)
-					display_element.classList.toggle('error', true)
-
-					// Display fail in status bar
-					statusBarManager.set_fail('FAIL - Correct error then rescan');
-					errorcode = -5
-					console.log(`Tube number: ${x + 1}\nStatus: FAIL`)
-		
-				}
-		
+		let y = 1
+		for (let x = 0; x < cartridge_count; x++) {
+			if (y == 3) {
+				y = 4
 			}
-		} else if (rack_type === RackTypeEnum.TROUGH) {
-		
-			// Trough display/barcode
+			// Position of data in the data array which are in 3 in a set
+			let current_data_count = (x * 3);
 
-			for (let x = 0; x < laser_trough_count; x++) {
-				
-				// Position of data in the data array which are in pairs of 2, excluding the first arbitrary element
-				let current_data_count = (x * 2);
-
-				// Element reference for the trough display
-				let display_element = get_trough_display_item(x + 1)
-				
-				if (data[current_data_count] === '0') {
-					
-					// 0 means barcode is valid
-
-					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('error', false)
-					display_element.classList.toggle('pass', true)
-		
-					console.log(`Trough number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`)
-		
-				} else {
-		
-					// 1 means barcode is invalid
-
-					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('pass', false)
-					display_element.classList.toggle('error', true)
-
-					// Display fail in status bar
-					errorcode = -5
-					statusBarManager.set_fail('FAIL - Correct error then rescan');
-					
-					console.log(`Trough number: ${x + 1}\nStatus: FAIL`)
-		
-				}
-		
-			}
+			// Element reference for the tube display
+			let display_element = get_tube_display_item(y)
 			
-		} else {
+			if (data[current_data_count] === '0') {
+				
+				// 0 means barcode is valid
 
-			// Invalid rack type error handling
+				get_mask_row(y).innerText = data[current_data_count+1];
+				get_tube_barcode_row(y).innerText = data[current_data_count + 2];
+				display_element.classList.toggle('error', false)
+				display_element.classList.toggle('pass', true)
+	
+				console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`)
+	
+			} else {
+	
+				// 1 means barcode is invalid
 
-			console.log(`Rack type is invalid, rack_type: ${rack_type}`);
-			statusBarManager.set_fail('FAIL - Invalid rack type');
+				get_mask_row(y).innerText = data[current_data_count+1];
+				get_tube_barcode_row(y).innerText = data[current_data_count + 2];
+				display_element.classList.toggle('pass', false)
+				display_element.classList.toggle('error', true)
 
+				// Display fail in status bar
+				statusBarManager.set_fail('FAIL - Correct error then rescan');
+				errorcode = -5
+				console.log(`Tube number: ${x + 1}\nStatus: FAIL`)
+	
+			}
+			y++;
+	
 		}
-
 	} else {
 
 		// Error handling
 
-		if (rack_type != null) {
-
-			// No data
-	
-			console.log('No data received, nothing displayed');
-			statusBarManager.set_fail('FAIL - No Vision data received');
-
-		} else if (data != null) {
+		if (data != null) {
 			
 			// No rack type
 	
@@ -373,7 +319,7 @@ function load_data(data, rack_type, statusBarManager) {
 
 		} else {
 
-			// No data and rack type
+			// No data
 	
 			console.log('No data and rack type received, nothing displayed');
 			statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
@@ -384,7 +330,7 @@ function load_data(data, rack_type, statusBarManager) {
 }
 
 function get_tube_display_item(sn) {
-	return cartridge_tube_display.querySelector(`.gr-laser-item.i${sn}`);
+	return cartridge_tube_display.querySelector(`.gr-cartridge-item.i${sn}`);
 }
 
 function get_tube_barcode_row(sn) {

@@ -1,7 +1,7 @@
 const btn_start           = document.querySelector('#btn-start');
 const cartridge_modal_select  = document.querySelector('#cartridge-modal');
 const cartridge_modal_loading = document.querySelector('#cartridge-loading');
-const rack_id           = document.querySelector('#rack-id');
+const cartridge_id           = document.querySelector('#cartridge-id');
 
 // SocketIO
 
@@ -43,7 +43,7 @@ socketio.on('connect', function(msg) {
 socketio.on('get_cartridge_id', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		rack_id.innerHTML = msg
+		cartridge_id.innerHTML = msg
 	}
 });
 

@@ -68,7 +68,7 @@
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-cart-id'>
 							<tr><th>Cartridge ID</th></tr>
-							<tr><td id='rack_id' class='full-border'>id</td></tr>
+							<tr><td id='cartridge-id' class='full-border'>{{ cartridge_id }}</td></tr>
 						</table>
 					</div>
 
@@ -97,7 +97,33 @@
 					<!-- to be changed -->
 					<div class='container'>
 						<!-- Cartridge photo -->
-						<div class='cart-img container bordered'></div>
+						<div id='cartridge-img-container' class='cartridge-img-container container bordered flex-center flex-vertical padding-small'>
+
+							<!-- Image with zoom elements -->
+							<div class='cartridge-zoom-container container flex-center'>
+
+								<div class='zoom-lens'></div>
+								<img class='cartridge-img'>
+								<div class='zoom-result'></div>
+
+							</div>
+
+							<!-- Image navigation -->
+							<div class='container flex-center flex-horizontal max-width'>
+
+								<button id='btn-prev' class='btn btn-light prev'><p><</p></button>
+
+								<div class='image-info flex-center'>
+									<p id='image-title'>normal</p><p id='image-count'>1 / 5</p>
+								</div>
+
+								<button id='btn-next' class='btn btn-light next'><p>></p></button>
+
+							</div>
+
+						</div>
+
+					<!--	<div class='cart-img container bordered'></div> -->
 					</div>
 
 				</div>
@@ -115,8 +141,10 @@
 	<script type='text/javascript'>
 		var Globals = {
 			data      : {{ data|tojson }},
-			rack_type : {{ rack_type }},
+			//cartridge_id	: {{ cartridge_id }},
+			//rack_type : {{ rack_type }}, 
 			done_url  : {{ url_for('cartridge') }},
+			image_uid : {{ image_uid }},
 			img_titles: [
 				'CAM1 Normal',
 				'CAM1 Left',
@@ -142,6 +170,10 @@
 				{{ url_for('load_image', cam=2, image='upper')|tojson }}
 				]
 		};
+		// Give each image url a unique query id for each page load, so images always get refreshed
+		for (let i = 0; i < Globals.img_urls.length; i++) {
+			Globals.img_urls[i] += '?' + Globals.image_uid;
+		}
 		</script>
 		
 		<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>
