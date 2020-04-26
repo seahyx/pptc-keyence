@@ -127,9 +127,9 @@ def cartridge():
 def cartridge_process():
 	app.logger.info('Loading cartridge-process page...')
 
-	cartridge_id     = session.get(Cartridge.CARTRIDGE_ID)
-	data        = session.get(Cartridge.DATA)
-	errno  	= session.get(Cartridge.ERRORCODE)
+	cartridge_id = session.get(Cartridge.CARTRIDGE_ID)
+	data         = session.get(Cartridge.DATA)
+	errno        = session.get(Cartridge.ERRORCODE)
 
 	image_uid = str(int(current_time() * 1000))
 	app.logger.info (f'image_uid: '+ image_uid)
@@ -142,10 +142,10 @@ def cartridge_process():
 	return render_template(
 		'cartridge-process.html',
 		title        = 'Cartridge Assembly QC - Processing',
-		cartridge_id      = cartridge_id,
+		cartridge_id = cartridge_id,
 		data         = data,
 		errno        = errno,
-		image_uid 	 = image_uid,
+		image_uid    = image_uid,
 		)
 
 
