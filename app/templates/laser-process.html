@@ -75,7 +75,7 @@
 									<div class="gr-laser-item i15"></div>
 									<div class="gr-laser-item i14"></div>
 									<div class="gr-laser-item i13"></div>
-									
+
 									<div class='gr-laser-item i9'></div>
 									<div class='gr-laser-item i10'></div>
 									<div class='gr-laser-item i11'></div>
@@ -207,47 +207,9 @@
 
 	</div>
 
+	{% include 'program-globals-loader.html' %}
 
-	<!-- Pass Variables -->
-	<script type='text/javascript'>
-	var Globals = {
-		data      : {{ data|tojson }},
-		rack_type : {{ rack_type }},
-		done_url  : {{ url_for('laser') }},
-		image_uid : {{ image_uid }},
-		img_titles: [
-			'CAM1 Normal',
-			'CAM1 Left',
-			'CAM1 Right',
-			'CAM1 Lower',
-			'CAM1 Upper',
-			'CAM2 Normal',
-			'CAM2 Left',
-			'CAM2 Right',
-			'CAM2 Lower',
-			'CAM2 Upper',
-			],
-		img_urls  : [
-			{{ url_for('load_image', cam=1, image='normal')|tojson }},
-			{{ url_for('load_image', cam=1, image='left')|tojson }},
-			{{ url_for('load_image', cam=1, image='right')|tojson }},
-			{{ url_for('load_image', cam=1, image='lower')|tojson }},
-			{{ url_for('load_image', cam=1, image='upper')|tojson }},
-			{{ url_for('load_image', cam=2, image='normal')|tojson }},
-			{{ url_for('load_image', cam=2, image='left')|tojson }},
-			{{ url_for('load_image', cam=2, image='right')|tojson }},
-			{{ url_for('load_image', cam=2, image='lower')|tojson }},
-			{{ url_for('load_image', cam=2, image='upper')|tojson }}
-			]
-	};
-
-	// Give each image url a unique query id for each page load, so images always get refreshed
-	for (let i = 0; i < Globals.img_urls.length; i++) {
-		Globals.img_urls[i] += '?' + Globals.image_uid;
-	}
-	</script>
-	
-	<script src="{{ url_for('static', filename='src/laser-image-preloader.js') }}"></script>
+	<script src="{{ url_for('static', filename='src/image-preloader.js') }}"></script>
 
 	<script src="{{ url_for('static', filename='src/laser-process.js') }}" defer></script>
 
