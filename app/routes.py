@@ -296,7 +296,6 @@ def load_image(cam, image):
 	app.logger.info(f'Vision Image Dir: {configfile.VISION_IMAGE_DIR}')
 
 	return send_from_directory(configfile.VISION_IMAGE_DIR, filename, as_attachment=True)
-	#return send_from_directory('D:\\Seafile\\OngoingProjects\\Illumina\\2D Barcode System\\pptc-keyence\\app\\test\\xg\\hist', filename, as_attachment=True)
 
 
 # SocketIO interfaces
@@ -376,9 +375,7 @@ def read_2dbarcodes():
 		
 		if (totalitem != Cartridge.ITEM_QTY):
 			errno = -6
-			session[Cartridge.DATA] = ['1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','',
-					'1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','','1','','',
-					'1','','','1','','','1','','','1','','','1','','']
+			session[Cartridge.DATA] = ['1', ''] * 23
 			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 		
 		else:
@@ -566,12 +563,12 @@ def laser_confirm(laser_instrument):
 
 		if (errno == 0):
 			# Get barcodes
-			data = tcpclient.send('T1')
+			data = tcpclient.send('T1').pop(0)
 			session[Laser.DATA] = data
 
 			app.logger.info('Redirecting page to laser_process')
 		else:
-			session[Laser.DATA] = 'T1,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,,1,'
+			session[Laser.DATA] = ['1', ''] * 24
 			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
 		session[Laser.ERRORCODE] = errno
@@ -654,15 +651,15 @@ def read_barcodes():
 			session[Laser.DATA] = newdata
 		else:
 			if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
-				session[Laser.DATA] = ['1','','1','','1','','1','']
+				session[Laser.DATA] = ['1', ''] * 4
 			else:
-				session[Laser.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+				session[Laser.DATA] = ['1', ''] * 24
 
 	else:
 		if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
-			session[Laser.DATA] = ['1','','1','','1','','1','']
+			session[Laser.DATA] = ['1', ''] * 4
 		else:
-			session[Laser.DATA] = ['1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','','1','']
+			session[Laser.DATA] = ['1', ''] * 24
 
 		# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 
