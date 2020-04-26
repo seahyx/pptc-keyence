@@ -49,8 +49,7 @@ class TCPClient:
 	def send(self, message):
 		''' Send message
 
-		:type message: str
-		:param message: Message to be sent
+		:param message: String message to be sent
 		'''
 
 		message += '\r'
