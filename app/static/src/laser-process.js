@@ -74,7 +74,7 @@ class ImageStateManager {
 		this.zoom_lens.addEventListener('mousemove', (mouse_event) => {
 			this.on_move_lens(mouse_event);
 		});
-		
+
 		this.img.addEventListener('mousemove', (mouse_event) => {
 			this.on_move_lens(mouse_event);
 		});
@@ -85,7 +85,7 @@ class ImageStateManager {
 		});
 
 		this.img.addEventListener('touchmove', (mouse_event) => {
-			this.on_move_lens(mouse_event);	
+			this.on_move_lens(mouse_event);
 		});
 
 
@@ -196,7 +196,7 @@ class ImageStateManager {
 		relative_y = relative_y - window.pageYOffset;
 
 		return {x: relative_x, y: relative_y};
-		
+
 	}
 
 }
@@ -258,7 +258,7 @@ function load_data(data, rack_type, statusBarManager) {
 
 	// Debugging purposes
 	console.log(`data: ${data},\nrack_id: ${rack_type}`);
-	
+
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
 	let errorcode = 0;
@@ -277,25 +277,25 @@ function load_data(data, rack_type, statusBarManager) {
 			// Tube display/barcode
 
 			for (let x = 0; x < laser_tube_count; x++) {
-				
+
 				// Position of data in the data array which are in pairs of 2
 				let current_data_count = (x * 2);
 
 				// Element reference for the tube display
 				let display_element = get_display_item(x + 1);
-				
+
 				if (data[current_data_count] === '0') {
-					
+
 					// 0 means barcode is valid
 
 					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
 					display_element.classList.toggle('error', false);
 					display_element.classList.toggle('pass', true);
-		
+
 					console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
-		
+
 				} else {
-		
+
 					// 1 means barcode is invalid
 
 					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
@@ -306,34 +306,34 @@ function load_data(data, rack_type, statusBarManager) {
 					errorcode = -5;
 					statusBarManager.set_fail('FAIL - Correct error then rescan');
 					console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
-		
+
 				}
-		
+
 			}
 		} else if (rack_type === RackTypeEnum.TROUGH) {
-		
+
 			// Trough display/barcode
 
 			for (let x = 0; x < laser_trough_count; x++) {
-				
-				// Position of data in the data array which are in pairs of 2, excluding the first arbitrary element
+
+				// Position of data in the data array which are in pairs of 2
 				let current_data_count = (x * 2);
 
 				// Element reference for the trough display
 				let display_element = get_trough_display_item(x + 1);
-				
+
 				if (data[current_data_count] === '0') {
-					
+
 					// 0 means barcode is valid
 
 					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
 					display_element.classList.toggle('error', false);
 					display_element.classList.toggle('pass', true);
-		
+
 					console.log(`Trough number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
-		
+
 				} else {
-		
+
 					// 1 means barcode is invalid
 
 					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
@@ -343,13 +343,13 @@ function load_data(data, rack_type, statusBarManager) {
 					// Display fail in status bar
 					errorcode = -5;
 					statusBarManager.set_fail('FAIL - Correct error then rescan');
-					
+
 					console.log(`Trough number: ${x + 1}\nStatus: FAIL`);
-		
+
 				}
-		
+
 			}
-			
+
 		} else {
 
 			// Invalid rack type error handling
@@ -366,27 +366,27 @@ function load_data(data, rack_type, statusBarManager) {
 		if (rack_type != null) {
 
 			// No data
-	
+
 			console.log('No data received, nothing displayed');
 			statusBarManager.set_fail('FAIL - No Vision data received');
 
 		} else if (data != null) {
-			
+
 			// No rack type
-	
+
 			console.log('No rack type received, nothing displayed');
 			statusBarManager.set_fail('FAIL - Invalid rack type');
 
 		} else {
 
 			// No data and rack type
-	
+
 			console.log('No data and rack type received, nothing displayed');
 			statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
 		}
 
 	}
-	
+
 }
 
 function switch_rack_type(rack_type) {
@@ -395,7 +395,7 @@ function switch_rack_type(rack_type) {
 
 		laser_tube_display.classList.toggle('hidden', false);
 		laser_tube_barcode.classList.toggle('hidden', false);
-		
+
 		laser_trough_display.classList.toggle('hidden', true);
 		laser_trough_barcode.classList.toggle('hidden', true);
 
@@ -403,10 +403,10 @@ function switch_rack_type(rack_type) {
 
 		laser_tube_display.classList.toggle('hidden', true);
 		laser_tube_barcode.classList.toggle('hidden', true);
-		
+
 		laser_trough_display.classList.toggle('hidden', false);
 		laser_trough_barcode.classList.toggle('hidden', false);
-		
+
 	}
 
 }

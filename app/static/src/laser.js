@@ -56,7 +56,6 @@ btn_start.addEventListener('click', () => {
 		return;
 	}
 
-	// laser_modal_select.setAttribute('data-enabled', '');
 	socketio.emit('start', in_work_order.value, in_part_number.value);
 
 });
@@ -98,8 +97,7 @@ socketio.on('partnumber-result', function(msg) {
 	console.log(`Part Number: ${msg}`);
 	if (msg == 'Y') { // Valid part number
 		laser_modal_select.setAttribute('data-enabled', '');
-	}
-	else {
+	} else {
 		alert('Invalid Part Number');
 	}
 })
@@ -112,14 +110,14 @@ socketio.on('response', function(msg) {
 socketio.on('connect', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		socketio.emit('PLC-serial', 'G2')	;
+		socketio.emit('PLC-serial', 'G2');
 	}
 });
 
 socketio.on('redirect', function(url) {
 	console.log(`Redirecting to ${url}`);
 	window.location = url;
-})
+});
 
 socketio.on('plc-message', function(data) {
 	//let msg = data.data;
@@ -133,8 +131,9 @@ socketio.on('plc-message', function(data) {
 
 		laser_modal_select.setAttribute('data-enabled', '');
 		socketio.emit('start', in_work_order.value, in_part_number.value);
-	}
-	else if (data == 'G2') { // Reach scan position
+
+	} else if (data == 'G2') { // Reach scan position
 		socketio.emit('scan-position');
 	}
-})
+
+});
