@@ -135,7 +135,7 @@ def cartridge_process():
 	app.logger.info (f'image_uid: '+ image_uid)
 
 	if not cartridge_id or not data:
-		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, work_order: {work_order}, rack_id: {rack_id}, data: {data}')
+		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, cartridge_id: {cartridge_id}, data: {data}')
 		# Need to log the info
 		return(redirect(url_for('cartridge')))
 
@@ -145,6 +145,7 @@ def cartridge_process():
 		cartridge_id = cartridge_id,
 		data         = data,
 		errno        = errno,
+		done_url     = url_for('cartridge'),
 		image_uid    = image_uid,
 		)
 
@@ -200,6 +201,7 @@ def laser_process():
 		data             = data,
 		rack_type        = rack_type,
 		errno            = errno,
+		done_url         = url_for('laser'),
 		image_uid        = image_uid,
 		)
 
