@@ -484,6 +484,8 @@ def laser_start(work_order, part_number):
 	mask, racktype = csvreader.search(part_number)
 	if (mask == None):
 		app.logger.error ('Invalid Part Number:'+part_number)
+		logdata = (work_order, part_number, '',  'FALSE', '', '', 'FAIL')
+		Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
 		emit('partnumber-result', 'N')
 	else:
 		if (racktype == 'Tube'):
@@ -551,10 +553,10 @@ def laser_confirm(laser_instrument):
 			app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
 			if (sdata[:5] == 'ERROR'):
 				app.logger.warn('Can not read 1D barcode')
-				errno = 2
+				errno = -2
 			else:
 				if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
-					errno = 3
+					errno = -3
 					app.logger.warn('Invalid Rack ID')
 		else:
 			errno = -1
@@ -667,15 +669,14 @@ def read_barcodes():
 	# writing to log file
 	logdata = (session[Laser.WORK_ORDER], session[Laser.PART_NUMBER], session[Laser.RACK_ID])
 	if (errno == 0): # pass
-		logdata = logdata + ('PASS',)
+		logdata = logdata + ('TRUE', 'TRUE', 'TRUE', 'PASS',)
 	else:
-		logdata = logdata + ('FAIL',)
+		if (errno > -5):
+			logdata = logdata + ('TRUE', 'FALSE', 'FALSE', 'FAIL',)
+		else:
+			logdata = logdata + ('TRUE', 'TRUE', 'FALSE', 'FAIL',)
 
-	tmpdata = session[Laser.DATA]
-	for i in range (int(len(tmpdata)/2)):
-		logdata = logdata +(tmpdata[i*2 + 1], )
-
-	Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, session[Laser.RACK_TYPE])
+	Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
 	app.logger.info('Redirecting page to laser_process')

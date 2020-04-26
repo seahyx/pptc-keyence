@@ -311,13 +311,13 @@ function load_data(data, statusBarManager) {
 }
 
 function get_display_item(sn) {
-	return cartridge_tube_display.querySelector(`.gr-cart-item.i${sn}`);
+	return cart_display_container.querySelector(`.gr-cart-item.i${sn}`);
 }
 
 function get_mask_row(sn) {
-	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .mask`);
+	return tb_cart_barcode.querySelector(`#barcode-${sn} .mask`);
 }
 
 function get_barcode_row(sn) {
-	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .barcode`);
+	return tb_cart_barcode.querySelector(`#barcode-${sn} .barcode`);
 }
