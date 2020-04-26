@@ -5,9 +5,6 @@
 <script type='text/javascript'>
 	var Globals = {
 		data         : {{ data|tojson }},
-		{% if cartridge_id %}
-		cartridge_id : {{ cartridge_id }},
-		{% endif %}
 		{% if rack_type %}
 		rack_type    : {{ rack_type }},
 		{% endif %}
