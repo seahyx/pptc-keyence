@@ -217,7 +217,7 @@ btn_done.addEventListener('click', () => {
 statusBarManager = new StatusBarManager(status_bar);
 imageStateManager = new ImageStateManager(cart_image_container);
 
-load_data(Globals.data, Globals.rack_type, statusBarManager);
+load_data(Globals.data, statusBarManager);
 
 
 // SocketIO
