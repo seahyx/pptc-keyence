@@ -4,11 +4,15 @@
 
 <script type='text/javascript'>
 	var Globals = {
-		data      : {{ data|tojson }},
-		//cartridge_id	: {{ cartridge_id }},
-		//rack_type : {{ rack_type }}, 
-		done_url  : {{ url_for('cartridge') }},
-		image_uid : {{ image_uid }},
+		data         : {{ data|tojson }},
+		{% if cartridge_id %}
+		cartridge_id : {{ cartridge_id }},
+		{% endif %}
+		{% if rack_type %}
+		rack_type    : {{ rack_type }},
+		{% endif %}
+		done_url     : {{ done_url|tojson }},
+		image_uid    : {{ image_uid }},
 		img_titles: [
 			'CAM1 Normal',
 			'CAM1 Left',
