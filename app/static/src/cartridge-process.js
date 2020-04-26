@@ -12,25 +12,25 @@ class StatusBarManager {
 	}
 
 	reset() {
-		this.set_text('')
+		this.set_text('');
 		this.status_bar.classList.toggle('pass', false);
 		this.status_bar.classList.toggle('error', false);
 	}
 
 	set_success(success_msg = 'PASS') {
-		this.reset()
+		this.reset();
 		this.set_text(success_msg);
 		this.status_bar.classList.toggle('pass', true);
 	}
 
 	set_fail(error_msg = 'FAIL') {
-		this.reset()
+		this.reset();
 		this.set_text(error_msg);
 		this.status_bar.classList.toggle('error', true);
 	}
 
 	set_neutral(msg = '-') {
-		this.reset()
+		this.reset();
 		this.set_text(msg);
 	}
 
@@ -44,8 +44,8 @@ class ImageStateManager {
 		this.container = container;
 
 		// Obtain components
-		this.zoom_container = container.querySelector('.cartridge-zoom-container');
-		this.img         = this.zoom_container.querySelector('.cartridge-img');
+		this.zoom_container = container.querySelector('.zoom-container');
+		this.img         = this.zoom_container.querySelector('.display-img');
 		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
 		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
 		this.next        = container.querySelector('#btn-next');
@@ -196,34 +196,26 @@ class ImageStateManager {
 
 }
 
-const status_bar            = document.querySelector('#cartridge-status');
+const status_bar             = document.querySelector('#cart-status');
 
-const btn_done              = document.querySelector('#btn-done');
-const cartridge_id         = document.querySelector('#cartridge-id');
+const btn_done               = document.querySelector('#btn-done');
+const td_cart_id             = document.querySelector('#cart-id');
 
-const cartridge_display    = document.querySelector('#cartridge-display');
-const cartridge_mask	   = document.querySelector('#cartridge-mask')
-const cartridge_barcode    = document.querySelector('#cartridge-barcode');
-
-const laser_image_container = document.querySelector('#laser-img-container');
+const tb_cart_barcode        = document.querySelector('#cart-barcode');
+const cart_display_container = document.querySelector('#cart-display-container');
+const cart_image_container   = document.querySelector('#cart-img-container');
 
 // Done button
 
 btn_done.addEventListener('click', () => {
-	//let confirmation = confirm('Are you sure you want to finish?');
-
-	//if (confirmation) {
-	console.log(Globals.done_url)
 	window.location = Globals.done_url;
-	//}
-
 });
 
 
 // Initialization
 
 statusBarManager = new StatusBarManager(status_bar);
-imageStateManager = new ImageStateManager(laser_image_container);
+imageStateManager = new ImageStateManager(cart_image_container);
 
 load_data(Globals.data, Globals.rack_type, statusBarManager);
 
@@ -252,7 +244,7 @@ socketio.on('redirect', function(url) {
 
 // Functions
 
-function load_data(data, rack_type, statusBarManager) {
+function load_data(data, statusBarManager) {
 
 	// Debugging purposes
 	console.log(`data: ${data}`);
@@ -266,73 +258,66 @@ function load_data(data, rack_type, statusBarManager) {
 
 		// Set default status to success
 		statusBarManager.set_success();
-		let y = 1
-		for (let x = 0; x < cartridge_count; x++) {
-			if (y == 3) {
-				y = 4
-			}
+
+		for (let x = 0, barcode_num = 1; x < cartridge_count; x++, barcode_num++) {
+
+			// Skip no. 3
+			if (barcode_num === 3) barcode_num++;
+
 			// Position of data in the data array which are in 3 in a set
 			let current_data_count = (x * 3);
 
 			// Element reference for the tube display
-			let display_element = get_tube_display_item(y)
+			let display_element = get_display_item(barcode_num);
 			
 			if (data[current_data_count] === '0') {
 				
 				// 0 means barcode is valid
 
-				get_mask_row(y).innerText = data[current_data_count+1];
-				get_tube_barcode_row(y).innerText = data[current_data_count + 2];
-				display_element.classList.toggle('error', false)
-				display_element.classList.toggle('pass', true)
+				get_mask_row(barcode_num).innerText = data[current_data_count+1];
+				get_barcode_row(barcode_num).innerText = data[current_data_count + 2];
+				display_element.classList.toggle('error', false);
+				display_element.classList.toggle('pass', true);
 	
-				console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`)
+				console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
 	
 			} else {
 	
 				// 1 means barcode is invalid
 
-				get_mask_row(y).innerText = data[current_data_count+1];
-				get_tube_barcode_row(y).innerText = data[current_data_count + 2];
-				display_element.classList.toggle('pass', false)
-				display_element.classList.toggle('error', true)
+				get_mask_row(barcode_num).innerText = data[current_data_count+1];
+				get_barcode_row(barcode_num).innerText = data[current_data_count + 2];
+				display_element.classList.toggle('pass', false);
+				display_element.classList.toggle('error', true);
 
 				// Display fail in status bar
+				errorcode = -5;
 				statusBarManager.set_fail('FAIL - Correct error then rescan');
-				errorcode = -5
-				console.log(`Tube number: ${x + 1}\nStatus: FAIL`)
+				console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
 	
 			}
-			y++;
 	
 		}
 	} else {
 
 		// Error handling
+		// No data
 
-		if (data != null) {
-			
-			// No rack type
-	
-			console.log('No rack type received, nothing displayed');
-			statusBarManager.set_fail('FAIL - Invalid rack type');
-
-		} else {
-
-			// No data
-	
-			console.log('No data and rack type received, nothing displayed');
-			statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
-		}
+		console.log('No data received, nothing displayed');
+		statusBarManager.set_fail('FAIL: No Vision data');
 
 	}
 	
 }
 
-function get_tube_display_item(sn) {
-	return cartridge_tube_display.querySelector(`.gr-cartridge-item.i${sn}`);
+function get_display_item(sn) {
+	return cartridge_tube_display.querySelector(`.gr-cart-item.i${sn}`);
 }
 
-function get_tube_barcode_row(sn) {
-	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .full-border`);
+function get_mask_row(sn) {
+	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .mask`);
+}
+
+function get_barcode_row(sn) {
+	return cartridge_tube_barcode.querySelector(`#barcode-${sn} .barcode`);
 }

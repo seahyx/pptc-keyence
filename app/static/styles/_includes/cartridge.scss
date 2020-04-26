@@ -1,20 +1,11 @@
 $cart-display-width: 16 * $base-font-size;
-$cart-img-size: 200px;
 
-.cart-container {
+.cart-display-container {
 	position: relative;
 
 	min-width: $cart-display-width;
 
 	background-color: white;
-
-
-	.cart-display {
-		min-width: -webkit-fill-available;
-		margin: $spacing-unit / 3;
-		pointer-events: none;
-		z-index: 1;
-	}
 	
 	.cart-underlay {
 		position: absolute;
@@ -30,6 +21,13 @@ $cart-img-size: 200px;
 		// background-color: $btn-green-color;
 		// opacity: 50%;
 		// z-index: 2;
+	}
+
+	.cart-display {
+		min-width: -webkit-fill-available;
+		margin: $spacing-unit / 3;
+		pointer-events: none;
+		z-index: 1;
 	}
 	
 	.cart-overlay {
@@ -72,16 +70,6 @@ table.tb-program {
 	.mask {
 		width: 35%;
 	}
-}
-
-// Cartridge photo
-.cart-img {
-	width: $cart-img-size;
-	height: $cart-img-size;
-
-	margin: $spacing-unit / 3 0;
-
-	background-color: white;
 }
 
 // Grid items

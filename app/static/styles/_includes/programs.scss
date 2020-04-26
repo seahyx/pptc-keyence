@@ -96,7 +96,7 @@ table.tb-program {
 	}
 }
 
-.gr-cartridge-item, .gr-laser-item {
+.gr-cart-item, .gr-laser-item {
 	// Debug color
 	// opacity: 50%;
 	// @for $i from 0 to 22 {
@@ -112,5 +112,87 @@ table.tb-program {
 	}
 	&.error {
 		background-color: $gr-item-error;
+	}
+}
+
+// Image displays
+.laser-img-container, .cart-img-container {
+	width: 300px;
+	min-height: 250px;
+
+	margin-bottom: $spacing-unit / 3;
+
+	background-color: white;
+
+	p {
+		text-align: center;
+
+		pointer-events: none;
+	}
+
+	.zoom-container {
+
+		position: relative;
+		min-width: 300px;
+
+		.zoom-lens {
+			position: absolute;
+			border: 1px solid transparent;
+			width: 60px;
+			height: 40px;
+
+			z-index: 1;
+
+			@include transitions(border 1s 2s);
+
+			&:hover {
+				border: 1px solid white;
+
+				@include transitions(none);
+			}
+
+		}
+	
+		img.display-img, .zoom-result {
+			height: 200px;
+		}
+	
+		img.display-img {
+			object-fit: contain;
+		}
+
+		.zoom-result {
+			position: absolute;
+
+			width: 300px;
+
+			visibility: hidden;
+			pointer-events: none;
+
+			z-index: 2;
+
+			&.activated {
+
+				visibility: visible;
+				pointer-events: all;
+
+			}
+		}
+
+	}
+
+	.image-info {
+		width: 150px;
+	}
+
+	.next, .prev {
+		flex-grow: 1;
+	}
+}
+
+// Loading circle modal
+.loading-modal {
+	.modal-wrapper, .modal-content {
+		background-color: $background-color;
 	}
 }
