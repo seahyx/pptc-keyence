@@ -1,24 +1,15 @@
-const btn_start           = document.querySelector('#btn-start');
-const cartridge_modal_select  = document.querySelector('#cartridge-modal');
-const cartridge_modal_loading = document.querySelector('#cartridge-loading');
-const cartridge_id           = document.querySelector('#cartridge-id');
+const btn_start     = document.querySelector('#btn-start');
+const loading_modal = document.querySelector('#loading-modal');
+const cart_id  = document.querySelector('#cart-id');
 
 // SocketIO
 
 var socketio = io.connect(`http://${document.domain}:${location.port}/cartridge/api`);
 
-window.addEventListener('click', (event) => {
-	if (event.target === cartridge_modal_select) {
-		cartridge_modal_select.removeAttribute('data-enabled');
-	}
-});
-
-
 // Start button, validate work order/part number
 btn_start.addEventListener('click', () => {
-
-	//cartridge_modal_loading.setAttribute('data-enabled', '');
-	socketio.emit('PLC-serial', 'S')	
+	loading_modal.setAttribute('data-enabled', '');
+	socketio.emit('PLC-serial', 'S');
 });
 
 // Responses
@@ -36,14 +27,14 @@ socketio.on('response', function(msg) {
 socketio.on('connect', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		socketio.emit('PLC-serial', 'G1')	
+		socketio.emit('PLC-serial', 'G1');
 	}
 });
 
 socketio.on('get_cartridge_id', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		cartridge_id.innerHTML = msg
+		td_cart_id.innerHTML = msg
 	}
 });
 
