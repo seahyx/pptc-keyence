@@ -300,6 +300,25 @@ def load_image(cam, image):
 
 # SocketIO interfaces
 
+#
+# Home
+#
+
+@socketio.on('connect', namespace='/home/api')
+def laser_connect():
+	app.logger.info('Connected to Home client interface')
+	plc_ser.on_send('H\r\n')
+	emit('connect', 'Connected to Home api')
+
+@socketio.on('disconnect', namespace='/home/api')
+def laser_disconnect():
+	app.logger.info('Disconnected from Home client interface')
+
+@socketio.on('PLC-serial', namespace='/home/api')
+def send_wait_serial(data):
+	app.logger.info(f'Sending {data} to PLC')
+	plc_ser.on_send(data+'\r\n')
+
 #Cartridge Assembly QC
 
 @socketio.on('connect', namespace=Cartridge.NAMESPACE)
@@ -484,7 +503,7 @@ def laser_start(work_order, part_number):
 	mask, racktype = csvreader.search(part_number)
 	if (mask == None):
 		app.logger.error ('Invalid Part Number:'+part_number)
-		logdata = (work_order, part_number, '',  'FALSE', '', '', 'FAIL')
+		logdata = (work_order, part_number, '', '',  'FALSE', '', '', 'FAIL')
 		Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
 		emit('partnumber-result', 'N')
 	else:
@@ -667,7 +686,7 @@ def read_barcodes():
 
 	session[Laser.ERRORCODE] = errno
 	# writing to log file
-	logdata = (session[Laser.WORK_ORDER], session[Laser.PART_NUMBER], session[Laser.RACK_ID])
+	logdata = (session[Laser.WORK_ORDER], session[Laser.PART_NUMBER], session[Laser.INSTRUMENT], session[Laser.RACK_ID])
 	if (errno == 0): # pass
 		logdata = logdata + ('TRUE', 'TRUE', 'TRUE', 'PASS',)
 	else:
@@ -685,15 +704,17 @@ def read_barcodes():
 @plc_ser.on_message()
 def handle_message(msg):
 	senddata = msg.decode("utf-8").strip()
-	if (senddata in ('H0', 'G2')):
-		app.nspace = Laser.NAMESPACE
+	if (senddata in ('G2')):
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
-	elif (senddata in ('H0', 'G1', 'G3')):
-		app.nspace = Cartridge.NAMESPACE
+	elif (senddata in ('G1', 'G3')):
 		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
 	elif (senddata in ('R')):
-		app.logger.info(app.nspace)
-		socketio.emit('plc-message', senddata, namespace=app.nspace)
+		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
+		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
+	elif (senddata in ('H0', 'E')):
+		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
+		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
+		socketio.emit('plc-message', senddata, namespace='/home/api')
 
 @plc_ser.on_log()
 def handle_logging(level, info):

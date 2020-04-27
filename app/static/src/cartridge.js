@@ -44,19 +44,17 @@ socketio.on('redirect', function(url) {
 })
 
 socketio.on('plc-message', function(data) {
-	//let msg = data.data;
 	console.log(`PLC sent ${data}`)
 
 	if (data == 'R') { // Start button pressed
-
-		//cartridge_modal_loading.setAttribute('data-enabled', '');
 		socketio.emit('PLC-serial', 'S')	
 	}
 	else if (data == 'G1') { // Reach scan position
-		console.log('Received G1')
 		socketio.emit('scan-position');
 	}
 	else if (data == 'G3') {
 		socketio.emit('scan-position2')
+	} else if (data == 'E') {
+		alert('E-STOP PRESSED');
 	}
 })

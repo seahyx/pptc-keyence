@@ -134,6 +134,9 @@ socketio.on('plc-message', function(data) {
 
 	} else if (data == 'G2') { // Reach scan position
 		socketio.emit('scan-position');
+	} else if (data == 'E') {
+		alert('E-STOP PRESSED');
 	}
+	
 
 });
