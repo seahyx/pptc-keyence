@@ -6,9 +6,11 @@ from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
 from logfile import Log_file
+from fileutil import Path_Util
 from werkzeug.urls import url_parse
 from time import sleep, time as current_time
 from timeit import default_timer as timer
+import os
 
 # Consts
 class Laser:
@@ -41,6 +43,14 @@ permissions.redirect_view = 'index'
 app.start_pressed = False
 app.use_flask_serial = True
 app.nspace = ''
+
+# move files from vision image dir to respective dir
+def move_image_files (destdir, subfolder):
+	filenames = os.listdir(configfile.VISION_IMAGE_DIR)
+	finaldest = Path_Util(destdir).mkdir(subfolder)
+	s = Path_Util(configfile.VISION_IMAGE_DIR)
+	for filename in filenames:
+		s.move(filename, finaldest)
 
 # Context processor runs and adds global values
 # for the template before any page is rendered
@@ -458,6 +468,11 @@ def read_2dbarcodes():
 	app.logger.info('Redirecting page to cartridge-process')
 	emit('redirect', url_for('cartridge_process'))
 
+@socketio.on('move_images', namespace=Cartridge.NAMESPACE)
+def cartridge_move_images():
+	subfolder = session[Cartridge.CARTRIDGE_ID]
+	move_image_files(configfile.cartridge_assembly_QC['ImageDir'], subfolder)
+
 #
 # Laser Etch QC
 #
@@ -701,6 +716,12 @@ def read_barcodes():
 	app.logger.info('Redirecting page to laser_process')
 	emit('redirect', url_for('laser_process'))
 
+@socketio.on('move_images', namespace=Laser.NAMESPACE)
+def laser_move_images():
+	subfolder = session[Laser.RACK_ID] +datetime.now().strftime('_%Y%m%d_%H%M%S')
+	move_image_files(configfile.laser_etch_QC['ImageDir'], subfolder)
+
+# PLC_SERIAL message
 @plc_ser.on_message()
 def handle_message(msg):
 	senddata = msg.decode("utf-8").strip()

@@ -218,6 +218,7 @@ const laser_image_container = document.querySelector('#laser-img-container');
 // Done button
 
 btn_done.addEventListener('click', () => {
+	socketio.emit('move_images')
 	window.location = Globals.done_url;
 });
 
