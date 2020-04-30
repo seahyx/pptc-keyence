@@ -208,7 +208,7 @@ const cart_image_container   = document.querySelector('#cart-img-container');
 // Done button
 
 btn_done.addEventListener('click', () => {
-	socketio.emit('move_images')
+	Globals.is_done = true;
 	window.location = Globals.done_url;
 });
 
@@ -322,3 +322,20 @@ function get_mask_row(sn) {
 function get_barcode_row(sn) {
 	return tb_cart_barcode.querySelector(`#barcode-${sn} .barcode`);
 }
+
+
+/* Redirect Hook */
+
+window.onbeforeunload = (e) => {
+
+	// Check for the isDone flag in Globals variable, which is present in process pages
+	if (Globals != null && Globals.is_done != null && !Globals.is_done) return '';
+
+};
+
+window.onunload = (e) => {
+
+	/* Do any cleaning up here */
+	socketio.emit('move_images');
+
+};

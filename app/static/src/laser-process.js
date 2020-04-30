@@ -218,7 +218,7 @@ const laser_image_container = document.querySelector('#laser-img-container');
 // Done button
 
 btn_done.addEventListener('click', () => {
-	socketio.emit('move_images')
+	Globals.is_done = true;
 	window.location = Globals.done_url;
 });
 
@@ -427,3 +427,22 @@ function get_barcode_row(sn) {
 function get_trough_barcode_row(sn) {
 	return laser_trough_barcode.querySelector(`#barcode-${sn} .barcode`);
 }
+
+
+
+
+/* Redirect Hook */
+
+window.onbeforeunload = (e) => {
+
+	// Check for the isDone flag in Globals variable, which is present in process pages
+	if (Globals != null && Globals.is_done != null && !Globals.is_done) return '';
+
+};
+
+window.onunload = (e) => {
+
+	/* Do any cleaning up here */
+	socketio.emit('move_images');
+
+};
