@@ -10,6 +10,8 @@ from fileutil import Path_Util
 from werkzeug.urls import url_parse
 from time import sleep, time as current_time
 from timeit import default_timer as timer
+from datetime import datetime
+import glob
 import os
 
 # Consts
@@ -49,8 +51,21 @@ def move_image_files (destdir, subfolder):
 	filenames = os.listdir(configfile.VISION_IMAGE_DIR)
 	finaldest = Path_Util(destdir).mkdir(subfolder)
 	s = Path_Util(configfile.VISION_IMAGE_DIR)
+	app.logger.info(f'Move images from {configfile.VISION_IMAGE_DIR} to {finaldest}')
 	for filename in filenames:
 		s.move(filename, finaldest)
+
+def get_folder_count(folder):
+	dest = configfile.cartridge_assembly_QC['ImageDir']+'/'+folder+'*'
+	return (len(glob.glob(dest)))
+
+def get_subfolder(subfolder):
+	folder_count = get_folder_count(subfolder)
+	if (folder_count == 0):
+		return subfolder
+	else:
+		return (subfolder+'_'+str(folder_count))
+
 
 # Context processor runs and adds global values
 # for the template before any page is rendered
@@ -470,7 +485,8 @@ def read_2dbarcodes():
 
 @socketio.on('move_images', namespace=Cartridge.NAMESPACE)
 def cartridge_move_images():
-	subfolder = session[Cartridge.CARTRIDGE_ID]
+	app.logger.info('Move vision images')
+	subfolder = get_subfolder(session[Cartridge.CARTRIDGE_ID])
 	move_image_files(configfile.cartridge_assembly_QC['ImageDir'], subfolder)
 
 #
@@ -718,6 +734,7 @@ def read_barcodes():
 
 @socketio.on('move_images', namespace=Laser.NAMESPACE)
 def laser_move_images():
+	app.logger.info('Move vision images')
 	subfolder = session[Laser.RACK_ID] +datetime.now().strftime('_%Y%m%d_%H%M%S')
 	move_image_files(configfile.laser_etch_QC['ImageDir'], subfolder)
 

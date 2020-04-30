@@ -223,7 +223,7 @@ load_data(Globals.data, statusBarManager);
 
 // SocketIO
 
-var socketio = io.connect(`http://${document.domain}:${location.port}/laser/api`);
+var socketio = io.connect(`http://${document.domain}:${location.port}/cartridge/api`);
 
 // Responses
 
@@ -328,14 +328,9 @@ function get_barcode_row(sn) {
 
 window.onbeforeunload = (e) => {
 
-	// Check for the isDone flag in Globals variable, which is present in process pages
-	if (Globals != null && Globals.is_done != null && !Globals.is_done) return '';
-
-};
-
-window.onunload = (e) => {
-
 	/* Do any cleaning up here */
+	console.log('Move cartridge images')
 	socketio.emit('move_images');
+	// Check for the isDone flag in Globals variable, which is present in process pages
 
 };

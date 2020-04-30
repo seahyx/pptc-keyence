@@ -34,7 +34,7 @@ socketio.on('connect', function(msg) {
 socketio.on('get_cartridge_id', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		td_cart_id.innerHTML = msg
+		cart_id.innerHTML = msg
 	}
 });
 

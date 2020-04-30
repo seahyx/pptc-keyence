@@ -5,7 +5,7 @@ const btn_select_cancel  = document.querySelector('#btn-select-cancel');
 const btn_select_confirm = document.querySelector('#btn-select-confirm');
 const in_work_order      = document.querySelector('#laser-work-order');
 const in_part_number     = document.querySelector('#laser-part-number');
-
+const status_bar         = document.querySelector('#status-bar');
 
 // SocketIO
 
@@ -79,6 +79,8 @@ btn_select_confirm.addEventListener('click', () => {
 	laser_modal_select.removeAttribute('data-enabled');
 
 	loading_modal.setAttribute('data-enabled', '');
+	
+	status_bar.innerHTML = 'Processing'
 
 	// Send data to server
 	socketio.emit('confirm', instrument_selected.value);
