@@ -2,7 +2,6 @@ from os import path
 # from app import configfile
 from datetime import datetime
 
-racks = {'Cartridge':0, 'Tube':1, 'Trough':2}
 fileformats = {0:'%s %15s  %s    %-8s %-15s %-15s       %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s',
             1:'%s %-8s %-8s %-15s %-15s %5s %5s %5s %s'}
         #1:'%s %s %s %15s %s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s',
@@ -24,4 +23,13 @@ class Log_file:
         print (fileformats[program])
         print (newdata)
         f.write(fileformats[program] % newdata)
+        f.close()
+
+class Audit_trail:
+    def write_file(dir, userid, data):
+        filename = dir + '/AuditTrail.log'
+        f = open (filename, 'a+')
+
+        newdata = (datetime.now().strftime('%Y%m%d %H%M%S'), userid, data)
+        f.write('%s %s %s' % newdata)
         f.close()

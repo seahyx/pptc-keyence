@@ -5,7 +5,7 @@ from app import app, db, socketio, tcpclient, plc_ser, barcode_ser, configfile, 
 from app.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.models import User
 from app.permissions import PermissionsManager
-from logfile import Log_file
+from logfile import Log_file, Audit_trail
 from fileutil import Path_Util
 from werkzeug.urls import url_parse
 from time import sleep, time as current_time
@@ -106,16 +106,19 @@ def login():
 		if user:
 			if not user.check_password(form.password.data):
 				# Wrong password
+				Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Invalid user/password')
 				app.logger.info('Log in failed: Wrong password')
 				return redirect(url_for('login'))
 		else:
 			# Wrong username
 			app.logger.info('Log in failed: Wrong username')
+			Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Invalid user/password')
 			return redirect(url_for('login'))
 
 		# Correct username and password
 		flash('Logged in successfully')
 		app.logger.info(f'Logged in successfully with username {user.username}')
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Login successful')
 		login_user(user, remember=form.rmb_me.data)
 
 		next_page = request.args.get('next')
@@ -151,6 +154,7 @@ def cartridge():
 @login_required
 def cartridge_process():
 	app.logger.info('Loading cartridge-process page...')
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Cartridge Assembly QC')
 
 	cartridge_id = session.get(Cartridge.CARTRIDGE_ID)
 	data         = session.get(Cartridge.DATA)
@@ -197,6 +201,7 @@ def laser():
 @login_required
 def laser_process():
 	app.logger.info('Loading laser-process page...')
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Laser Etch QC')
 
 	work_order  = session.get(Laser.WORK_ORDER)
 	part_number = session.get(Laser.PART_NUMBER)

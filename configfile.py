@@ -36,6 +36,10 @@ class ConfigFile():
 		self.PLC_BYTESIZE       = config.getint('PLC', 'Bytesize')
 		self.PLC_STOPBITS       = config.getint('PLC', 'Stopbits')
 
+		# Audit trail path
+		self.AUDIT_TRAIL_DIR = config.get('FILES', 'Audit Trail Dir')
+
+
 		# Cartridge Assembly QC and Laser Etch QC config files
 		cartridge_assembly_QC_file = config.get('FILES', 'Cartridge Assembly QC File')
 		laser_etch_QC_file         = config.get('FILES', 'Laser Etch QC File')
@@ -61,6 +65,7 @@ class ConfigFile():
 		self.cartridge_assembly_QC = {'Prefix': self.cartridge_assembly_QC_config.get('PREFIX', 'Allowed Prefixes').split(';')}
 		self.cartridge_assembly_QC['LogFile'] 		= self.cartridge_assembly_QC_config.get('PATH', 'Log File')
 		self.cartridge_assembly_QC['ImageDir'] 		= self.cartridge_assembly_QC_config.get('PATH', 'Image Dir')
+		self.cartridge_assembly_QC['Max Retry'] 		= self.cartridge_assembly_QC_config.getint('GENERAL', 'Max Retry')
 
 		# app.logger.info(f'Loading Cartridge Assembly QC config: {self.cartridge_assembly_QC}')
 
