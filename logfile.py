@@ -31,5 +31,5 @@ class Audit_trail:
         f = open (filename, 'a+')
 
         newdata = (datetime.now().strftime('%Y%m%d %H%M%S'), userid, data)
-        f.write('%s %s %s' % newdata)
+        f.write('%s %s %s\n' % newdata)
         f.close()

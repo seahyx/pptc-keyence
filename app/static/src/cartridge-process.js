@@ -218,7 +218,7 @@ btn_done.addEventListener('click', () => {
 statusBarManager = new StatusBarManager(status_bar);
 imageStateManager = new ImageStateManager(cart_image_container);
 
-load_data(Globals.data, statusBarManager);
+load_data(Globals.error_no, Globals.data, statusBarManager);
 
 
 // SocketIO
@@ -245,20 +245,27 @@ socketio.on('redirect', function(url) {
 
 // Functions
 
-function load_data(data, statusBarManager) {
+function load_data(error_no, data, statusBarManager) {
 
 	// Debugging purposes
-	console.log(`data: ${data}`);
+	console.log(`data: ${data}, error no: ${error_no}`);
 	
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
-	let errorcode = 0;
 
 	// Load data, != checks against null and undefined
-	if (data != null) {
+	if (error_no == 0 || error_no < -3) {
 
-		// Set default status to success
-		statusBarManager.set_success();
+		// Set default status
+		if (error_no == 0){
+			statusBarManager.set_success();
+		}
+		else if (error_no == -4){
+			statusBarManager.set_fail('FAIL: Invalid cartridge ID');
+		}
+		else {
+			statusBarManager.set_fail('FAIL: Correct error then rescan');
+		}
 
 		for (let x = 0, barcode_num = 1; x < cartridge_count; x++, barcode_num++) {
 
@@ -292,21 +299,17 @@ function load_data(data, statusBarManager) {
 				display_element.classList.toggle('error', true);
 
 				// Display fail in status bar
-				errorcode = -5;
-				statusBarManager.set_fail('FAIL - Correct error then rescan');
 				console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
 	
 			}
 	
 		}
+	} else if (error_no == -2) {
+		console.log('Invalid cartridge ID');
+		statusBarManager.set_fail('FAIL: Invalid cartridge ID');
 	} else {
-
-		// Error handling
-		// No data
-
-		console.log('No data received, nothing displayed');
-		statusBarManager.set_fail('FAIL: No Vision data');
-
+		console.log('Cartridge ID exceeded retry');
+		statusBarManager.set_fail('FAIL: Cartridge ID exceeded retry');
 	}
 	
 }
@@ -328,9 +331,10 @@ function get_barcode_row(sn) {
 
 window.onbeforeunload = (e) => {
 
+	if (Globals.error_no == 0 || Globals.error_no < -3) {
 	/* Do any cleaning up here */
-	console.log('Move cartridge images')
-	socketio.emit('move_images');
-	// Check for the isDone flag in Globals variable, which is present in process pages
+		console.log('Move cartridge images')
+		socketio.emit('move_images');
+	}
 
 };

@@ -106,19 +106,22 @@ def login():
 		if user:
 			if not user.check_password(form.password.data):
 				# Wrong password
-				Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Invalid user/password')
+				Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Invalid user/password')
+				session['USERNAME'] = ''
 				app.logger.info('Log in failed: Wrong password')
 				return redirect(url_for('login'))
 		else:
 			# Wrong username
 			app.logger.info('Log in failed: Wrong username')
-			Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Invalid user/password')
+			Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Invalid user/password')
+			session['USERNAME'] = ''
 			return redirect(url_for('login'))
 
 		# Correct username and password
 		flash('Logged in successfully')
 		app.logger.info(f'Logged in successfully with username {user.username}')
-		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Login successful')
+		session['USERNAME'] = user.username
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Login successful')
 		login_user(user, remember=form.rmb_me.data)
 
 		next_page = request.args.get('next')
@@ -139,6 +142,7 @@ def logout():
 	app.logger.info('Logging out user')
 	logout_user()
 	app.logger.info('User logged out')
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Logged out')
 	app.logger.info('Redirecting to login page...')
 	return redirect(url_for('login'))
 
@@ -153,8 +157,8 @@ def cartridge():
 @app.route('/cartridge/process/')
 @login_required
 def cartridge_process():
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Cartridge Assembly QC')
 	app.logger.info('Loading cartridge-process page...')
-	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Cartridge Assembly QC')
 
 	cartridge_id = session.get(Cartridge.CARTRIDGE_ID)
 	data         = session.get(Cartridge.DATA)
@@ -163,10 +167,10 @@ def cartridge_process():
 	image_uid = str(int(current_time() * 1000))
 	app.logger.info (f'image_uid: '+ image_uid)
 
-	if not cartridge_id or not data:
-		app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, cartridge_id: {cartridge_id}, data: {data}')
+	#if not cartridge_id or not data:
+	#	app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, cartridge_id: {cartridge_id}, data: {data}')
 		# Need to log the info
-		return(redirect(url_for('cartridge')))
+	#	return(redirect(url_for('cartridge')))
 
 	return render_template(
 		'cartridge-process.html',
@@ -201,7 +205,7 @@ def laser():
 @login_required
 def laser_process():
 	app.logger.info('Loading laser-process page...')
-	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.id, 'Laser Etch QC')
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Laser Etch QC')
 
 	work_order  = session.get(Laser.WORK_ORDER)
 	part_number = session.get(Laser.PART_NUMBER)
@@ -349,7 +353,9 @@ def send_wait_serial(data):
 	app.logger.info(f'Sending {data} to PLC')
 	plc_ser.on_send(data+'\r\n')
 
+#
 #Cartridge Assembly QC
+#
 
 @socketio.on('connect', namespace=Cartridge.NAMESPACE)
 def cartridge_connect():
@@ -380,6 +386,8 @@ def read_1dbarcodes():
 			tdata = barcode_ser.get().strip()
 			if (',' in tdata):
 				cartridge_id, work_order = tdata.split(',')
+				if (get_folder_count(cartridge_id) >= configfile.cartridge_assembly_QC['Max Retry']):
+					errno = -3
 			else:
 				cartridge_id = ''
 				work_order = ''
@@ -396,22 +404,28 @@ def read_1dbarcodes():
 				break
 			else:
 				sleep(0.1)
+
+	# TODO: Check whether it has exceeded max retry
+	
 	session[Cartridge.CARTRIDGE_ID] = cartridge_id
 	session[Cartridge.WORK_ORDER] = work_order
 	session[Cartridge.ERRORCODE] = errno
 
-	# TODO: Send the data back to browser
-	plc_ser.on_send('G3\r\n')
-	emit('get_cartridge_id', cartridge_id)
-	plc_ser.on_send('S\r\n')
+	if (errno == 0):
+		plc_ser.on_send('G3\r\n')
+		plc_ser.on_send('S\r\n')
+		emit('get_cartridge_id', {'Cart_ID':cartridge_id, 'Error_No':errno})
+	else:
+		plc_ser.on_send('GB\r\n')
+		session[Cartridge.DATA]=[]
+		app.logger.info('Redirecting page to cartridge-process')
+		emit('redirect', url_for('cartridge_process'))
+		# Log error
 
 @socketio.on('scan-position2', namespace=Cartridge.NAMESPACE)
 def read_2dbarcodes():
 	app.logger.info('Reading 2d barcode')
-	if (session[Cartridge.ERRORCODE] != 0):
-		errno = session[Cartridge.ERRORCODE]
-	else:
-		errno = 0
+
 	# Get barcodes
 	items = tcpclient.send('T1')
 	items.pop(0)
@@ -432,8 +446,13 @@ def read_2dbarcodes():
 			app.logger.info(section)
 			if (section not in sections): # Invalid rack id
 				app.logger.warn('Invalid cartridge id: '+section)
-				errno = -2
-				session[Cartridge.DATA] = items
+				errno = -4
+				for i in range (totalitem):
+					newdata.append('1')
+					newdata.append('')
+					newdata.append(items[i*2+1])
+
+				session[Cartridge.DATA] = newdata
 			else:
 				i=1
 				masks = []
@@ -464,8 +483,9 @@ def read_2dbarcodes():
 						errno = -7
 				app.logger.info(newdata)
 				session[Cartridge.DATA] = newdata
-	else: # Invalid rack id
+	else: # Invalid cartridge id
 		app.logger.info ('Invalid cartridge id: '+session[Cartridge.CARTRIDGE_ID])
+		errno = -4
 		for i in range(Cartridge.ITEM_QTY):
 			newdata.append('1')
 			newdata.append('') # mask
@@ -483,6 +503,7 @@ def read_2dbarcodes():
 		logdata = logdata +(tmpdata[i*3 + 2], )
 
 	Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
+	session[Cartridge.ERRORCODE] = errno
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
 	app.logger.info('Redirecting page to cartridge-process')
