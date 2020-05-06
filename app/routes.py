@@ -418,6 +418,8 @@ def read_1dbarcodes():
 	else:
 		plc_ser.on_send('GB\r\n')
 		session[Cartridge.DATA]=[]
+		logdata = (cartridge_id, 'FAIL', work_order) +('', )*Cartridge.ITEM_QTY
+		Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
 		app.logger.info('Redirecting page to cartridge-process')
 		emit('redirect', url_for('cartridge_process'))
 		# Log error
