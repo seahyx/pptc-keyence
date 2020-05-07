@@ -239,6 +239,21 @@ def laser_process():
 		image_uid        = image_uid,
 		)
 
+@app.route('/manual/test/')
+@login_required
+def manual_test():
+	app.logger.info('Loading manual test page...')
+	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Manual Test')
+
+	# Add a time tag to the user to ensure that images always load new on load
+	image_uid = str(int(current_time() * 1000))
+
+	return render_template(
+		'manual-test.html',
+		title            = 'Manual Test',
+		#image_uid        = image_uid,
+		)
+
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
 @permissions.admin_required
