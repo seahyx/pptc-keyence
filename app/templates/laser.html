@@ -12,7 +12,7 @@
 			<div class='container padding fit-content'>
 
 				<!-- Status code container -->
-				<div class='container status-container flex-center bordered'>
+				<div id='status-bar' class='container status-container flex-center bordered'>
 					<p>Set Rack on Stage, Enter WO and Part Number, then click Start</p>
 				</div>
 
@@ -23,19 +23,28 @@
 					<div class='container flex-center margin-right'>
 
 
-						<!-- Cartridge image -->
-						<div class='laser-img container bordered flex-center padding-small'>
-							
+						<!-- Laser image -->
+						<div class='laser-img-container container bordered flex-center padding-small'>
+
+							<!-- Image with zoom elements -->
+							<div class='zoom-container flex-center'>
+
+								<div class='zoom-lens'></div>
+								<img class='display-img'>
+								<div class='zoom-result'></div>
+
+							</div>
+
 						</div>
 
-						<!-- Cartridge display container -->
+						<!-- Laser display container -->
 						<div class='container laser-display-container bordered'>
 
 
 							<!-- EMPTY PLACEHOLDER Display -->
 							<div class='container laser-tube-display'>
 
-								<!-- Cartridge display overlay -->
+								<!-- Laser display overlay -->
 								<img class='laser-display laser-empty' src="{{ url_for('static', filename='img/laser.svg') }}">
 
 							</div>
@@ -43,7 +52,7 @@
 
 						</div>
 
-						<!-- Cartridge ID -->
+						<!-- Work Order, PN and Rack ID -->
 						<table class='tb-program tb-laser-id'>
 							<tr>
 								<td class='sn'><label for='laser-work-order'>Work Order</label></td>
@@ -75,16 +84,16 @@
 							</table>
 						</div>
 						<!-- Barcode and mask table -->
-						<div class='container'>
+						<div class='container bordered padding-small'>
 							<table class='tb-program tb-laser-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>
-									<th>Barcode</th>
+									<th class='barcode'>Barcode</th>
 								</tr>
 								{% for x in range(1, 25) %}
 									<tr id='barcode-{{ x }}'>
 										<td class='sn'>{{ x }}</td>
-										<td class='full-border'></td>
+										<td class='full-border barcode'></td>
 									</tr>
 								{% endfor %}
 							</table>
@@ -132,35 +141,19 @@
 
 		</div>
 
-		
-		<!-- Loading modal -->
-		<div id='laser-loading' class='modal laser-modal'>
+		{% include 'loading-modal.html' %}
 
-			<div class='container modal-wrapper padding'>
-			
-				<!-- Modal content -->
-				<div class='modal-content container padding bordered flex-center'>
-
-					<h2>Loading...</h2>
-
-					{% include 'spinner.html' %}
-
-				</div>
-
-			</div>
-
-		</div>
 
 	</div>
 
 
 	<!-- Pass Variables -->
-	<script type='text/javascript' defer>
+	<script type='text/javascript'>
 	let Globals = {
 		in_work_order_len: {{ work_order_len }}
 	}
 	</script>
-0
+
 	<script src="{{ url_for('static', filename='src/laser.js') }}" defer></script>
 
 {% endblock %}

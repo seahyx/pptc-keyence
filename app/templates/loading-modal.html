@@ -1,0 +1,21 @@
+{% block loading_modal %}
+
+<!-- Loading modal -->
+<div id='loading-modal' class='modal loading-modal'>
+
+	<div class='container modal-wrapper padding'>
+	
+		<!-- Modal content -->
+		<div class='modal-content container padding bordered flex-center'>
+
+			<h2>Loading...</h2>
+
+			{% include 'spinner.html' %}
+
+		</div>
+
+	</div>
+
+</div>
+
+{% endblock %}

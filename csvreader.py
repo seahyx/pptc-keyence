@@ -23,10 +23,11 @@ class CSVReader:
     def search (self, value):
         print (value)
         if self._open:
-            for row in self._data:
+            return next(((mask, racktype) for PN, a, mask, racktype in self._data if (PN == value)),(None, None)) 
+            # for row in self._data:
                 # print (row[0])
-                if (row[0] == value):
+                # if (row[0] == value):
                     # print(row[0])
-                    return row[2], row[3]   # mask, rack type
+                    # return row[2], row[3]   # mask, rack type
             
         return None, None

@@ -1,11 +1,11 @@
-const btn_start           = document.querySelector('#btn-start');
-const laser_modal_select  = document.querySelector('#laser-modal');
-const laser_modal_loading = document.querySelector('#laser-loading');
-const btn_select_cancel   = document.querySelector('#btn-select-cancel');
-const btn_select_confirm  = document.querySelector('#btn-select-confirm');
-const in_work_order       = document.querySelector('#laser-work-order');
-const in_part_number      = document.querySelector('#laser-part-number');
-
+const btn_start          = document.querySelector('#btn-start');
+const laser_modal_select = document.querySelector('#laser-modal');
+const loading_modal      = document.querySelector('#loading-modal');
+const btn_select_cancel  = document.querySelector('#btn-select-cancel');
+const btn_select_confirm = document.querySelector('#btn-select-confirm');
+const in_work_order      = document.querySelector('#laser-work-order');
+const in_part_number     = document.querySelector('#laser-part-number');
+const status_bar         = document.querySelector('#status-bar');
 
 // SocketIO
 
@@ -40,12 +40,11 @@ in_part_number.addEventListener('keydown', (e) => {
 });
 
 in_work_order.addEventListener('change', () => {
-	if (in_work_order.value.length < Globals.in_work_order_len) {
+	if (in_work_order.value.length != Globals.in_work_order_len) {
 		alert('Work order is invalid, please try again');
-		socketio.emit('PLC-serial', 'G2')	
-		return
+		//socketio.emit('PLC-serial', 'G2')
+		return;
 	}
-	// socketio.emit('partnumber', in_part_number.value);
 })
 
 
@@ -54,11 +53,10 @@ btn_start.addEventListener('click', () => {
 
 	if (!in_work_order.value || !in_part_number.value) {
 		alert('Please enter the work order and/or part number.');
-		return
+		return;
 	}
 
-	laser_modal_select.setAttribute('data-enabled', '');
-	socketio.emit('start', in_work_order.value, in_part_number.value)
+	socketio.emit('start', in_work_order.value, in_part_number.value);
 
 });
 
@@ -72,18 +70,20 @@ btn_select_confirm.addEventListener('click', () => {
 	if (instrument_selected === null) {
 
 		// No instrument selected (error!)
-		alert('Please select a laser instrument!')
+		alert('Please select a laser instrument!');
 		return;
 
 	}
-	
+
 	// Hide Modal
 	laser_modal_select.removeAttribute('data-enabled');
 
-	laser_modal_loading.setAttribute('data-enabled', '');
+	loading_modal.setAttribute('data-enabled', '');
+	
+	status_bar.innerHTML = 'Processing'
 
 	// Send data to server
-	socketio.emit('confirm', in_work_order.value, in_part_number.value, instrument_selected.value);
+	socketio.emit('confirm', instrument_selected.value);
 
 });
 
@@ -95,35 +95,50 @@ socketio.on('alert', function(msg) {
 	alert(msg);
 });
 
+socketio.on('partnumber-result', function(msg) {
+	console.log(`Part Number: ${msg}`);
+	if (msg == 'Y') { // Valid part number
+		laser_modal_select.setAttribute('data-enabled', '');
+	} else {
+		alert('Invalid Part Number');
+	}
+})
+
 socketio.on('response', function(msg) {
-	console.log(`Received data: ${msg}`);
+	console.log(`Received message: ${msg}`);
 });
 
 
 socketio.on('connect', function(msg) {
 	console.log(`Received data: ${msg}`);
 	if (msg) {
-		socketio.emit('PLC-serial', 'G2')	
+		socketio.emit('PLC-serial', 'G2');
 	}
-	
 });
 
 socketio.on('redirect', function(url) {
 	console.log(`Redirecting to ${url}`);
 	window.location = url;
-})
+});
 
 socketio.on('plc-message', function(data) {
 	//let msg = data.data;
 	console.log(`PLC sent ${data}`)
-	if (data == 'R') {
+
+	if (data == 'R') { // Start button pressed
 		if (!in_work_order.value || !in_part_number.value) {
 			alert('Please enter the work order and/or part number.');
-			socketio.emit('PLC-serial', 'G2')	
-			return
+			return;
 		}
 
 		laser_modal_select.setAttribute('data-enabled', '');
-		socketio.emit('start', in_work_order.value, in_part_number.value)
+		socketio.emit('start', in_work_order.value, in_part_number.value);
+
+	} else if (data == 'G2') { // Reach scan position
+		socketio.emit('scan-position');
+	} else if (data == 'E') {
+		alert('E-STOP PRESSED');
 	}
-})
+	
+
+});

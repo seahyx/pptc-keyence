@@ -1,0 +1,46 @@
+<!-- This block will load global variables for laser and cartridge processes -->
+
+{% block programs_globals_loader %}
+
+<script type='text/javascript'>
+	var Globals = {
+		is_done   : false,
+		error_no  : {{ errno }},
+		data      : {{ data|tojson }},
+		{% if rack_type %}
+		rack_type : {{ rack_type }},
+		{% endif %}
+		done_url  : {{ done_url|tojson }},
+		image_uid : {{ image_uid }},
+		img_titles: [
+			'CAM1 Normal',
+			'CAM1 Left',
+			'CAM1 Right',
+			'CAM1 Lower',
+			'CAM1 Upper',
+			'CAM2 Normal',
+			'CAM2 Left',
+			'CAM2 Right',
+			'CAM2 Lower',
+			'CAM2 Upper',
+			],
+		img_urls  : [
+			{{ url_for('load_image', cam=1, image='normal')|tojson }},
+			{{ url_for('load_image', cam=1, image='left')|tojson }},
+			{{ url_for('load_image', cam=1, image='right')|tojson }},
+			{{ url_for('load_image', cam=1, image='lower')|tojson }},
+			{{ url_for('load_image', cam=1, image='upper')|tojson }},
+			{{ url_for('load_image', cam=2, image='normal')|tojson }},
+			{{ url_for('load_image', cam=2, image='left')|tojson }},
+			{{ url_for('load_image', cam=2, image='right')|tojson }},
+			{{ url_for('load_image', cam=2, image='lower')|tojson }},
+			{{ url_for('load_image', cam=2, image='upper')|tojson }}
+			]
+	};
+	// Give each image url a unique query id for each page load, so images always get refreshed
+	for (let i = 0; i < Globals.img_urls.length; i++) {
+		Globals.img_urls[i] += '?' + Globals.image_uid;
+	}
+</script>
+
+{% endblock %}

@@ -49,8 +49,7 @@ class TCPClient:
 	def send(self, message):
 		''' Send message
 
-		:type message: str
-		:param message: Message to be sent
+		:param message: String message to be sent
 		'''
 
 		message += '\r'
@@ -72,7 +71,7 @@ class TCPClient:
 			data = self.sock.recv(1024)
 
 			# Response is received
-			data_decoded = data.decode('utf-8').split(',')
+			data_decoded = data.decode('utf-8').strip().split(',')
 			self.app.logger.info(f'Received {repr(data_decoded)} from server')
 
 		except:

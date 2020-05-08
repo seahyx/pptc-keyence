@@ -1,3 +1,4 @@
+from functools import wraps
 import time
 import serial
 import threading
@@ -9,7 +10,7 @@ class SerialClient:
 
 	''' Serial interface to barcode scanner
 
-	This class will attempt a serial connection to the specified port on the terminal. Can be used as follows::
+	This class will attempt a serial connection to the specified port on the terminal. Can be used as follow::
 
 		from flask import Flask
 		from serialclient import SerialClient
@@ -126,3 +127,27 @@ class SerialClient:
 				self.handle_data(reading)
 			else:
 				time.sleep(0.1)
+
+
+	# Dummy commands to cover Serial on testing
+
+	def on_send(self, data):
+		self.app.logger.info(f'on_send: {data}')
+	
+	def on_message(self):
+		''' Dummy on_message for testing without using Flask-Serial '''
+		def decorator(func):
+			@wraps(func)
+			def wrapper():
+				self.app.logger.info('on_message called, nothing is going to happen because this is for debugging')
+			return wrapper
+		return decorator
+	
+	def on_log(self):
+		''' Dummy on_log for testing without using Flask-Serial '''
+		def decorator(func):
+			@wraps(func)
+			def wrapper():
+				self.app.logger.info('on_log called, nothing is going to happen because this is for debugging')
+			return wrapper
+		return decorator
