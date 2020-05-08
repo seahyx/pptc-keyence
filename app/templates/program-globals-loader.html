@@ -3,15 +3,28 @@
 {% block programs_globals_loader %}
 
 <script type='text/javascript'>
+	let date = new Date();
+
 	var Globals = {
 		is_done   : false,
+
+		{% if error_no %}
 		error_no  : {{ errno }},
+		{% endif %}
+
+		{% if data %}
 		data      : {{ data|tojson }},
+		{% endif %}
+
 		{% if rack_type %}
 		rack_type : {{ rack_type }},
 		{% endif %}
+
+		{% if done_url %}
 		done_url  : {{ done_url|tojson }},
-		image_uid : {{ image_uid }},
+		{% endif %}
+
+		image_uid : date.getTime(),
 		img_titles: [
 			'CAM1 Normal',
 			'CAM1 Left',

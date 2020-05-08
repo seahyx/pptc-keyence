@@ -164,9 +164,6 @@ def cartridge_process():
 	data         = session.get(Cartridge.DATA)
 	errno        = session.get(Cartridge.ERRORCODE)
 
-	image_uid = str(int(current_time() * 1000))
-	app.logger.info (f'image_uid: '+ image_uid)
-
 	#if not cartridge_id or not data:
 	#	app.logger.warning(f'Insufficient data received, redirecting back to cartridge page, cartridge_id: {cartridge_id}, data: {data}')
 		# Need to log the info
@@ -179,7 +176,6 @@ def cartridge_process():
 		data         = data,
 		errno        = errno,
 		done_url     = url_for('cartridge'),
-		image_uid    = image_uid,
 		)
 
 
@@ -222,9 +218,6 @@ def laser_process():
 	if not rack_type:
 		rack_type = -1
 
-	# Add a time tag to the user to ensure that images always load new on load
-	image_uid = str(int(current_time() * 1000))
-
 	return render_template(
 		'laser-process.html',
 		title            = 'Laser Etch QC - Processing',
@@ -236,7 +229,6 @@ def laser_process():
 		rack_type        = rack_type,
 		errno            = errno,
 		done_url         = url_for('laser'),
-		image_uid        = image_uid,
 		)
 
 @app.route('/manual/test/')
@@ -245,13 +237,9 @@ def manual_test():
 	app.logger.info('Loading manual test page...')
 	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Manual Test')
 
-	# Add a time tag to the user to ensure that images always load new on load
-	image_uid = str(int(current_time() * 1000))
-
 	return render_template(
 		'manual-test.html',
 		title            = 'Manual Test',
-		#image_uid        = image_uid,
 		)
 
 @app.route('/registration/', methods=['GET', 'POST'])
