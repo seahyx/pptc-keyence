@@ -165,13 +165,31 @@ class ImageStateManager {
 
 }
 
-const btn_clear             = document.querySelector('#btn-clear');
-const manual_work_order      = document.querySelector('#manual-work-order');
-const manual_rack_id         = document.querySelector('#manual-id');
+const btn_clear                = document.querySelector('#btn-clear');
+const manual_work_order        = document.querySelector('#manual-work-order');
+const manual_rack_id           = document.querySelector('#manual-id');
 
-const manual_tube_barcode    = document.querySelector('#manual-tube-barcode');
+const manual_tube_barcode      = document.querySelector('#manual-tube-barcode');
 
-const manual_image_container = document.querySelector('#manual-img-container');
+const manual_image_container   = document.querySelector('#manual-img-container');
+
+// Main
+const manual_btn_init          = document.querySelector('#btn-initialization');
+const manual_btn_home_pos      = document.querySelector('#btn-home-pos');
+
+// Cartridge Assembly QC
+const manual_btn_cart_pos_1    = document.querySelector('#btn-cart-move-pos-1');
+const manual_btn_cart_read_1D  = document.querySelector('#btn-cart-read-1D');
+const manual_btn_cart_pos_2    = document.querySelector('#btn-cart-move-pos-2');
+const manual_btn_cart_read_2D  = document.querySelector('#btn-cart-read-2D');
+
+// Laser Etch QC
+const manual_btn_laser_pos_1   = document.querySelector('#btn-laser-move-pos-1');
+const manual_btn_laser_read_1D = document.querySelector('#btn-laser-read-1D');
+const manual_btn_laser_pos_2   = document.querySelector('#btn-laser-move-pos-2');
+const manual_btn_laser_read_2D = document.querySelector('#btn-laser-read-2D');
+
+
 
 // Done button
 

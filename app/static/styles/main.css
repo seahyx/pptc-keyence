@@ -1183,8 +1183,16 @@ table.tb-program.tb-manual-barcode, table.tb-program.tb-manual-select {
   background-color: white;
 }
 
-.manual-modal .modal-wrapper, .manual-modal .modal-content {
-  background-color: #f2f2f2;
+.manual-button-container {
+  width: 20rem;
+}
+
+.manual-button-container p {
+  font-weight: bold;
+}
+
+.manual-button-container a {
+  flex-grow: 1;
 }
 
 .container.input-form-container {

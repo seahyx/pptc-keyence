@@ -22,9 +22,15 @@ table.tb-program {
 	background-color: white;
 }
 
-// manual modal and loading screen (instrument selection popup)
-.manual-modal {
-	.modal-wrapper, .modal-content {
-		background-color: $background-color;
+.manual-button-container {
+	width: 25 * $base-font-size;
+
+	p {
+		font-weight: bold;
 	}
+
+	a {
+		flex-grow: 1;
+	}
+
 }
