@@ -1,40 +1,3 @@
-
-var Globals = {
-	image_uid : {{ image_uid }},
-	img_titles: [
-		'CAM1 Normal',
-		'CAM1 Left',
-		'CAM1 Right',
-		'CAM1 Lower',
-		'CAM1 Upper',
-		'CAM2 Normal',
-		'CAM2 Left',
-		'CAM2 Right',
-		'CAM2 Lower',
-		'CAM2 Upper',
-		],
-	img_urls  : [
-		{{ url_for('load_image', cam=1, image='normal')|tojson }},
-		{{ url_for('load_image', cam=1, image='left')|tojson }},
-		{{ url_for('load_image', cam=1, image='right')|tojson }},
-		{{ url_for('load_image', cam=1, image='lower')|tojson }},
-		{{ url_for('load_image', cam=1, image='upper')|tojson }},
-		{{ url_for('load_image', cam=2, image='normal')|tojson }},
-		{{ url_for('load_image', cam=2, image='left')|tojson }},
-		{{ url_for('load_image', cam=2, image='right')|tojson }},
-		{{ url_for('load_image', cam=2, image='lower')|tojson }},
-		{{ url_for('load_image', cam=2, image='upper')|tojson }}
-		]
-};
-// Give each image url a unique query id for each page load, so images always get refreshed
-for (let i = 0; i < Globals.img_urls.length; i++) {
-	Globals.img_urls[i] += '?' + Globals.image_uid;
-}
-
-for (i = 0; i < Globals.img_urls.length - 1; i++) {
-	let img = new Image();
-	img.src = Globals.img_urls[i];
-}
 const laser_tube_count = 24, laser_trough_count = 4;
 
 const RackTypeEnum = {
@@ -203,12 +166,12 @@ class ImageStateManager {
 }
 
 const btn_clear             = document.querySelector('#btn-clear');
-const laser_work_order      = document.querySelector('#laser-work-order');
-const laser_rack_id         = document.querySelector('#laser-rack-id');
+const manual_work_order      = document.querySelector('#manual-work-order');
+const manual_rack_id         = document.querySelector('#manual-id');
 
-const laser_tube_barcode    = document.querySelector('#laser-tube-barcode');
+const manual_tube_barcode    = document.querySelector('#manual-tube-barcode');
 
-const laser_image_container = document.querySelector('#laser-img-container');
+const manual_image_container = document.querySelector('#manual-img-container');
 
 // Done button
 
@@ -220,9 +183,9 @@ btn_clear.addEventListener('click', () => {
 
 // Initialization
 
-imageStateManager = new ImageStateManager(laser_image_container);
+imageStateManager = new ImageStateManager(manual_image_container);
 
-load_data(Globals.data, Globals.rack_type);
+// load_data(Globals.data, Globals.rack_type);
 
 
 // SocketIO
@@ -297,7 +260,6 @@ function load_data(data, rack_type) {
 	}
 
 }
-
 
 function get_barcode_row(sn) {
 	return laser_tube_barcode.querySelector(`#barcode-${sn} .barcode`);

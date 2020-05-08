@@ -783,24 +783,24 @@ table.tb-program td input {
   background-color: #cd1818;
 }
 
-.laser-img-container, .cart-img-container {
+.img-container {
   width: 300px;
   min-height: 250px;
   margin-bottom: 0.5333333333rem;
   background-color: white;
 }
 
-.laser-img-container p, .cart-img-container p {
+.img-container p {
   text-align: center;
   pointer-events: none;
 }
 
-.laser-img-container .zoom-container, .cart-img-container .zoom-container {
+.img-container .zoom-container {
   position: relative;
   min-width: 300px;
 }
 
-.laser-img-container .zoom-container .zoom-lens, .cart-img-container .zoom-container .zoom-lens {
+.img-container .zoom-container .zoom-lens {
   position: absolute;
   border: 1px solid transparent;
   width: 60px;
@@ -813,7 +813,7 @@ table.tb-program td input {
   transition: border 1s 2s;
 }
 
-.laser-img-container .zoom-container .zoom-lens:hover, .cart-img-container .zoom-container .zoom-lens:hover {
+.img-container .zoom-container .zoom-lens:hover {
   border: 1px solid white;
   -webkit-transition: none;
   -moz-transition: none;
@@ -822,15 +822,15 @@ table.tb-program td input {
   transition: none;
 }
 
-.laser-img-container .zoom-container img.display-img, .laser-img-container .zoom-container .zoom-result, .cart-img-container .zoom-container img.display-img, .cart-img-container .zoom-container .zoom-result {
+.img-container .zoom-container img.display-img, .img-container .zoom-container .zoom-result {
   height: 200px;
 }
 
-.laser-img-container .zoom-container img.display-img, .cart-img-container .zoom-container img.display-img {
+.img-container .zoom-container img.display-img {
   object-fit: contain;
 }
 
-.laser-img-container .zoom-container .zoom-result, .cart-img-container .zoom-container .zoom-result {
+.img-container .zoom-container .zoom-result {
   position: absolute;
   width: 300px;
   visibility: hidden;
@@ -838,16 +838,16 @@ table.tb-program td input {
   z-index: 2;
 }
 
-.laser-img-container .zoom-container .zoom-result.activated, .cart-img-container .zoom-container .zoom-result.activated {
+.img-container .zoom-container .zoom-result.activated {
   visibility: visible;
   pointer-events: all;
 }
 
-.laser-img-container .image-info, .cart-img-container .image-info {
+.img-container .image-info {
   width: 150px;
 }
 
-.laser-img-container .next, .laser-img-container .prev, .cart-img-container .next, .cart-img-container .prev {
+.img-container .next, .img-container .prev {
   flex-grow: 1;
 }
 
@@ -1162,6 +1162,28 @@ table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
 }
 
 .laser-modal .modal-wrapper, .laser-modal .modal-content {
+  background-color: #f2f2f2;
+}
+
+table.tb-program.tb-manual-id {
+  width: 20rem;
+}
+
+table.tb-program.tb-manual-id .sn {
+  font-weight: bold;
+}
+
+table.tb-program.tb-manual-barcode, table.tb-program.tb-manual-select {
+  width: 16rem;
+}
+
+.manual-display-container {
+  position: relative;
+  margin-bottom: 0.5333333333rem;
+  background-color: white;
+}
+
+.manual-modal .modal-wrapper, .manual-modal .modal-content {
   background-color: #f2f2f2;
 }
 

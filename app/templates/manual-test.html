@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% set active_page = 'manual-test' %}
+{% set active_page = 'manual_test' %}
 
 {% block content %}
 
@@ -17,8 +17,10 @@
 					<!-- Left side container -->
 					<div class='container flex-center margin-right'>
 
-						<!-- Laser image -->
-						<div id='laser-img-container' class='laser-img-container container bordered flex-center flex-vertical padding-small'>
+
+
+						<!-- Image display -->
+						<div id='manual-img-container' class='manual-img-container container bordered flex-center flex-vertical padding-small'>
 
 							<!-- Image with zoom elements -->
 							<div class='zoom-container container flex-center'>
@@ -44,28 +46,57 @@
 
 						</div>
 
-						<!-- Add command and display of positions -->
 
-						<!-- Cartridge ID -->
-						<table class='tb-program tb-laser-id'>
+
+						<!-- Work Order / ID -->
+						<table class='tb-program tb-manual-id'>
 							<tr>
-								<td class='sn'>Work Order</td>
-								<td class='full-border' id='laser-work-order'>{{ work_order }}</td>
+								<td class='sn'><label for='manual-work-order'>Work Order</label></td>
+								<td class='full-border'><input id='manual-work-order' type='number'></td>
 							</tr>
 							<tr>
-								<td class='sn'>Rack ID / Cart ID</td>
-								<td class='full-border' id='laser-rack-id'>{{ rack_id }}</td>
+								<td class='sn'><label for='manual-rid'>Rack ID / Cart ID</label></td>
+								<td class='full-border'><input id='manual-id' type='number'></td>
 							</tr>
 						</table>
+
+
+
+						<!-- Command buttons -->
+
+						<div class='container flex-horizontal padding-small'>
+							<a id='btn-initialization' class='btn btn-small'>Initialization</a>
+							<a id='btn-home-pos' class='btn btn-small'>Home Pos</a>
+						</div>
+
+						<div class='grid-padded bordered padding-small'>
+							<p>Cartridge Assembly QC</p>
+							<a id='btn-cart-move-pos-1' class='btn btn-small'>Move to Pos 1</a>
+							<a id='btn-card-read-1D' class='btn btn-small'>Read 1D barcodes</a>
+							<a id='btn-cart-move-pos-2' class='btn btn-small'>Move to Pos 1</a>
+							<a id='btn-cart-read-2D' class='btn btn-small'>Read 2D barcodes</a>
+						</div>
+
+						<div class='grid-padded bordered padding-small'>
+							<p>Laser Etch QC</p>
+							<a id='btn-laser-move-pos-1' class='btn btn-small'>Move to Pos 1</a>
+							<a id='btn-laser-read-1D' class='btn btn-small'>Read 1D barcodes</a>
+							<a id='btn-laser-move-pos-2' class='btn btn-small'>Move to Pos 1</a>
+							<a id='btn-laser-read-2D' class='btn btn-small'>Read 2D barcodes</a>
+						</div>
+
 					</div>
+
+
+
 
 					<!-- Right side container -->
 					<div class='container flex-center'>
 
 						<!-- TUBE -->
 						<!-- Barcode table -->
-						<div id='laser-tube-barcode' class='container bordered padding-small laser-tube-barcode'>
-							<table class='tb-program tb-laser-barcode'>
+						<div id='manual-tube-barcode' class='container bordered padding-small manual-tube-barcode'>
+							<table class='tb-program tb-manual-barcode'>
 								<tr>
 									<th class='sn'>S/N</th>
 									<th class='barcode'>Barcode</th>
@@ -87,9 +118,13 @@
 
 		</div>
 
-		<a id='btn-clear' class='btn btn-clear'>CLEAR</a>
+		<a id='btn-clear' class='btn btn-small'>CLEAR</a>
 
 	</div>
+
+	{% include 'program-globals-loader.html' %}
+
+	<script src="{{ url_for('static', filename='src/image-preloader.js') }}"></script>
 
 	<script src="{{ url_for('static', filename='src/manual-test.js') }}" defer></script>
 

@@ -1,0 +1,30 @@
+table.tb-program {
+
+	&.tb-manual-id {
+		width: 25 * $base-font-size;
+
+		.sn {
+			font-weight: bold;
+		}
+	}
+	
+	&.tb-manual-barcode, &.tb-manual-select {
+		width: 20 * $base-font-size;
+	}
+
+}
+
+.manual-display-container {
+	position: relative;
+
+	margin-bottom: $spacing-unit / 3;
+
+	background-color: white;
+}
+
+// manual modal and loading screen (instrument selection popup)
+.manual-modal {
+	.modal-wrapper, .modal-content {
+		background-color: $background-color;
+	}
+}
