@@ -1,6 +1,7 @@
 const laser_tube_count = 24, laser_trough_count = 4;
 
 const RackTypeEnum = {
+	CARTRIDGE: 0,
 	TUBE: 1,
 	TROUGH: 2
 }
@@ -186,48 +187,84 @@ const manual_btn_cart_read_2D  = document.querySelector('#btn-cart-read-2D');
 // Laser Etch QC
 const manual_btn_laser_pos_1   = document.querySelector('#btn-laser-move-pos-1');
 const manual_btn_laser_read_1D = document.querySelector('#btn-laser-read-1D');
-const manual_btn_laser_pos_2   = document.querySelector('#btn-laser-move-pos-2');
-const manual_btn_laser_read_2D = document.querySelector('#btn-laser-read-2D');
+const manual_btn_laser_read_2D_tube   = document.querySelector('#btn-laser-read-2D-tube');
+const manual_btn_laser_read_2D_trough = document.querySelector('#btn-laser-read-2D-trough');
 
+// SocketIO
+var socketio = io.connect(`http://${document.domain}:${location.port}/manual/api`);
 
-
-// Done button
-
+// Clear button
 btn_clear.addEventListener('click', () => {
-	window.location = Globals.done_url;
+	//window.location = Globals.done_url;
 	// to check
+	clear_data()
 });
 
+manual_btn_init.addEventListener('click',() => {
+	console.log('Initialization')
+	socketio.emit('PLC-serial', 'H');
+});
+
+manual_btn_home_pos.addEventListener('click',() => {
+	console.log('Home position')
+	socketio.emit('PLC-serial', 'GB');
+});
+
+manual_btn_cart_pos_1.addEventListener('click',() => {
+	console.log('Cartridge pos 1')
+	socketio.emit('PLC-serial', 'G1');
+	socketio.emit('PLC-serial', 'S');
+});
+
+manual_btn_cart_pos_2.addEventListener('click',() => {
+	console.log('Cartridge pos 2')
+	socketio.emit('PLC-serial', 'G3');
+	socketio.emit('PLC-serial', 'S');
+});
+
+manual_btn_cart_read_1D.addEventListener('click',() => {
+	console.log('Cartridge read 1D barcode')
+	socketio.emit('1D-barcode')
+});
+
+manual_btn_cart_read_2D.addEventListener('click',() => {
+	console.log('Cartridge read 2D barcode')
+	socketio.emit('2D-barcode', RackTypeEnum.CARTRIDGE)
+});
+
+manual_btn_laser_pos_1.addEventListener('click',() => {
+	console.log('Laser pos 1')
+	socketio.emit('PLC-serial', 'G2');
+	socketio.emit('PLC-serial', 'S');
+});
+
+manual_btn_laser_read_1D.addEventListener('click',() => {
+	console.log('Laser read 1D barcode')
+	socketio.emit('1D-barcode')
+});
+
+manual_btn_laser_read_2D_tube.addEventListener('click',() => {
+	console.log('Laser read 2D barcode (tube)')
+	socketio.emit('2D-barcode', RackTypeEnum.TUBE)
+});
+
+manual_btn_laser_read_2D_trough.addEventListener('click',() => {
+	console.log('Laser read 2D barcode (trough)')
+	socketio.emit('2D-barcode', RackTypeEnum.TROUGH)
+});
 
 // Initialization
 
 imageStateManager = new ImageStateManager(manual_image_container);
 
-// load_data(Globals.data, Globals.rack_type);
-
-
-// SocketIO
-var socketio = io.connect(`http://${document.domain}:${location.port}/manual/api`);
-
-// Responses
-
-socketio.on('alert', function(msg) {
-	console.log(`Received alert: ${msg}`);
-	alert(msg);
-});
-
-socketio.on('response', function(msg) {
-	console.log(`Received data: ${msg}`);
-});
-
-socketio.on('redirect', function(url) {
-	console.log(`Redirecting to ${url}`);
-	window.location = url;
-})
-
-
-
 // Functions
+function clear_data() {
+	console.log('Clear data')
+	manual_rack_id.innerText = '';
+	manual_work_order.innerText = '';
+	data = [0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,'',0,''];
+	load_data(data, RackTypeEnum.TUBE);
+}
 
 function load_data(data, rack_type) {
 
@@ -235,50 +272,47 @@ function load_data(data, rack_type) {
 	console.log(`data: ${data},\nrack_id: ${rack_type}`);
 
 	// Load data, != checks against null and undefined
+	let cnt = 0;
 	if (data != null && rack_type != null) {
 
-		if (rack_type === RackTypeEnum.TUBE) {
+		if (rack_type == RackTypeEnum.TUBE) cnt = 24;
+		else if (rack_type == RackTypeEnum.TROUGH) cnt = 4;
+		else cnt = 21;
 
-			// Tube display/barcode
+		// Tube display/barcode
 
-			for (let x = 0; x < laser_tube_count; x++) {
+		for (let x = 0, y = 1; x < cnt; x++, y++) {
 
-				// Position of data in the data array which are in pairs of 2
-				let current_data_count = (x * 2);
+			// Position of data in the data array which are in pairs of 2
+			let current_data_count = (x * 2);
+			if (rack_type == 0 && y == 3) y++
 
-				// Element reference for the tube display
-				let display_element = get_display_item(x + 1);
+			get_barcode_row(y).innerText = data[current_data_count + 1];
+			console.log(`Tube number: ${x + 1}, Value: ${data[current_data_count + 1]}`);
 
-				if (data[current_data_count] === '0') {
-
-					// 0 means barcode is valid
-
-					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('error', false);
-					display_element.classList.toggle('pass', true);
-
-					console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
-
-				} else {
-
-					// 1 means barcode is invalid
-
-					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('pass', false);
-					display_element.classList.toggle('error', true);
-
-					// Display fail in status bar
-					statusBarManager.set_fail('FAIL - Correct error then rescan');
-					console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
-
-				}
-
-			}
 		}
 	}
 
 }
 
 function get_barcode_row(sn) {
-	return laser_tube_barcode.querySelector(`#barcode-${sn} .barcode`);
+	return manual_tube_barcode.querySelector(`#barcode-${sn} .barcode`);
 }
+
+// Responses
+
+socketio.on('response', function(msg) {
+	console.log(`Received data: ${msg}`);
+});
+
+socketio.on('1D-barcode', function(rack_id, work_order) {
+	manual_rack_id.innerText = rack_id;
+	manual_work_order.innerText = work_order;
+	console.log(`1D barcode ${rack_id}, ${work_order}`);
+})
+
+
+socketio.on('2D-barcode', function(rack_type, items) {
+	console.log(`2D barcode ${rack_type} ${items}`);
+	load_data(items, rack_type)
+})

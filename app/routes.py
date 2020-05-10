@@ -39,6 +39,8 @@ class Cartridge:
 	ITEM_QTY	= 21
 	ERRORCODE	= 0
 
+class Manual:
+	NAMESPACE   = '/manual/api'
 
 permissions = PermissionsManager()
 permissions.redirect_view = 'index'
@@ -769,6 +771,82 @@ def laser_move_images():
 	subfolder = session[Laser.RACK_ID] +datetime.now().strftime('_%Y%m%d_%H%M%S')
 	move_image_files(configfile.laser_etch_QC['ImageDir'], subfolder)
 
+#
+# manual test
+#
+
+@socketio.on('connect', namespace=Manual.NAMESPACE)
+def manual_connect():
+	app.logger.info('Connected to Manual client interface')
+	emit('response', 'Connected to Manual api')
+
+@socketio.on('disconnect', namespace=Manual.NAMESPACE)
+def laser_disconnect():
+	app.logger.info('Disconnected from Manual client interface')
+
+@socketio.on('PLC-serial', namespace=Manual.NAMESPACE)
+def send_wait_serial(data):
+	app.logger.info(f'Sending {data} to PLC')
+	plc_ser.on_send(data+'\r\n')
+
+@socketio.on('1D-barcode', namespace=Manual.NAMESPACE)
+def manual_1D_barcodes():
+	app.logger.info(f'1D barcode')
+
+	# Get Rack ID
+	barcode_ser.purge()
+	barcode_ser.send_data("LON")
+
+	start = timer()
+	sdata = None
+	while True:
+		if barcode_ser.data_ready:
+			sdata = barcode_ser.get().strip()
+			break
+		else:
+			end = timer()
+			if end - start > 2.0:
+				app.logger.warn('Timeout getting barcode')
+				break
+			else:
+				sleep(0.1)
+	
+	# TODO: Handle sdata error
+
+	if sdata:
+		app.logger.info('Data: ' + sdata)
+		if (sdata == 'ERROR'):
+			app.logger.error('Error reading Rack ID barcode')
+			rack_id = sdata
+			work_order = ''
+		elif (',' in sdata):
+				rack_id, work_order = sdata.split(',')
+		else:
+			rack_id = sdata
+			work_order = ''
+
+	else:
+		rack_id = ''
+		work_order = ''
+	app.logger.info(f' rack id: {rack_id}')
+	emit('1D-barcode', (rack_id, work_order))
+
+@socketio.on('2D-barcode', namespace=Manual.NAMESPACE)
+def manual_2D_barcodes( rack_type ):
+	app.logger.info(f'2D barcode')
+
+	if (rack_type == Laser.RACK_TYPE.TUBE):
+		tcpclient.send('PW,1,3')
+	elif (rack_type == Laser.RACK_TYPE.TROUGH):
+		tcpclient.send('PW,1,2')
+	else:
+		tcpclient.send('PW,1,1')
+
+	# Get barcodes
+	items = tcpclient.send('T1')
+	items.pop(0)
+	emit('2D-barcode', (rack_type, items))
+
 # PLC_SERIAL message
 @plc_ser.on_message()
 def handle_message(msg):
@@ -792,8 +870,3 @@ def handle_logging(level, info):
 @socketio.on('plc-message', namespace=Laser.NAMESPACE)
 def dotest(msg):
 	app.logger.info(msg)
-
-#@socketio.on_error_default
-#def default_error_handler(e):
-#	app.logger.error(request.event['message'])
-#	app.logger.error(request.event['args'])

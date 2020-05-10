@@ -42,7 +42,6 @@ in_part_number.addEventListener('keydown', (e) => {
 in_work_order.addEventListener('change', () => {
 	if (in_work_order.value.length != Globals.in_work_order_len) {
 		alert('Work order is invalid, please try again');
-		//socketio.emit('PLC-serial', 'G2')
 		return;
 	}
 })
