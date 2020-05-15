@@ -60,25 +60,18 @@ Session(app)
 # Serial setup
 
 # PLC serial
-use_flask_serial = True
 plc_ser = None
-if use_flask_serial:
 
-	from flask_serial import Serial
+from flask_serial import Serial
 
-	app.config['SERIAL_TIMEOUT'] = 0.1
-	app.config['SERIAL_PORT']     = configfile.PLC_PORT
-	app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
-	app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
-	app.config['SERIAL_PARITY']   = configfile.PLC_PARITY
-	app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
+app.config['SERIAL_TIMEOUT'] = 0.1
+app.config['SERIAL_PORT']     = configfile.PLC_PORT
+app.config['SERIAL_BAUDRATE'] = configfile.PLC_BAUDRATE
+app.config['SERIAL_BYTESIZE'] = configfile.PLC_BYTESIZE
+app.config['SERIAL_PARITY']   = configfile.PLC_PARITY
+app.config['SERIAL_STOPBITS'] = configfile.PLC_STOPBITS
 
-	plc_ser = Serial(app)
-
-else:
-	# SerialClient fallback
-	plc_ser = SerialClient(app, configfile.PLC_PORT, configfile.PLC_BAUDRATE, configfile.PLC_BYTESIZE,
-				configfile.PLC_PARITY, configfile.PLC_STOPBITS)
+plc_ser = Serial(app)
 
 # Barcode reader serial
 barcode_ser = SerialClient(app, configfile.BARCODE_PORT, configfile.BARCODE_BAUDRATE, configfile.BARCODE_BYTESIZE,
@@ -129,10 +122,7 @@ tcpclient.send('R0')
 # tcpclient.send('PW,1,001')
 
 # Initialize motor
-if use_flask_serial:
-	plc_ser.on_send('H\r\n')
-else:
-	plc_ser.send_data('H')
+plc_ser.on_send('H\r\n')
 app.logger.info('Initialize motor to home position')
 
 # Production email logging and file logs

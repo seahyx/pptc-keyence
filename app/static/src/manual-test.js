@@ -183,9 +183,15 @@ const manual_btn_cart_pos_1    = document.querySelector('#btn-cart-move-pos-1');
 const manual_btn_cart_read_1D  = document.querySelector('#btn-cart-read-1D');
 const manual_btn_cart_pos_2    = document.querySelector('#btn-cart-move-pos-2');
 const manual_btn_cart_read_2D  = document.querySelector('#btn-cart-read-2D');
+const manual_pos_g1				= document.querySelector('#pos-g1');
+const manual_pos_g3				= document.querySelector('#pos-g3');
+const manual_btn_apply_g1		= document.querySelector('#btn-apply-g1')
+const manual_btn_apply_g3		= document.querySelector('#btn-apply-g3')
 
 // Laser Etch QC
 const manual_btn_laser_pos_1   = document.querySelector('#btn-laser-move-pos-1');
+const manual_pos_g2			   = document.querySelector('#pos-g2');
+const manual_btn_apply_g2		= document.querySelector('#btn-apply-g2')
 const manual_btn_laser_read_1D = document.querySelector('#btn-laser-read-1D');
 const manual_btn_laser_read_2D_tube   = document.querySelector('#btn-laser-read-2D-tube');
 const manual_btn_laser_read_2D_trough = document.querySelector('#btn-laser-read-2D-trough');
@@ -253,6 +259,21 @@ manual_btn_laser_read_2D_trough.addEventListener('click',() => {
 	socketio.emit('2D-barcode', RackTypeEnum.TROUGH)
 });
 
+manual_btn_apply_g1.addEventListener('click',() => {
+	console.log('Apply Pos G1')
+	socketio.emit('write-pos', 'S1'+manual_pos_g1.value)
+});
+
+manual_btn_apply_g2.addEventListener('click',() => {
+	console.log('Apply Pos G2')
+	socketio.emit('write-pos', 'S2'+manual_pos_g2.value)
+});
+
+manual_btn_apply_g3.addEventListener('click',() => {
+	console.log('Apply Pos G3')
+	socketio.emit('write-pos', 'S3'+manual_pos_g3.value)
+});
+
 // Initialization
 
 imageStateManager = new ImageStateManager(manual_image_container);
@@ -301,6 +322,19 @@ function get_barcode_row(sn) {
 
 // Responses
 
+socketio.on('position', function(msg) {
+	console.log(`Received data: ${msg}`);
+	if (msg.substring(0,2) == 'P1') {
+		manual_pos_g1.value = msg.substring(2,5);
+	}
+	else if (msg.substring(0,2) == 'P2') {
+		manual_pos_g2.value = msg.substring(2,5);
+	}
+	else {
+		manual_pos_g3.value = msg.substring(2,5);
+	}
+});
+
 socketio.on('response', function(msg) {
 	console.log(`Received data: ${msg}`);
 });
@@ -315,4 +349,5 @@ socketio.on('1D-barcode', function(rack_id, work_order) {
 socketio.on('2D-barcode', function(rack_type, items) {
 	console.log(`2D barcode ${rack_type} ${items}`);
 	load_data(items, rack_type)
+	imageStateManager.update_img()
 })

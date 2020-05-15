@@ -778,6 +778,8 @@ def laser_move_images():
 @socketio.on('connect', namespace=Manual.NAMESPACE)
 def manual_connect():
 	app.logger.info('Connected to Manual client interface')
+	plc_ser.on_send('P1\r\n')
+	session['position']='P1'
 	emit('response', 'Connected to Manual api')
 
 @socketio.on('disconnect', namespace=Manual.NAMESPACE)
@@ -846,11 +848,17 @@ def manual_2D_barcodes( rack_type ):
 	items = tcpclient.send('T1')
 	items.pop(0)
 	emit('2D-barcode', (rack_type, items))
+	
+@socketio.on('write-pos', namespace=Manual.NAMESPACE)
+def write_pos(cmd):
+	app.logger.info(cmd)
+	plc_ser.on_send(cmd+'\r\n')
 
 # PLC_SERIAL message
 @plc_ser.on_message()
 def handle_message(msg):
 	senddata = msg.decode("utf-8").strip()
+	app.logger.info(senddata[0])
 	if (senddata in ('G2')):
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
 	elif (senddata in ('G1', 'G3')):
@@ -862,6 +870,13 @@ def handle_message(msg):
 		socketio.emit('plc-message', senddata, namespace=Laser.NAMESPACE)
 		socketio.emit('plc-message', senddata, namespace=Cartridge.NAMESPACE)
 		socketio.emit('plc-message', senddata, namespace='/home/api')
+	elif (senddata[0] == 'P'):
+		socketio.emit('position', senddata, namespace=Manual.NAMESPACE)
+		app.logger.info(senddata)
+		if (senddata[0:2]=='P1'):
+			plc_ser.on_send('P2\r\n')
+		elif (senddata[0:2]=='P2'):
+			plc_ser.on_send('P3\r\n')
 
 @plc_ser.on_log()
 def handle_logging(level, info):

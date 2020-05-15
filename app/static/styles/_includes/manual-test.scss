@@ -33,4 +33,12 @@ table.tb-program {
 		flex-grow: 1;
 	}
 
+	b {
+		border: 1px solid;
+		height: 25px;
+		text-align: center;
+		width: 9 * $base-font-size;
+		padding: 3px 4px;
+	}
+
 }
