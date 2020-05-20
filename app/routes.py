@@ -439,6 +439,7 @@ def read_2dbarcodes():
 	totalitem = int(len(items)/2)
 	
 	newdata = []
+	errno = 0
 	cartridge_id = session[Cartridge.CARTRIDGE_ID]
 	if ('-' in cartridge_id):
 		a, section = cartridge_id.split('-')

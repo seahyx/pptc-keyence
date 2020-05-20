@@ -7,10 +7,7 @@
 
 	var Globals = {
 		is_done   : false,
-
-		{% if error_no %}
 		error_no  : {{ errno }},
-		{% endif %}
 
 		{% if data %}
 		data      : {{ data|tojson }},
