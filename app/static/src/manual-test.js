@@ -175,6 +175,7 @@ const manual_tube_barcode      = document.querySelector('#manual-tube-barcode');
 const manual_image_container   = document.querySelector('#manual-img-container');
 
 // Main
+const manual_btn_refresh          = document.querySelector('#btn-cart-refresh-image');
 const manual_btn_init          = document.querySelector('#btn-initialization');
 const manual_btn_home_pos      = document.querySelector('#btn-home-pos');
 
@@ -209,6 +210,11 @@ btn_clear.addEventListener('click', () => {
 manual_btn_init.addEventListener('click',() => {
 	console.log('Initialization')
 	socketio.emit('PLC-serial', 'H');
+});
+
+manual_btn_refresh.addEventListener('click',() => {
+	console.log('Refresh Image')
+	imageStateManager.update_img();
 });
 
 manual_btn_home_pos.addEventListener('click',() => {
