@@ -18,7 +18,7 @@
 
 				<!-- Horizontal container to contain both sides -->
 				<div class='container flex-center flex-horizontal align-start fit-content'>
-					
+
 					<!-- Left side container -->
 					<div class='container'>
 
@@ -29,18 +29,18 @@
 							<div class='img-container container bordered flex-center padding-small'>
 
 								<p>CAM1</p>
-								
+
 								<img id='cart-img-cam1' class='display-img'>
-	
+
 							</div>
-							
+
 							<!-- Cartridge image CAM2 -->
 							<div class='img-container container bordered flex-center padding-small'>
 
 								<p>CAM2</p>
-								
+
 								<img id='cart-img-cam2' class='display-img'>
-	
+
 							</div>
 
 						</div>
@@ -51,7 +51,7 @@
 							<!-- Underlay - colours the circles -->
 							<div class='grid cart-underlay'>
 								<!-- Grid items - top->bottom, left->right -->
-								
+
 								<!-- There are 12 rows and 10 columns -->
 								<div class='gr-cart-item i1'></div>
 								<div class='gr-cart-item i2'></div>
@@ -79,24 +79,25 @@
 
 								<div class='gr-cart-item i21'></div>
 								<div class='gr-cart-item i22'></div>
-								
+
 							</div>
 
 							<!-- Cartridge image overlay -->
 							<img class='cart-display' src="{{ url_for('static', filename='img/cartridge.svg') }}">
 
 						</div>
-						
+
+					</div>
+
+					<!-- Right side container -->
+					<div class='container margin-left'>
+
 						<!-- Cartridge ID -->
 						<table class='tb-program tb-cart-id'>
 							<tr><th>Cartridge ID</th></tr>
 							<tr><td id='cart-id' class='full-border'></td></tr>
 						</table>
 
-					</div>
-
-					<!-- Right side container -->
-					<div class='container margin-left'>
 						<!-- Barcode and mask table -->
 						<div class='container bordered padding-small'>
 							<table class='tb-program'>
@@ -125,10 +126,10 @@
 		<a id='btn-start' class='btn btn-green btn-start'>START</a>
 
 		{% include 'loading-modal.html' %}
-		
-		
+
+
 	</div>
-	
+
 	<script src="{{ url_for('static', filename='src/cartridge.js') }}" defer></script>
-	
+
 {% endblock %}
