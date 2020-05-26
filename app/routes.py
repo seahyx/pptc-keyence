@@ -124,7 +124,7 @@ def login():
 		app.logger.info(f'Logged in successfully with username {user.username}')
 		session['USERNAME'] = user.username
 		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Login successful')
-		login_user(user, remember=form.rmb_me.data)
+		login_user(user)
 
 		next_page = request.args.get('next')
 		# Netloc tests if next is pointed towards other site, which can link to malicious sites. Thus not accepting the redirect if it has value.
