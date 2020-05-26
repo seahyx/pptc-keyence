@@ -22,6 +22,29 @@
 					<!-- Left side container -->
 					<div class='container'>
 
+						<!-- Cartridge Image Group -->
+						<div class='container flex-horizontal'>
+
+							<!-- Cartridge image CAM1 -->
+							<div class='img-container container bordered flex-center padding-small'>
+
+								<p>CAM1</p>
+								
+								<img id='cart-img-cam1' class='display-img'>
+	
+							</div>
+							
+							<!-- Cartridge image CAM2 -->
+							<div class='img-container container bordered flex-center padding-small'>
+
+								<p>CAM2</p>
+								
+								<img id='cart-img-cam2' class='display-img'>
+	
+							</div>
+
+						</div>
+
 						<!-- Cartridge display -->
 						<div id='cart-display-container' class='container cart-display-container flex-center bordered'>
 
@@ -76,8 +99,8 @@
 
 					</div>
 
-					<!-- Center container -->
-					<div class='container margin-center'>
+					<!-- Right side container -->
+					<div class='container margin-left'>
 						<!-- Barcode and mask table -->
 						<div class='container'>
 							<table  id='cart-barcode' class='tb-program'>
@@ -95,38 +118,6 @@
 								{% endfor %}
 							</table>
 						</div>
-					</div>
-
-					<!-- Right side container -->
-					<div class='container'>
-
-						<!-- Cartridge photo -->
-						<div id='cart-img-container' class='img-container container bordered flex-center flex-vertical padding-small'>
-
-							<!-- Image with zoom elements -->
-							<div class='zoom-container container flex-center'>
-
-								<div class='zoom-lens'></div>
-								<img class='display-img'>
-								<div class='zoom-result'></div>
-
-							</div>
-
-							<!-- Image navigation -->
-							<div class='container flex-center flex-horizontal max-width'>
-
-								<button id='btn-prev' class='btn btn-light prev'><p><</p></button>
-
-								<div class='image-info flex-center'>
-									<p id='image-title'>normal</p><p id='image-count'>1 / 5</p>
-								</div>
-
-								<button id='btn-next' class='btn btn-light next'><p>></p></button>
-
-							</div>
-
-						</div>
-
 					</div>
 
 				</div>
