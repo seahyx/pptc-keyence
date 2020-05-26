@@ -235,14 +235,14 @@ def laser_process():
 
 @app.route('/manual/test/')
 @login_required
+@permissions.admin_required
 def manual_test():
 	app.logger.info('Loading manual test page...')
 	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Manual Test')
 
 	return render_template(
 		'manual-test.html',
-		title            = 'Manual Test',
-		)
+		title = 'Manual Test',)
 
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
