@@ -92,16 +92,16 @@ table.tb-program {
 	}
 	
 	&.i17 {
-		@include grid-lines(8, 10, 1, 4);
+		@include grid-lines(9, 10, 1, 4);
 	}
 	&.i18 {
-		@include grid-lines(8, 10, 4, 7);
+		@include grid-lines(9, 10, 4, 7);
 	}
 	&.i19 {
-		@include grid-lines(8, 10, 7, 10);
+		@include grid-lines(9, 10, 7, 10);
 	}
 	&.i20 {
-		@include grid-lines(8, 10, 10, 13);
+		@include grid-lines(9, 10, 10, 13);
 	}
 
 	&.i13 {
