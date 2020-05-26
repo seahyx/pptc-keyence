@@ -64,10 +64,6 @@ $cart-display-width: 16 * $base-font-size;
 }
 
 table.tb-program {
-
-	&.tb-cart-id {
-		width: -webkit-fill-available;
-	}
 	
 	.mask {
 		width: 35%;

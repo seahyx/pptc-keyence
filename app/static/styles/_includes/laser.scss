@@ -1,6 +1,6 @@
 table.tb-program {
 	
-	&.tb-laser-table {
+	&.tb-laser-table, *.tb-laser-barcode {
 		width: 20 * $base-font-size;
 	}
 

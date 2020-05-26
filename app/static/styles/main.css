@@ -902,10 +902,6 @@ table.tb-program td input {
   grid-row-end: 11;
 }
 
-table.tb-program.tb-cart-id {
-  width: -webkit-fill-available;
-}
-
 table.tb-program .mask {
   width: 35%;
 }
@@ -1057,7 +1053,7 @@ table.tb-program .mask {
   grid-row-end: 13;
 }
 
-table.tb-program.tb-laser-table {
+table.tb-program.tb-laser-table, table.tb-program *.tb-laser-barcode {
   width: 16rem;
 }
 
