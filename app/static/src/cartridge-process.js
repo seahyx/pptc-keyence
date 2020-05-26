@@ -44,10 +44,10 @@ class ImageZoomManager {
 		this.container = container;
 
 		// Obtain components
-		this.zoom_container = container.querySelector('.zoom-container');
-		this.img         = this.zoom_container.querySelector('.display-img');
-		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
-		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
+    this.zoom_container = container.querySelector('.zoom-container');
+    this.img            = this.zoom_container.querySelector('.display-img');
+    this.zoom_lens      = this.zoom_container.querySelector('.zoom-lens');
+    this.zoom_result    = this.zoom_container.querySelector('.zoom-result');
 
 		// Default image index
 		this.current_image_index = default_image_index;
@@ -96,7 +96,7 @@ class ImageZoomManager {
 	}
 
 	update_zoom() {
-		this.lens_ratio = this.img.width / this.zoom_lens.offsetHeight;
+		this.lens_ratio = this.img.height / this.zoom_lens.offsetHeight;
 
 		this.zoom_result.style.backgroundImage = 'url("' + Globals.img_urls[this.current_image_index] + '")';
 		this.zoom_result.style.backgroundSize = (this.img.width * this.lens_ratio) + 'px ' + (this.img.height * this.lens_ratio) + 'px';
