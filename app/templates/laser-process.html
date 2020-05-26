@@ -24,7 +24,9 @@
 
 
 						<!-- Laser image -->
-						<div id='laser-img-container' class='img-container container bordered flex-center flex-vertical padding-small'>
+						<div id='laser-img-container-cam1' class='img-container container bordered flex-center flex-vertical padding-small'>
+
+							<p>CAM1</p>
 
 							<!-- Image with zoom elements -->
 							<div class='zoom-container container flex-center'>
@@ -35,16 +37,18 @@
 
 							</div>
 
-							<!-- Image navigation -->
-							<div class='container flex-center flex-horizontal max-width'>
+						</div>
 
-								<button id='btn-prev' class='btn btn-light prev'><p><</p></button>
+						<div id='laser-img-container-cam2' class='img-container container bordered flex-center flex-vertical padding-small'>
 
-								<div class='image-info flex-center'>
-									<p id='image-title'>normal</p><p id='image-count'>1 / 5</p>
-								</div>
+							<p>CAM2</p>
 
-								<button id='btn-next' class='btn btn-light next'><p>></p></button>
+							<!-- Image with zoom elements -->
+							<div class='zoom-container container flex-center'>
+
+								<div class='zoom-lens'></div>
+								<img class='display-img'>
+								<div class='zoom-result'></div>
 
 							</div>
 

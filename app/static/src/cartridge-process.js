@@ -36,16 +36,134 @@ class StatusBarManager {
 
 }
 
-const status_bar             = document.querySelector('#cart-status');
+class ImageZoomManager {
 
-const btn_done               = document.querySelector('#btn-done');
-const td_cart_id             = document.querySelector('#cart-id');
+	constructor(container, default_image_index) {
 
-const tb_cart_barcode        = document.querySelector('#cart-barcode');
-const cart_display_container = document.querySelector('#cart-display-container');
+		// Image container
+		this.container = container;
 
-const cart_image_cam1        = document.querySelector('#cart-img-cam1');
-const cart_image_cam2        = document.querySelector('#cart-img-cam2');
+		// Obtain components
+		this.zoom_container = container.querySelector('.zoom-container');
+		this.img         = this.zoom_container.querySelector('.display-img');
+		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
+		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
+
+		// Default image index
+		this.current_image_index = default_image_index;
+
+		/* Execute a function when someone moves the cursor over the image, or the lens: */
+		this.zoom_lens.addEventListener('mousemove', (mouse_event) => {
+			this.on_move_lens(mouse_event);
+		});
+
+		this.img.addEventListener('mousemove', (mouse_event) => {
+			this.on_move_lens(mouse_event);
+		});
+
+		/* And also for touch screens: */
+		this.zoom_lens.addEventListener('touchmove', (mouse_event) => {
+			this.on_move_lens(mouse_event);
+		});
+
+		this.img.addEventListener('touchmove', (mouse_event) => {
+			this.on_move_lens(mouse_event);
+		});
+
+
+		// Zoom in and zoom out
+		this.zoom_lens.addEventListener('click', () => {
+			this.zoom_result.classList.toggle('activated', true);
+		});
+
+		this.zoom_result.addEventListener('click', () => {
+			this.zoom_result.classList.toggle('activated', false);
+		});
+
+
+		// Update image, title, count, and button
+		this.update_everything();
+
+	}
+
+	update_everything() {
+		this.update_img();
+		this.update_zoom();
+	}
+
+	update_img() {
+		this.img.setAttribute('src', Globals.img_urls[this.current_image_index]);
+	}
+
+	update_zoom() {
+		this.lens_ratio = this.img.width / this.zoom_lens.offsetHeight;
+
+		this.zoom_result.style.backgroundImage = 'url("' + Globals.img_urls[this.current_image_index] + '")';
+		this.zoom_result.style.backgroundSize = (this.img.width * this.lens_ratio) + 'px ' + (this.img.height * this.lens_ratio) + 'px';
+	}
+
+	on_move_lens(mouse_event) {
+
+		let cursor_pos, lens_x, lens_y;
+
+		/* Update background image if it has yet to load correctly */
+		if (this.lens_ratio == 0) {
+			this.update_zoom();
+		}
+
+		/* Get the cursor's x and y positions: */
+		cursor_pos = this.get_cursor_pos(mouse_event);
+
+		/* Calculate the position of the lens: */
+		lens_x = cursor_pos.x - (this.zoom_lens.offsetWidth / 2);
+		lens_y = cursor_pos.y - (this.zoom_lens.offsetHeight / 2);
+
+		/* Prevent the lens from being positioned outside the image: */
+		if (lens_x > this.img.width - this.zoom_lens.offsetWidth) {lens_x = this.img.width - this.zoom_lens.offsetWidth;}
+		if (lens_x < 0) {lens_x = 0;}
+		if (lens_y > this.img.height - this.zoom_lens.offsetHeight) {lens_y = this.img.height - this.zoom_lens.offsetHeight;}
+		if (lens_y < 0) {lens_y = 0;}
+
+		/* Set the position of the lens: */
+		this.zoom_lens.style.left = (lens_x + this.img.offsetLeft) + 'px';
+		this.zoom_lens.style.top = (lens_y + this.img.offsetTop) + 'px';
+
+		/* Display what the lens 'sees': */
+		this.zoom_result.style.backgroundPosition = '-' + (lens_x * this.lens_ratio) + 'px -' + (lens_y * this.lens_ratio) + 'px';
+
+	}
+
+	get_cursor_pos(mouse_event) {
+
+		let img_dom_rect, relative_x = 0, relative_y = 0;
+
+		/* Get the x and y positions of the image: */
+		img_dom_rect = this.img.getBoundingClientRect();
+
+		/* Calculate the cursor's x and y coordinates, relative to the image: */
+		relative_x = mouse_event.pageX - img_dom_rect.left;
+		relative_y = mouse_event.pageY - img_dom_rect.top;
+
+		/* Consider any page scrolling: */
+		relative_x = relative_x - window.pageXOffset;
+		relative_y = relative_y - window.pageYOffset;
+
+		return {x: relative_x, y: relative_y};
+
+	}
+
+}
+
+const status_bar                 = document.querySelector('#cart-status');
+
+const btn_done                   = document.querySelector('#btn-done');
+const td_cart_id                 = document.querySelector('#cart-id');
+
+const tb_cart_barcode            = document.querySelector('#cart-barcode');
+const cart_display_container     = document.querySelector('#cart-display-container');
+
+const cart_image_container_cam1 = document.querySelector('#cart-img-container-cam1');
+const cart_image_container_cam2 = document.querySelector('#cart-img-container-cam2');
 
 // Done button
 
@@ -59,10 +177,10 @@ btn_done.addEventListener('click', () => {
 
 statusBarManager = new StatusBarManager(status_bar);
 
-load_data(Globals.error_no, Globals.data, statusBarManager);
+imageZoomManager_1 = new ImageZoomManager(cart_image_container_cam1);
+imageZoomManager_2 = new ImageZoomManager(cart_image_container_cam2);
 
-cart_image_cam1.setAttribute('src', Globals.img_urls[0]);
-cart_image_cam2.setAttribute('src', Globals.img_urls[1]);
+load_data(Globals.error_no, Globals.data, statusBarManager);
 
 
 // SocketIO

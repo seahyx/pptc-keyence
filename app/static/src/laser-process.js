@@ -41,9 +41,9 @@ class StatusBarManager {
 
 }
 
-class ImageStateManager {
+class ImageZoomManager {
 
-	constructor(container) {
+	constructor(container, default_image_index) {
 
 		// Image container
 		this.container = container;
@@ -53,22 +53,9 @@ class ImageStateManager {
 		this.img         = this.zoom_container.querySelector('.display-img');
 		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
 		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
-		this.next        = container.querySelector('#btn-next');
-		this.prev        = container.querySelector('#btn-prev');
-		this.title       = container.querySelector('#image-title');
-		this.count       = container.querySelector('#image-count');
 
 		// Default image index
-		this.current_image_index = 0;
-
-		// Set listeners to the buttons
-		this.next.addEventListener('click', () => {
-			this.set_next_img();
-		})
-
-		this.prev.addEventListener('click', () => {
-			this.set_prev_img();
-		})
+		this.current_image_index = default_image_index;
 
 		/* Execute a function when someone moves the cursor over the image, or the lens: */
 		this.zoom_lens.addEventListener('mousemove', (mouse_event) => {
@@ -104,27 +91,9 @@ class ImageStateManager {
 
 	}
 
-	set_next_img() {
-		if (this.current_image_index < Globals.img_urls.length - 1) {
-			this.current_image_index++;
-
-			this.update_everything();
-		}
-	}
-
-	set_prev_img() {
-		if (this.current_image_index > 0) {
-			this.current_image_index--;
-
-			this.update_everything();
-		}
-	}
-
 	update_everything() {
 		this.update_img();
 		this.update_zoom();
-		this.update_text();
-		this.update_button_attr();
 	}
 
 	update_img() {
@@ -136,17 +105,6 @@ class ImageStateManager {
 
 		this.zoom_result.style.backgroundImage = 'url("' + Globals.img_urls[this.current_image_index] + '")';
 		this.zoom_result.style.backgroundSize = (this.img.width * this.lens_ratio) + 'px ' + (this.img.height * this.lens_ratio) + 'px';
-	}
-
-	update_text() {
-		this.title.innerText = Globals.img_titles[this.current_image_index];
-
-		this.count.innerText = `${this.current_image_index + 1} / ${Globals.img_urls.length}`;
-	}
-
-	update_button_attr() {
-		this.prev.toggleAttribute('disabled', this.current_image_index <= 0);
-		this.next.toggleAttribute('disabled', this.current_image_index >= Globals.img_urls.length - 1);
 	}
 
 	on_move_lens(mouse_event) {
@@ -201,19 +159,20 @@ class ImageStateManager {
 
 }
 
-const status_bar            = document.querySelector('#laser-status');
+const status_bar                 = document.querySelector('#laser-status');
 
-const btn_done              = document.querySelector('#btn-done');
-const laser_work_order      = document.querySelector('#laser-work-order');
-const laser_part_number     = document.querySelector('#laser-part-number');
-const laser_rack_id         = document.querySelector('#laser-rack-id');
+const btn_done                   = document.querySelector('#btn-done');
+const laser_work_order           = document.querySelector('#laser-work-order');
+const laser_part_number          = document.querySelector('#laser-part-number');
+const laser_rack_id              = document.querySelector('#laser-rack-id');
 
-const laser_tube_display    = document.querySelector('#laser-tube-display');
-const laser_trough_display  = document.querySelector('#laser-trough-display');
-const laser_tube_barcode    = document.querySelector('#laser-tube-barcode');
-const laser_trough_barcode  = document.querySelector('#laser-trough-barcode');
+const laser_tube_display         = document.querySelector('#laser-tube-display');
+const laser_trough_display       = document.querySelector('#laser-trough-display');
+const laser_tube_barcode         = document.querySelector('#laser-tube-barcode');
+const laser_trough_barcode       = document.querySelector('#laser-trough-barcode');
 
-const laser_image_container = document.querySelector('#laser-img-container');
+const laser_image_container_cam1 = document.querySelector('#laser-img-container-cam1');
+const laser_image_container_cam2 = document.querySelector('#laser-img-container-cam2');
 
 // Done button
 
@@ -227,7 +186,9 @@ btn_done.addEventListener('click', () => {
 // Initialization
 
 statusBarManager = new StatusBarManager(status_bar);
-imageStateManager = new ImageStateManager(laser_image_container);
+
+imageZoomManager_1 = new ImageZoomManager(laser_image_container_cam1);
+imageZoomManager_2 = new ImageZoomManager(laser_image_container_cam2);
 
 load_data(Globals.data, Globals.rack_type, statusBarManager);
 
