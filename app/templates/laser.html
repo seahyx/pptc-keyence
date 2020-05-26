@@ -22,7 +22,6 @@
 					<!-- Left side container -->
 					<div class='container flex-center margin-right'>
 
-
 						<!-- Laser Image Group -->
 						<div class='container flex-horizontal'>
 
@@ -30,36 +29,36 @@
 							<div id='laser-img-container-cam1' class='img-container container bordered flex-center flex-vertical padding-small'>
 
 								<p>CAM1</p>
-	
+
 								<!-- Image with zoom elements -->
 								<div class='zoom-container container flex-center'>
-	
+
 									<div class='zoom-lens'></div>
 									<img class='display-img'>
 									<div class='zoom-result'></div>
-	
+
 								</div>
-	
+
 							</div>
-	
+
 							<!-- Laser image CAM2 -->
 							<div id='laser-img-container-cam2' class='img-container container bordered flex-center flex-vertical padding-small'>
-	
+
 								<p>CAM2</p>
-	
+
 								<!-- Image with zoom elements -->
 								<div class='zoom-container container flex-center'>
-	
+
 									<div class='zoom-lens'></div>
 									<img class='display-img'>
 									<div class='zoom-result'></div>
-	
+
 								</div>
-	
+
 							</div>
-							
+
 						</div>
-						
+
 						<!-- Laser display container -->
 						<div class='container laser-display-container bordered'>
 
@@ -75,29 +74,52 @@
 
 						</div>
 
-						<!-- Work Order, PN and Rack ID -->
-						<table class='tb-program tb-laser-id'>
-							<tr>
-								<td class='sn'><label for='laser-work-order'>Work Order</label></td>
-								<td class='full-border'><input id='laser-work-order' type='number' value='{{ work_order }}'></td>
-							</tr>
-							<tr>
-								<td class='sn'><label for='laser-part-number'>Part Number</label></td>
-								<td class='full-border'><input id='laser-part-number' type='number' value='{{ part_number }}'></td>
-							</tr>
-							<tr>
-								<td class='sn'>Rack ID</td>
-								<td class='full-border' id='laser-rack-id'></td>
-							</tr>
-						</table>
 					</div>
+
 
 					<!-- Right side container -->
 					<div class='container flex-center'>
 
-						<!-- Laser etch instrument selection -->
+						<!-- Work Order and Part Number container -->
 						<div class='container bordered padding-small margin-bottom'>
-							<table class='tb-program tb-laser-select'>
+
+							<!-- Work Order -->
+							<table class='tb-program tb-laser-table'>
+								<tr>
+									<th class='sn'><label for='laser-work-order'>Work Order</label></th>
+								</tr>
+								<tr>
+									<td class='full-border'><input id='laser-work-order' type='number' value='{{ work_order }}'></td>
+								</tr>
+							</table>
+
+							<!-- Part Number -->
+							<table class='tb-program tb-laser-table'>
+								<tr>
+									<th class='sn'><label for='laser-part-number'>Part Number</label></th>
+								</tr>
+								<tr>
+									<td class='full-border'><input id='laser-part-number' type='number' value='{{ part_number }}'></td>
+								</tr>
+							</table>
+
+						</div>
+
+						<!-- Rack ID and Instrument container -->
+						<div class='container bordered padding-small margin-bottom'>
+
+							<!-- Rack ID -->
+							<table class='tb-program tb-laser-table'>
+								<tr>
+									<th class='sn'>Rack ID</th>
+								</tr>
+								<tr>
+									<td id='laser-rack-id' class='full-border'></td>
+								</tr>
+							</table>
+
+							<!-- Laser Instrument Selection -->
+							<table class='tb-program tb-laser-table'>
 								<tr>
 									<th class='sn'>Laser Instrument</th>
 								</tr>
@@ -105,7 +127,9 @@
 									<td id='td-laser-select' class='full-border'></td>
 								</tr>
 							</table>
+
 						</div>
+
 						<!-- Barcode and mask table -->
 						<div class='container bordered padding-small'>
 							<table class='tb-program tb-laser-barcode'>

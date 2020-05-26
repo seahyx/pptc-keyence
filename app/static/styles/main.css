@@ -1057,15 +1057,7 @@ table.tb-program .mask {
   grid-row-end: 13;
 }
 
-table.tb-program.tb-laser-id {
-  width: 20rem;
-}
-
-table.tb-program.tb-laser-id .sn {
-  font-weight: bold;
-}
-
-table.tb-program.tb-laser-barcode, table.tb-program.tb-laser-select {
+table.tb-program.tb-laser-table {
   width: 16rem;
 }
 

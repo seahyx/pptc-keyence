@@ -1,14 +1,6 @@
 table.tb-program {
-
-	&.tb-laser-id {
-		width: 25 * $base-font-size;
-
-		.sn {
-			font-weight: bold;
-		}
-	}
 	
-	&.tb-laser-barcode, &.tb-laser-select {
+	&.tb-laser-table {
 		width: 20 * $base-font-size;
 	}
 
