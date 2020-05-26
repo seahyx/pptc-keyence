@@ -20,7 +20,7 @@
 				<div class='container flex-center flex-horizontal align-start fit-content'>
 					
 					<!-- Left side container -->
-					<div class='container'>
+					<div class='container margin-right'>
 
 						<!-- Cartridge Image Group -->
 						<div class='container flex-horizontal'>
@@ -51,50 +51,53 @@
 							<!-- Underlay - colours the circles -->
 							<div class='grid cart-underlay'>
 								<!-- Grid items - top->bottom, left->right -->
-								<!-- There are 10 rows and 12 columns -->
-								<div class='gr-cart-item i21'></div>
-								<div class='gr-cart-item i22'></div>
 
-								<div class='gr-cart-item i17'></div>
-								<div class='gr-cart-item i18'></div>
-								<div class='gr-cart-item i19'></div>
-								<div class='gr-cart-item i20'></div>
-
-								<div class='gr-cart-item i13'></div>
-								<div class='gr-cart-item i14'></div>
-								<div class='gr-cart-item i15'></div>
-								<div class='gr-cart-item i16'></div>
-
-								<div class='gr-cart-item i9'></div>
-								<div class='gr-cart-item i10'></div>
-								<div class='gr-cart-item i11'></div>
-								<div class='gr-cart-item i12'></div>
+								<!-- There are 12 rows and 10 columns -->
+								<div class='gr-cart-item i1'></div>
+								<div class='gr-cart-item i2'></div>
+								<div class='gr-cart-item i4'></div>
 
 								<div class='gr-cart-item i5'></div>
 								<div class='gr-cart-item i6'></div>
 								<div class='gr-cart-item i7'></div>
 								<div class='gr-cart-item i8'></div>
 
-								<div class='gr-cart-item i1'></div>
-								<div class='gr-cart-item i2'></div>
-								<div class='gr-cart-item i4'></div>
+								<div class='gr-cart-item i9'></div>
+								<div class='gr-cart-item i10'></div>
+								<div class='gr-cart-item i11'></div>
+								<div class='gr-cart-item i12'></div>
+
+								<div class='gr-cart-item i13'></div>
+								<div class='gr-cart-item i14'></div>
+								<div class='gr-cart-item i15'></div>
+								<div class='gr-cart-item i16'></div>
+
+								<div class='gr-cart-item i17'></div>
+								<div class='gr-cart-item i18'></div>
+								<div class='gr-cart-item i19'></div>
+								<div class='gr-cart-item i20'></div>
+
+								<div class='gr-cart-item i21'></div>
+								<div class='gr-cart-item i22'></div>
+
 							</div>
 
 							<!-- Cartridge image overlay -->
 							<img class='cart-display' src="{{ url_for('static', filename='img/cartridge.svg') }}">
 
 						</div>
-						
-						<!-- Cartridge ID -->
-						<table class='tb-program tb-cart-id'>
-							<tr><th>Cartridge ID</th></tr>
-							<tr><td id='cart-id' class='full-border'>{{ cartridge_id }}</td></tr>
-						</table>
 
 					</div>
 
 					<!-- Right side container -->
-					<div class='container margin-left'>
+					<div class='container'>
+
+						<!-- Cartridge ID -->
+						<table class='tb-program tb-cart-id margin-bottom'>
+							<tr><th>Cartridge ID</th></tr>
+							<tr><td id='cart-id' class='full-border'>{{ cartridge_id }}</td></tr>
+						</table>
+
 						<!-- Barcode and mask table -->
 						<div class='container'>
 							<table  id='cart-barcode' class='tb-program'>

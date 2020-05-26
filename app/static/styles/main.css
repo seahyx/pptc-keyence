@@ -693,7 +693,6 @@ a.bordered:active {
 /* Shared stylesheet for program pages */
 table.tb-program {
   width: 20rem;
-  margin: 0;
   padding: 0;
   border: none;
   text-align: center;
