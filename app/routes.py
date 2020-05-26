@@ -242,7 +242,8 @@ def manual_test():
 
 	return render_template(
 		'manual-test.html',
-		title = 'Manual Test',)
+		title = 'Manual Test',
+		all_images = True)
 
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
