@@ -857,21 +857,23 @@ table.tb-program td input {
 
 .cart-display-container {
   position: relative;
+  width: -webkit-fill-available;
   min-width: 12.8rem;
   background-color: white;
 }
 
 .cart-display-container .cart-underlay {
   position: absolute;
-  top: 0.5333333333rem;
-  bottom: 0.5333333333rem;
-  left: 0.5333333333rem;
-  right: 0.5333333333rem;
-  margin: 3%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0.5333333333rem;
 }
 
 .cart-display-container .cart-display {
   min-width: -webkit-fill-available;
+  height: auto;
   margin: 0.5333333333rem;
   pointer-events: none;
   z-index: 1;
@@ -910,150 +912,150 @@ table.tb-program .mask {
 }
 
 .gr-cart-item.i21 {
-  grid-column-start: 1;
-  grid-column-end: 7;
+  grid-column-start: 10;
+  grid-column-end: 11;
   grid-row-start: 1;
-  grid-row-end: 2;
+  grid-row-end: 7;
 }
 
 .gr-cart-item.i22 {
-  grid-column-start: 7;
-  grid-column-end: 13;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  grid-column-start: 10;
+  grid-column-end: 11;
+  grid-row-start: 7;
+  grid-row-end: 13;
 }
 
 .gr-cart-item.i17 {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: 2;
+  grid-column-start: 8;
+  grid-column-end: 10;
+  grid-row-start: 1;
   grid-row-end: 4;
 }
 
 .gr-cart-item.i18 {
-  grid-column-start: 4;
-  grid-column-end: 7;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-column-start: 8;
+  grid-column-end: 10;
+  grid-row-start: 4;
+  grid-row-end: 7;
 }
 
 .gr-cart-item.i19 {
-  grid-column-start: 7;
+  grid-column-start: 8;
   grid-column-end: 10;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-start: 7;
+  grid-row-end: 10;
 }
 
 .gr-cart-item.i20 {
-  grid-column-start: 10;
-  grid-column-end: 13;
-  grid-row-start: 2;
-  grid-row-end: 3;
+  grid-column-start: 8;
+  grid-column-end: 10;
+  grid-row-start: 10;
+  grid-row-end: 13;
 }
 
 .gr-cart-item.i13 {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: 3;
+  grid-column-start: 8;
+  grid-column-end: 9;
+  grid-row-start: 1;
   grid-row-end: 4;
 }
 
 .gr-cart-item.i14 {
-  grid-column-start: 4;
-  grid-column-end: 7;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-column-start: 8;
+  grid-column-end: 9;
+  grid-row-start: 4;
+  grid-row-end: 7;
 }
 
 .gr-cart-item.i15 {
-  grid-column-start: 7;
-  grid-column-end: 10;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-column-start: 8;
+  grid-column-end: 9;
+  grid-row-start: 7;
+  grid-row-end: 10;
 }
 
 .gr-cart-item.i16 {
-  grid-column-start: 10;
-  grid-column-end: 13;
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-column-start: 8;
+  grid-column-end: 9;
+  grid-row-start: 10;
+  grid-row-end: 13;
 }
 
 .gr-cart-item.i9 {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: 4;
-  grid-row-end: 5;
+  grid-column-start: 7;
+  grid-column-end: 8;
+  grid-row-start: 1;
+  grid-row-end: 4;
 }
 
 .gr-cart-item.i10 {
-  grid-column-start: 4;
-  grid-column-end: 7;
+  grid-column-start: 7;
+  grid-column-end: 8;
   grid-row-start: 4;
-  grid-row-end: 5;
+  grid-row-end: 7;
 }
 
 .gr-cart-item.i11 {
   grid-column-start: 7;
-  grid-column-end: 10;
-  grid-row-start: 4;
-  grid-row-end: 5;
+  grid-column-end: 8;
+  grid-row-start: 7;
+  grid-row-end: 10;
 }
 
 .gr-cart-item.i12 {
-  grid-column-start: 10;
-  grid-column-end: 13;
-  grid-row-start: 4;
-  grid-row-end: 5;
+  grid-column-start: 7;
+  grid-column-end: 8;
+  grid-row-start: 10;
+  grid-row-end: 13;
 }
 
 .gr-cart-item.i5 {
-  grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start: 5;
-  grid-row-end: 6;
+  grid-column-start: 6;
+  grid-column-end: 7;
+  grid-row-start: 1;
+  grid-row-end: 4;
 }
 
 .gr-cart-item.i6 {
-  grid-column-start: 4;
+  grid-column-start: 6;
   grid-column-end: 7;
-  grid-row-start: 5;
-  grid-row-end: 6;
+  grid-row-start: 4;
+  grid-row-end: 7;
 }
 
 .gr-cart-item.i7 {
-  grid-column-start: 7;
-  grid-column-end: 10;
-  grid-row-start: 5;
-  grid-row-end: 6;
+  grid-column-start: 6;
+  grid-column-end: 7;
+  grid-row-start: 7;
+  grid-row-end: 10;
 }
 
 .gr-cart-item.i8 {
-  grid-column-start: 10;
-  grid-column-end: 13;
-  grid-row-start: 5;
-  grid-row-end: 6;
+  grid-column-start: 6;
+  grid-column-end: 7;
+  grid-row-start: 10;
+  grid-row-end: 13;
 }
 
 .gr-cart-item.i1 {
   grid-column-start: 1;
-  grid-column-end: 5;
-  grid-row-start: 6;
-  grid-row-end: 11;
+  grid-column-end: 6;
+  grid-row-start: 1;
+  grid-row-end: 5;
 }
 
 .gr-cart-item.i2 {
-  grid-column-start: 5;
-  grid-column-end: 9;
-  grid-row-start: 6;
-  grid-row-end: 11;
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 5;
+  grid-row-end: 9;
 }
 
 .gr-cart-item.i4 {
-  grid-column-start: 9;
-  grid-column-end: 13;
-  grid-row-start: 6;
-  grid-row-end: 11;
+  grid-column-start: 1;
+  grid-column-end: 6;
+  grid-row-start: 9;
+  grid-row-end: 13;
 }
 
 table.tb-program.tb-laser-id {
