@@ -187,8 +187,8 @@ btn_done.addEventListener('click', () => {
 
 statusBarManager = new StatusBarManager(status_bar);
 
-imageZoomManager_1 = new ImageZoomManager(laser_image_container_cam1);
-imageZoomManager_2 = new ImageZoomManager(laser_image_container_cam2);
+imageZoomManager_1 = new ImageZoomManager(laser_image_container_cam1, 0);
+imageZoomManager_2 = new ImageZoomManager(laser_image_container_cam2, 1);
 
 load_data(Globals.data, Globals.rack_type, statusBarManager);
 
