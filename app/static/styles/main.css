@@ -802,8 +802,8 @@ table.tb-program td input {
 .img-container .zoom-container .zoom-lens {
   position: absolute;
   border: 1px solid transparent;
-  width: 60px;
-  height: 40px;
+  width: 45px;
+  height: 30px;
   z-index: 1;
   -webkit-transition: border 1s 2s;
   -moz-transition: border 1s 2s;
