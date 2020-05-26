@@ -1053,7 +1053,7 @@ table.tb-program .mask {
   grid-row-end: 13;
 }
 
-table.tb-program.tb-laser-table, table.tb-program *.tb-laser-barcode {
+table.tb-program.tb-laser-table, table.tb-program.tb-laser-barcode {
   width: 16rem;
 }
 
