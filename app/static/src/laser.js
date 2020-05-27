@@ -21,7 +21,21 @@ btn_select_cancel.addEventListener('click', (event) => {
 	laser_modal_select.removeAttribute('data-enabled');
 });
 
+
 // Validate part number data
+
+in_work_order.addEventListener('change', () => {
+	if (in_work_order.value.length != Globals.in_work_order_len) {
+		alert('Work order is invalid, please try again');
+		return;
+	}
+});
+
+in_work_order.addEventListener('input', () => {
+	if (in_work_order.value.length === Globals.in_work_order_len) {
+		in_part_number.focus();
+	}
+});
 
 var invalidChars = [
 	'-',
@@ -38,13 +52,6 @@ in_part_number.addEventListener('keydown', (e) => {
 		e.preventDefault();
 	}
 });
-
-in_work_order.addEventListener('change', () => {
-	if (in_work_order.value.length != Globals.in_work_order_len) {
-		alert('Work order is invalid, please try again');
-		return;
-	}
-})
 
 
 // Start button, validate work order/part number
