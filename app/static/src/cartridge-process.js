@@ -63,10 +63,12 @@ class ImageZoomManager {
 
 		/* And also for touch screens: */
 		this.zoom_lens.addEventListener('touchmove', (mouse_event) => {
+			this.update_everything();
 			this.on_move_lens(mouse_event);
 		});
 
 		this.img.addEventListener('touchmove', (mouse_event) => {
+			this.update_everything();
 			this.on_move_lens(mouse_event);
 		});
 

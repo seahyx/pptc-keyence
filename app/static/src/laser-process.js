@@ -78,10 +78,12 @@ class ImageZoomManager {
 
 		// Zoom in and zoom out
 		this.zoom_lens.addEventListener('click', () => {
+			this.update_everything();
 			this.zoom_result.classList.toggle('activated', true);
 		});
 
 		this.zoom_result.addEventListener('click', () => {
+			this.update_everything();
 			this.zoom_result.classList.toggle('activated', false);
 		});
 
