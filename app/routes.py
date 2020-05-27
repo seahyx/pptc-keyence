@@ -765,6 +765,7 @@ def read_barcodes():
 	Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
+	time.sleep(0.5)
 	app.logger.info('Redirecting page to laser_process')
 	emit('redirect', url_for('laser_process'))
 

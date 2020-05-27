@@ -1,5 +1,5 @@
 const btn_start          = document.querySelector('#btn-start');
-const laser_modal_select = document.querySelector('#laser-modal');
+const laser_modal_select = document.querySelector('#td-laser-select');
 const loading_modal      = document.querySelector('#loading-modal');
 const btn_select_cancel  = document.querySelector('#btn-select-cancel');
 const btn_select_confirm = document.querySelector('#btn-select-confirm');
@@ -27,6 +27,7 @@ btn_select_cancel.addEventListener('click', (event) => {
 in_work_order.addEventListener('change', () => {
 	if (in_work_order.value.length != Globals.in_work_order_len) {
 		alert('Work order is invalid, please try again');
+		in_work_order.focus();
 		return;
 	}
 });
@@ -60,6 +61,11 @@ btn_start.addEventListener('click', () => {
 	if (!in_work_order.value || !in_part_number.value) {
 		alert('Please enter the work order and/or part number.');
 		return;
+	}
+	else if (in_work_order.value.length != Globals.in_work_order_len) {
+		alert ('Invalid work order')
+		in_work_order.focus();
+		return ;
 	}
 
 	socketio.emit('start', in_work_order.value, in_part_number.value);
