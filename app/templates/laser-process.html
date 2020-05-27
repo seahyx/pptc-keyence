@@ -60,84 +60,144 @@
 
 						</div>
 
-						<!-- Laser digital container -->
-						<div class='container laser-display-container bordered padding-small'>
+						<!-- Laser display / WO & PN & RackID & Instrument -->
+						<div class='container flex-horizontal max-width'>
+
+							<!-- Laser display container -->
+							<div class='container laser-display-container bordered padding-small margin-right'>
 
 
-							<!-- TUBE Display -->
-							<div id='laser-tube-display' class='container laser-tube-display'>
+								<!-- TUBE Display -->
+								<div id='laser-tube-display' class='container laser-tube-display'>
 
-								<!-- Underlay - colours the circles -->
-								<div class='grid laser-underlay'>
+									<!-- Underlay - colours the circles -->
+									<div class='grid laser-underlay'>
 
-									<!-- Grid items -->
-									<div class="gr-laser-item i24"></div>
-									<div class="gr-laser-item i23"></div>
-									<div class="gr-laser-item i22"></div>
-									<div class="gr-laser-item i21"></div>
+										<!-- Grid items -->
+										<div class="gr-laser-item i24"></div>
+										<div class="gr-laser-item i23"></div>
+										<div class="gr-laser-item i22"></div>
+										<div class="gr-laser-item i21"></div>
 
-									<div class="gr-laser-item i17"></div>
-									<div class="gr-laser-item i18"></div>
-									<div class="gr-laser-item i19"></div>
-									<div class="gr-laser-item i20"></div>
+										<div class="gr-laser-item i17"></div>
+										<div class="gr-laser-item i18"></div>
+										<div class="gr-laser-item i19"></div>
+										<div class="gr-laser-item i20"></div>
 
-									<div class="gr-laser-item i16"></div>
-									<div class="gr-laser-item i15"></div>
-									<div class="gr-laser-item i14"></div>
-									<div class="gr-laser-item i13"></div>
+										<div class="gr-laser-item i16"></div>
+										<div class="gr-laser-item i15"></div>
+										<div class="gr-laser-item i14"></div>
+										<div class="gr-laser-item i13"></div>
 
-									<div class='gr-laser-item i9'></div>
-									<div class='gr-laser-item i10'></div>
-									<div class='gr-laser-item i11'></div>
-									<div class='gr-laser-item i12'></div>
+										<div class='gr-laser-item i9'></div>
+										<div class='gr-laser-item i10'></div>
+										<div class='gr-laser-item i11'></div>
+										<div class='gr-laser-item i12'></div>
 
-									<div class="gr-laser-item i8"></div>
-									<div class="gr-laser-item i7"></div>
-									<div class="gr-laser-item i6"></div>
-									<div class="gr-laser-item i5"></div>
+										<div class="gr-laser-item i8"></div>
+										<div class="gr-laser-item i7"></div>
+										<div class="gr-laser-item i6"></div>
+										<div class="gr-laser-item i5"></div>
 
-									<div class='gr-laser-item i1'></div>
-									<div class='gr-laser-item i2'></div>
-									<div class='gr-laser-item i3'></div>
-									<div class='gr-laser-item i4'></div>
+										<div class='gr-laser-item i1'></div>
+										<div class='gr-laser-item i2'></div>
+										<div class='gr-laser-item i3'></div>
+										<div class='gr-laser-item i4'></div>
+
+									</div>
+
+									<!-- Laser display overlay -->
+									<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
+
+									<!-- Overlay - functional buttons left/right -->
+									<div class='grid laser-overlay'>
+										<div class='left'></div>
+										<div class='right'></div>
+									</div>
 
 								</div>
 
-								<!-- Laser display overlay -->
-								<img class='laser-display' src="{{ url_for('static', filename='img/laser.svg') }}">
 
-								<!-- Overlay - functional buttons left/right -->
-								<div class='grid laser-overlay'>
-									<div class='left'></div>
-									<div class='right'></div>
+								<!-- TROUGH Display -->
+								<div id='laser-trough-display' class='container laser-trough-display hidden'>
+
+									<!-- Underlay - colours the troughs -->
+									<div class='grid laser-underlay'>
+										<!-- Grid items - top->bottom, left->right -->
+										<!-- There are 4 columns -->
+										<div class='gr-laser-item i4'></div>
+										<div class='gr-laser-item i3'></div>
+										<div class='gr-laser-item i2'></div>
+										<div class='gr-laser-item i1'></div>
+
+									</div>
+									<!-- Cartridge display overlay -->
+									<img class='laser-display' src="{{ url_for('static', filename='img/laser-trough.svg') }}">
+									<!-- Overlay - functional buttons left/right -->
+									<div class='grid laser-overlay'>
+										<div class='left'></div>
+										<div class='right'></div>
+									</div>
+
 								</div>
+
 
 							</div>
 
+							<!-- WO & PN & RackID & Instrument -->
+							<div class='container'>
 
-							<!-- TROUGH Display -->
-							<div id='laser-trough-display' class='container laser-trough-display hidden'>
+								<!-- Work Order and Part Number container -->
+								<div class='container bordered padding-small margin-bottom'>
 
-								<!-- Underlay - colours the troughs -->
-								<div class='grid laser-underlay'>
-									<!-- Grid items - top->bottom, left->right -->
-									<!-- There are 4 columns -->
-									<div class='gr-laser-item i4'></div>
-									<div class='gr-laser-item i3'></div>
-									<div class='gr-laser-item i2'></div>
-									<div class='gr-laser-item i1'></div>
+									<!-- Work Order -->
+									<table class='tb-program tb-laser-table'>
+										<tr>
+											<th class='sn'>Work Order</th>
+										</tr>
+										<tr>
+											<td id='laser-work-order' class='full-border'>{{ work_order }}</td>
+										</tr>
+									</table>
+
+									<!-- Part Number -->
+									<table class='tb-program tb-laser-table'>
+										<tr>
+											<th class='sn'>Part Number</th>
+										</tr>
+										<tr>
+											<td id='laser-part-number' class='full-border'>{{ part_number }}</td>
+										</tr>
+									</table>
 
 								</div>
-								<!-- Cartridge display overlay -->
-								<img class='laser-display' src="{{ url_for('static', filename='img/laser-trough.svg') }}">
-								<!-- Overlay - functional buttons left/right -->
-								<div class='grid laser-overlay'>
-									<div class='left'></div>
-									<div class='right'></div>
+
+								<!-- Rack ID and Instrument container -->
+								<div class='container bordered padding-small margin-bottom'>
+
+									<!-- Rack ID -->
+									<table class='tb-program tb-laser-table'>
+										<tr>
+											<th class='sn'>Rack ID</th>
+										</tr>
+										<tr>
+											<td id='laser-rack-id' class='full-border'>{{ rack_id }}</td>
+										</tr>
+									</table>
+
+									<!-- Laser Instrument Selection -->
+									<table class='tb-program tb-laser-table'>
+										<tr>
+											<th class='sn'>Laser Instrument</th>
+										</tr>
+										<tr>
+											<td id='td-laser-select' class='full-border'></td>
+										</tr>
+									</table>
+
 								</div>
 
 							</div>
-
 
 						</div>
 
@@ -146,56 +206,6 @@
 
 					<!-- Right side container -->
 					<div class='container flex-center'>
-
-						<!-- Work Order and Part Number container -->
-						<div class='container bordered padding-small margin-bottom'>
-
-							<!-- Work Order -->
-							<table class='tb-program tb-laser-table'>
-								<tr>
-									<th class='sn'>Work Order</th>
-								</tr>
-								<tr>
-									<td id='laser-work-order' class='full-border'>{{ work_order }}</td>
-								</tr>
-							</table>
-
-							<!-- Part Number -->
-							<table class='tb-program tb-laser-table'>
-								<tr>
-									<th class='sn'>Part Number</th>
-								</tr>
-								<tr>
-									<td id='laser-part-number' class='full-border'>{{ part_number }}</td>
-								</tr>
-							</table>
-
-						</div>
-
-						<!-- Rack ID and Instrument container -->
-						<div class='container bordered padding-small margin-bottom'>
-
-							<!-- Rack ID -->
-							<table class='tb-program tb-laser-table'>
-								<tr>
-									<th class='sn'>Rack ID</th>
-								</tr>
-								<tr>
-									<td id='laser-rack-id' class='full-border'>{{ rack_id }}</td>
-								</tr>
-							</table>
-
-							<!-- Laser Instrument Selection -->
-							<table class='tb-program tb-laser-table'>
-								<tr>
-									<th class='sn'>Laser Instrument</th>
-								</tr>
-								<tr>
-									<td id='td-laser-select' class='full-border'></td>
-								</tr>
-							</table>
-
-						</div>
 
 						<!-- TUBE -->
 						<!-- Barcode table -->

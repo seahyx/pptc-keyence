@@ -1077,7 +1077,7 @@ table.tb-program.tb-laser-table, table.tb-program.tb-laser-barcode {
 }
 
 .laser-tube-display .laser-display {
-  min-width: 300px;
+  min-width: 400px;
   z-index: 1;
 }
 
@@ -1121,7 +1121,7 @@ table.tb-program.tb-laser-table, table.tb-program.tb-laser-barcode {
 }
 
 .laser-trough-display .laser-display {
-  min-width: 300px;
+  min-width: 400px;
   z-index: 1;
 }
 
