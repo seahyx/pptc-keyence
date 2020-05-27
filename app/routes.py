@@ -243,6 +243,7 @@ def manual_test():
 	return render_template(
 		'manual-test.html',
 		title = 'Manual Test',
+		errno = 0,
 		all_images = True)
 
 @app.route('/registration/', methods=['GET', 'POST'])
