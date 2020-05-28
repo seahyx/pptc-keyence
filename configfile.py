@@ -75,21 +75,21 @@ class ConfigFile():
 		# Image filenames
 		self.VISION_IMAGE = {
 			'CAM1': {
+				'TEXTURE' : config.get('CAM1', 'Texture Image'),
 				'NORMAL'  : config.get('CAM1', 'Normal Image'),
 				'LEFT'    : config.get('CAM1', 'Left Image'),
 				'RIGHT'   : config.get('CAM1', 'Right Image'),
 				'LOWER'   : config.get('CAM1', 'Lower Image'),
 				'UPPER'   : config.get('CAM1', 'Upper Image'),
-				'SHAPE'   : config.get('CAM1', 'Shape Image'),
-				'TEXTURE' : config.get('CAM1', 'Texture Image')
+#				'SHAPE'   : config.get('CAM1', 'Shape Image'),
 			},
 			'CAM2': {
+				'TEXTURE' : config.get('CAM2', 'Texture Image'),
 				'NORMAL'  : config.get('CAM2', 'Normal Image'),
 				'LEFT'    : config.get('CAM2', 'Left Image'),
 				'RIGHT'   : config.get('CAM2', 'Right Image'),
 				'LOWER'   : config.get('CAM2', 'Lower Image'),
 				'UPPER'   : config.get('CAM2', 'Upper Image'),
-				'SHAPE'   : config.get('CAM2', 'Shape Image'),
-				'TEXTURE' : config.get('CAM2', 'Texture Image')
+#				'SHAPE'   : config.get('CAM2', 'Shape Image'),
 			}
 		}

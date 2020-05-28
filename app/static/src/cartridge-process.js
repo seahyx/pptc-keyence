@@ -36,40 +36,27 @@ class StatusBarManager {
 
 }
 
-class ImageStateManager {
+class ImageZoomManager {
 
-	constructor(container) {
+	constructor(container, default_image_index) {
 
 		// Image container
 		this.container = container;
 
 		// Obtain components
-		this.zoom_container = container.querySelector('.zoom-container');
-		this.img         = this.zoom_container.querySelector('.display-img');
-		this.zoom_lens   = this.zoom_container.querySelector('.zoom-lens');
-		this.zoom_result = this.zoom_container.querySelector('.zoom-result');
-		this.next        = container.querySelector('#btn-next');
-		this.prev        = container.querySelector('#btn-prev');
-		this.title       = container.querySelector('#image-title');
-		this.count       = container.querySelector('#image-count');
+    this.zoom_container = container.querySelector('.zoom-container');
+    this.img            = this.zoom_container.querySelector('.display-img');
+    this.zoom_lens      = this.zoom_container.querySelector('.zoom-lens');
+    this.zoom_result    = this.zoom_container.querySelector('.zoom-result');
 
 		// Default image index
-		this.current_image_index = 0;
-
-		// Set listeners to the buttons
-		this.next.addEventListener('click', () => {
-			this.set_next_img();
-		})
-
-		this.prev.addEventListener('click', () => {
-			this.set_prev_img();
-		})
+		this.current_image_index = default_image_index;
 
 		/* Execute a function when someone moves the cursor over the image, or the lens: */
 		this.zoom_lens.addEventListener('mousemove', (mouse_event) => {
 			this.on_move_lens(mouse_event);
 		});
-		
+
 		this.img.addEventListener('mousemove', (mouse_event) => {
 			this.on_move_lens(mouse_event);
 		});
@@ -80,16 +67,18 @@ class ImageStateManager {
 		});
 
 		this.img.addEventListener('touchmove', (mouse_event) => {
-			this.on_move_lens(mouse_event);	
+			this.on_move_lens(mouse_event);
 		});
 
 
 		// Zoom in and zoom out
 		this.zoom_lens.addEventListener('click', () => {
+			this.update_everything();
 			this.zoom_result.classList.toggle('activated', true);
 		});
 
 		this.zoom_result.addEventListener('click', () => {
+			this.update_everything();
 			this.zoom_result.classList.toggle('activated', false);
 		});
 
@@ -99,27 +88,9 @@ class ImageStateManager {
 
 	}
 
-	set_next_img() {
-		if (this.current_image_index < Globals.img_urls.length - 1) {
-			this.current_image_index++;
-
-			this.update_everything();
-		}
-	}
-
-	set_prev_img() {
-		if (this.current_image_index > 0) {
-			this.current_image_index--;
-
-			this.update_everything();
-		}
-	}
-
 	update_everything() {
 		this.update_img();
 		this.update_zoom();
-		this.update_text();
-		this.update_button_attr();
 	}
 
 	update_img() {
@@ -127,21 +98,10 @@ class ImageStateManager {
 	}
 
 	update_zoom() {
-		this.lens_ratio = this.img.width / this.zoom_lens.offsetHeight;
+		this.lens_ratio = this.img.height / this.zoom_lens.offsetHeight;
 
 		this.zoom_result.style.backgroundImage = 'url("' + Globals.img_urls[this.current_image_index] + '")';
 		this.zoom_result.style.backgroundSize = (this.img.width * this.lens_ratio) + 'px ' + (this.img.height * this.lens_ratio) + 'px';
-	}
-
-	update_text() {
-		this.title.innerText = Globals.img_titles[this.current_image_index];
-
-		this.count.innerText = `${this.current_image_index + 1} / ${Globals.img_urls.length}`;
-	}
-
-	update_button_attr() {
-		this.prev.toggleAttribute('disabled', this.current_image_index <= 0);
-		this.next.toggleAttribute('disabled', this.current_image_index >= Globals.img_urls.length - 1);
 	}
 
 	on_move_lens(mouse_event) {
@@ -191,19 +151,21 @@ class ImageStateManager {
 		relative_y = relative_y - window.pageYOffset;
 
 		return {x: relative_x, y: relative_y};
-		
+
 	}
 
 }
 
-const status_bar             = document.querySelector('#cart-status');
+const status_bar                 = document.querySelector('#cart-status');
 
-const btn_done               = document.querySelector('#btn-done');
-const td_cart_id             = document.querySelector('#cart-id');
+const btn_done                   = document.querySelector('#btn-done');
+const td_cart_id                 = document.querySelector('#cart-id');
 
-const tb_cart_barcode        = document.querySelector('#cart-barcode');
-const cart_display_container = document.querySelector('#cart-display-container');
-const cart_image_container   = document.querySelector('#cart-img-container');
+const tb_cart_barcode            = document.querySelector('#cart-barcode');
+const cart_display_container     = document.querySelector('#cart-display-container');
+
+const cart_image_container_cam1 = document.querySelector('#cart-img-container-cam1');
+const cart_image_container_cam2 = document.querySelector('#cart-img-container-cam2');
 
 // Done button
 
@@ -216,7 +178,9 @@ btn_done.addEventListener('click', () => {
 // Initialization
 
 statusBarManager = new StatusBarManager(status_bar);
-imageStateManager = new ImageStateManager(cart_image_container);
+
+imageZoomManager_1 = new ImageZoomManager(cart_image_container_cam1, 0);
+imageZoomManager_2 = new ImageZoomManager(cart_image_container_cam2, 1);
 
 load_data(Globals.error_no, Globals.data, statusBarManager);
 

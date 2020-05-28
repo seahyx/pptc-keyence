@@ -3,18 +3,19 @@ $cart-display-width: 16 * $base-font-size;
 .cart-display-container {
 	position: relative;
 
+	width: -webkit-fill-available;
 	min-width: $cart-display-width;
 
 	background-color: white;
 	
 	.cart-underlay {
 		position: absolute;
-		top: $spacing-unit / 3;
-		bottom: $spacing-unit / 3;
-		left: $spacing-unit / 3;
-		right: $spacing-unit / 3;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 	
-		margin: 3%;
+		margin: $spacing-unit / 3;
 	
 		// Debug styles!
 	
@@ -25,6 +26,7 @@ $cart-display-width: 16 * $base-font-size;
 
 	.cart-display {
 		min-width: -webkit-fill-available;
+		height: auto;
 		margin: $spacing-unit / 3;
 		pointer-events: none;
 		z-index: 1;
@@ -62,10 +64,6 @@ $cart-display-width: 16 * $base-font-size;
 }
 
 table.tb-program {
-
-	&.tb-cart-id {
-		width: -webkit-fill-available;
-	}
 	
 	.mask {
 		width: 35%;
@@ -83,72 +81,72 @@ table.tb-program {
 	// }
 
 	&.i21 {
-		@include grid-lines(1, 7, 1, 2);
+		@include grid-lines(10, 11, 1, 7);
 	}
 	&.i22 {
-		@include grid-lines(7, 13, 1, 2);
+		@include grid-lines(10, 11, 7, 13);
 	}
 	
 	&.i17 {
-		@include grid-lines(1, 4, 2, 4);
+		@include grid-lines(9, 10, 1, 4);
 	}
 	&.i18 {
-		@include grid-lines(4, 7, 2, 3);
+		@include grid-lines(9, 10, 4, 7);
 	}
 	&.i19 {
-		@include grid-lines(7, 10, 2, 3);
+		@include grid-lines(9, 10, 7, 10);
 	}
 	&.i20 {
-		@include grid-lines(10, 13, 2, 3);
+		@include grid-lines(9, 10, 10, 13);
 	}
 
 	&.i13 {
-		@include grid-lines(1, 4, 3, 4);
+		@include grid-lines(8, 9, 1, 4);
 	}
 	&.i14 {
-		@include grid-lines(4, 7, 3, 4);
+		@include grid-lines(8, 9, 4, 7);
 	}
 	&.i15 {
-		@include grid-lines(7, 10, 3, 4);
+		@include grid-lines(8, 9, 7, 10);
 	}
 	&.i16 {
-		@include grid-lines(10, 13, 3, 4);
+		@include grid-lines(8, 9, 10, 13);
 	}
 
 	&.i9 {
-		@include grid-lines(1, 4, 4, 5);
+		@include grid-lines(7, 8, 1, 4);
 	}
 	&.i10 {
-		@include grid-lines(4, 7, 4, 5);
+		@include grid-lines(7, 8, 4, 7);
 	}
 	&.i11 {
-		@include grid-lines(7, 10, 4, 5);
+		@include grid-lines(7, 8, 7, 10);
 	}
 	&.i12 {
-		@include grid-lines(10, 13, 4, 5);
+		@include grid-lines(7, 8, 10, 13);
 	}
 
 	&.i5 {
-		@include grid-lines(1, 4, 5, 6);
+		@include grid-lines(6, 7, 1, 4);
 	}
 	&.i6 {
-		@include grid-lines(4, 7, 5, 6);
+		@include grid-lines(6, 7, 4, 7);
 	}
 	&.i7 {
-		@include grid-lines(7, 10, 5, 6);
+		@include grid-lines(6, 7, 7, 10);
 	}
 	&.i8 {
-		@include grid-lines(10, 13, 5, 6);
+		@include grid-lines(6, 7, 10, 13);
 	}
 
 	&.i1 {
-		@include grid-lines(1, 5, 6, 11);
+		@include grid-lines(1, 6, 1, 5);
 	}
 	&.i2 {
-		@include grid-lines(5, 9, 6, 11);
+		@include grid-lines(1, 6, 5, 9);
 	}
 	&.i4 {
-		@include grid-lines(9, 13, 6, 11);
+		@include grid-lines(1, 6, 9, 13);
 	}
 
 }

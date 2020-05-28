@@ -21,7 +21,22 @@ btn_select_cancel.addEventListener('click', (event) => {
 	laser_modal_select.removeAttribute('data-enabled');
 });
 
+
 // Validate part number data
+
+in_work_order.addEventListener('change', () => {
+	if (in_work_order.value.length != Globals.in_work_order_len) {
+		alert('Work order is invalid, please try again');
+		in_work_order.focus();
+		return;
+	}
+});
+
+in_work_order.addEventListener('input', () => {
+	if (in_work_order.value.length === Globals.in_work_order_len) {
+		in_part_number.focus();
+	}
+});
 
 var invalidChars = [
 	'-',
@@ -39,13 +54,6 @@ in_part_number.addEventListener('keydown', (e) => {
 	}
 });
 
-in_work_order.addEventListener('change', () => {
-	if (in_work_order.value.length != Globals.in_work_order_len) {
-		alert('Work order is invalid, please try again');
-		return;
-	}
-})
-
 
 // Start button, validate work order/part number
 btn_start.addEventListener('click', () => {
@@ -53,6 +61,11 @@ btn_start.addEventListener('click', () => {
 	if (!in_work_order.value || !in_part_number.value) {
 		alert('Please enter the work order and/or part number.');
 		return;
+	}
+	else if (in_work_order.value.length != Globals.in_work_order_len) {
+		alert ('Invalid work order')
+		in_work_order.focus();
+		return ;
 	}
 
 	socketio.emit('start', in_work_order.value, in_part_number.value);

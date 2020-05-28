@@ -115,7 +115,7 @@ def login():
 		else:
 			# Wrong username
 			app.logger.info('Log in failed: Wrong username')
-			Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Invalid user/password')
+			Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, '', 'Invalid user/password')
 			session['USERNAME'] = ''
 			return redirect(url_for('login'))
 
@@ -124,7 +124,7 @@ def login():
 		app.logger.info(f'Logged in successfully with username {user.username}')
 		session['USERNAME'] = user.username
 		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, user.username, 'Login successful')
-		login_user(user, remember=form.rmb_me.data)
+		login_user(user)
 
 		next_page = request.args.get('next')
 		# Netloc tests if next is pointed towards other site, which can link to malicious sites. Thus not accepting the redirect if it has value.
@@ -159,7 +159,6 @@ def cartridge():
 @app.route('/cartridge/process/')
 @login_required
 def cartridge_process():
-	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Cartridge Assembly QC')
 	app.logger.info('Loading cartridge-process page...')
 
 	cartridge_id = session.get(Cartridge.CARTRIDGE_ID)
@@ -203,7 +202,6 @@ def laser():
 @login_required
 def laser_process():
 	app.logger.info('Loading laser-process page...')
-	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Laser Etch QC')
 
 	work_order  = session.get(Laser.WORK_ORDER)
 	part_number = session.get(Laser.PART_NUMBER)
@@ -238,11 +236,12 @@ def laser_process():
 @permissions.admin_required
 def manual_test():
 	app.logger.info('Loading manual test page...')
-	Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Access Manual Test')
 
 	return render_template(
 		'manual-test.html',
-		title = 'Manual Test',)
+		title = 'Manual Test',
+		errno = 0,
+		all_images = True)
 
 @app.route('/registration/', methods=['GET', 'POST'])
 @login_required
@@ -393,10 +392,12 @@ def read_1dbarcodes():
 				cartridge_id, work_order = tdata.split(',')
 				if (get_folder_count(cartridge_id) >= configfile.cartridge_assembly_QC['Max Retry']):
 					errno = -3
+					errMsg = 'Cartridge Assembly QC Exceeded Max Retries'
 			else:
 				cartridge_id = ''
 				work_order = ''
 				errno = -2
+				errMsg = 'Cartridge Assembly QC Invalid Cartridge ID'
 
 			break
 		else:
@@ -405,6 +406,7 @@ def read_1dbarcodes():
 				app.logger.warn('Timeout getting barcode')
 				cartridge_id = ''
 				work_order = ''
+				errMsg = 'Cartridge Assembly QC Invalid Cartridge ID'
 				errno = -2
 				break
 			else:
@@ -425,6 +427,7 @@ def read_1dbarcodes():
 		session[Cartridge.DATA]=[]
 		logdata = (cartridge_id, 'FAIL', work_order) +('', )*Cartridge.ITEM_QTY
 		Log_file.write_file (configfile.cartridge_assembly_QC['LogFile'], logdata, 0)
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], errMsg)
 		app.logger.info('Redirecting page to cartridge-process')
 		emit('redirect', url_for('cartridge_process'))
 		# Log error
@@ -446,6 +449,7 @@ def read_2dbarcodes():
 		
 		if (totalitem != Cartridge.ITEM_QTY):
 			errno = -6
+			errMsg = 'Cartridge Assembly QC Can not Read 2D Barcode'
 			session[Cartridge.DATA] = ['1', ''] * 23
 			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
 		
@@ -455,6 +459,7 @@ def read_2dbarcodes():
 			if (section not in sections): # Invalid rack id
 				app.logger.warn('Invalid cartridge id: '+section)
 				errno = -4
+				errMsg = 'Cartridge Assembly QC Invalid Cartridge ID ({})'.format(section)
 				for i in range (totalitem):
 					newdata.append('1')
 					newdata.append('')
@@ -483,16 +488,19 @@ def read_2dbarcodes():
 							newdata.append(masks[i])
 							newdata.append(items[i*2+1])
 							# app.logger.info(newdata)
+							errMsg = 'Cartridge Assembly QC Invalid Mask'
 							errno = -5
 					else:
 						newdata.append('1')
 						newdata.append(masks[i])
 						newdata.append(items[i*2+1])
+						errMsg = 'Cartridge Assembly QC Cannot Read 2D Barcode'
 						errno = -7
 				app.logger.info(newdata)
 				session[Cartridge.DATA] = newdata
 	else: # Invalid cartridge id
 		app.logger.info ('Invalid cartridge id: '+session[Cartridge.CARTRIDGE_ID])
+		errMsg = 'Cartridge Assembly QC Invalid Cartridge ID ({})'.format(session[Cartridge.CARTRIDGE_ID])
 		errno = -4
 		for i in range(Cartridge.ITEM_QTY):
 			newdata.append('1')
@@ -505,6 +513,7 @@ def read_2dbarcodes():
 		logdata = (cartridge_id, 'PASS', session[Cartridge.WORK_ORDER])
 	else:
 		logdata = (cartridge_id, 'FAIL', session[Cartridge.WORK_ORDER])
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], errMsg)
 
 	tmpdata = session[Cartridge.DATA]
 	for i in range (int(len(tmpdata)/3)):
@@ -514,6 +523,7 @@ def read_2dbarcodes():
 	session[Cartridge.ERRORCODE] = errno
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
+	sleep(0.5)
 	app.logger.info('Redirecting page to cartridge-process')
 	emit('redirect', url_for('cartridge_process'))
 
@@ -540,29 +550,11 @@ def laser_disconnect():
 @socketio.on('PLC-serial', namespace=Laser.NAMESPACE)
 def send_wait_serial(data):
 	app.logger.info(f'Sending {data} to PLC')
-	if app.use_flask_serial:
-		plc_ser.on_send(data+'\r\n')
-	else:
-		plc_ser.send_data(data)
-		socketio.start_background_task(wait_for_start)
-
-if not app.use_flask_serial:
-	def wait_for_start():
-		while (not app.start_pressed):
-			if (plc_ser.data_ready):
-				sdata = plc_ser.get()
-				if (sdata[0] == 'R'):
-					socketio.emit('plc-message', 'R', namespace=Laser.NAMESPACE)
-					app.start_pressed = False
-					break
-			sleep(0.1)
-		app.start_pressed = False
+	plc_ser.on_send(data+'\r\n')
 
 @socketio.on('start', namespace=Laser.NAMESPACE)
 def laser_start(work_order, part_number):
 	app.logger.info(f'Laser Etch QC start, work order: {work_order}, part number: {part_number}')
-	if not app.use_flask_serial:
-		app.start_pressed = True
 
 	# TODO: Validate work order/part number
 	mask, racktype = csvreader.search(part_number)
@@ -570,6 +562,7 @@ def laser_start(work_order, part_number):
 		app.logger.error ('Invalid Part Number:'+part_number)
 		logdata = (work_order, part_number, '', '',  'FALSE', '', '', 'FAIL')
 		Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], 'Laset Etch QC Invalid Part Number ({})'.format(part_number))
 		emit('partnumber-result', 'N')
 	else:
 		if (racktype == 'Tube'):
@@ -587,80 +580,10 @@ def laser_start(work_order, part_number):
 @socketio.on('confirm', namespace=Laser.NAMESPACE)
 def laser_confirm(laser_instrument):
 	app.logger.info(f'Laser Etch QC confirm, laser instrument: {laser_instrument}')
-	errno = 0 # Default no error
-
 	# Save variables
 	session[Laser.INSTRUMENT] = laser_instrument
 
-	if app.use_flask_serial:
-		plc_ser.on_send('S\r\n')
-	else:
-		plc_ser.purge()
-		plc_ser.send_data("S")
-		start = timer()
-		while True:
-			if plc_ser.data_ready:
-				sdata = plc_ser.get()
-				if sdata[:2] == "G2": # Reach the scan location
-					break
-			else:
-				end = timer()
-				if end - start > 7.0:
-					app.logger.warning('Timeout, going to scan position')
-					break
-				else:
-					sleep(0.1)
-
-		# Get Rack ID
-		barcode_ser.purge()
-		barcode_ser.send_data("LON")
-		start = timer()
-
-		sdata = None
-		
-		while True:
-			if barcode_ser.data_ready:
-				sdata = barcode_ser.get()
-				break
-			else:
-				end = timer()
-				if end - start > 3.0:
-					app.logger.warning('Timeout getting barcode')
-					break
-				else:
-					sleep(0.1)
-		
-		# TODO: Handle sdata error
-
-		if sdata:
-			session[Laser.RACK_ID] = sdata[:-2]
-			app.logger.info('Laser Etch QC received ' + session[Laser.RACK_ID])
-			if (sdata[:5] == 'ERROR'):
-				app.logger.warn('Can not read 1D barcode')
-				errno = -2
-			else:
-				if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
-					errno = -3
-					app.logger.warn('Invalid Rack ID')
-		else:
-			errno = -1
-
-		app.logger.warn(errno)
-
-		if (errno == 0):
-			# Get barcodes
-			data = tcpclient.send('T1').pop(0)
-			session[Laser.DATA] = data
-
-			app.logger.info('Redirecting page to laser_process')
-		else:
-			session[Laser.DATA] = ['1', ''] * 24
-			# data = b'T1,0,MS3092555-RMF,0,TG2003637-RMF,0,MS3007019-TMP,0,TG2003671-RMF,0,TG2003667-RMF,0,TG2003626-RMF,0,TG2003657-RMF,0,TG2003660-RMF,0,MS6754129-LMX2,0,TG2003642-RMF,0,MS2929572-AMS1,0,MS6999347-LMX1,0,MS6324325-NULL,0,MS5357075-PW1,0,MS3085936-LPM,0,MS3247197-HP11,0,MS6262931-NULL,0,MS5342413-PW1,0,TG2003635-RMF,0,TG2003630-RMF,0,MS3040982-HP12,0,TG2003661-RMF,0,MS6675922-LDR,0,TG2003640-RMF'
-
-		session[Laser.ERRORCODE] = errno
-		plc_ser.send_data('GB')
-		app.logger.info("Sending GB")
-		emit('redirect', url_for('laser_process'))
+	plc_ser.on_send('S\r\n')
 
 @socketio.on('scan-position', namespace=Laser.NAMESPACE)
 def read_barcodes():
@@ -680,6 +603,7 @@ def read_barcodes():
 			if end - start > 2.0:
 				app.logger.warn('Timeout getting barcode')
 				errno = -2
+				errMsg = 'Laser Etch QC Error Reading 1D Barcode'
 				break
 			else:
 				sleep(0.1)
@@ -691,14 +615,17 @@ def read_barcodes():
 		app.logger.info('Rack ID: ' + sdata)
 		if (sdata == 'ERROR'):
 			app.logger.error('Error reading Rack ID barcode')
+			errMsg = 'Laser Etch QC Error Reading 1D Barcode'
 			errno = -3
 		else:
 			# Check the prefix
 			if (sdata[:2] not in configfile.laser_etch_QC['Prefix']):
 				errno = -4
+				errMsg = 'Laser Etch QC Invalid Rack ID ({})'.format(sdata)
 				app.logger.error('Invalid Rack ID')
 	else:
 		session[Laser.RACK_ID] = ''
+		errMsg = 'Laser Etch QC Error Reading 1D Barcode'
 		errno = -1
 
 	if (errno == 0):
@@ -711,9 +638,11 @@ def read_barcodes():
 		
 		if (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TROUGH):
 			if (totalitem != Laser.ITEM_QTY.TROUGH):
+				errMsg = 'Laser Etch QC Error Reading 2D Barcode'
 				errno = -6
 		elif (session[Laser.RACK_TYPE] == Laser.RACK_TYPE.TUBE):
 			if (totalitem != Laser.ITEM_QTY.TUBE):
+				errMsg = 'Laser Etch QC Error Reading 2D Barcode'
 				errno = -6
 		
 		if (errno == 0):
@@ -727,11 +656,13 @@ def read_barcodes():
 					else:
 						newdata.append('1')
 						newdata.append(items[i*2+1])
+						errMsg = 'Laser Etch QC Invalid Mask'
 						# app.logger.info(newdata)
 						errno = -5
 				else:
 					newdata.append('1')
 					newdata.append(items[i*2+1])
+					errMsg = 'Laser Etch QC Error Reading 2D Barcode'
 					errno = -7
 			app.logger.info(newdata)
 			session[Laser.DATA] = newdata
@@ -755,14 +686,17 @@ def read_barcodes():
 	if (errno == 0): # pass
 		logdata = logdata + ('TRUE', 'TRUE', 'TRUE', 'PASS',)
 	else:
+		Audit_trail.write_file(configfile.AUDIT_TRAIL_DIR, session['USERNAME'], errMsg)
+	
 		if (errno > -5):
-			logdata = logdata + ('TRUE', 'FALSE', 'FALSE', 'FAIL',)
+			logdata = logdata + ('TRUE', 'FALSE', '', 'FAIL',)
 		else:
 			logdata = logdata + ('TRUE', 'TRUE', 'FALSE', 'FAIL',)
 
 	Log_file.write_file (configfile.laser_etch_QC['LogFile'], logdata, 1)
 	app.logger.info("Go to home position")
 	plc_ser.on_send('GB\r\n')
+	sleep(0.5)
 	app.logger.info('Redirecting page to laser_process')
 	emit('redirect', url_for('laser_process'))
 
