@@ -192,7 +192,7 @@ statusBarManager = new StatusBarManager(status_bar);
 imageZoomManager_1 = new ImageZoomManager(laser_image_container_cam1, 0);
 imageZoomManager_2 = new ImageZoomManager(laser_image_container_cam2, 1);
 
-load_data(Globals.data, Globals.rack_type, statusBarManager);
+load_data(Globals.error_no, Globals.data, Globals.rack_type, statusBarManager);
 
 
 // SocketIO
@@ -216,140 +216,140 @@ socketio.on('redirect', function(url) {
 })
 
 
-
 // Functions
 
-function load_data(data, rack_type, statusBarManager) {
+function load_data(error_no, data, rack_type, statusBarManager) {
 
 	// Debugging purposes
 	console.log(`data: ${data},\nrack_id: ${rack_type}`);
 
 	// Set status to neutral first (reset)
 	statusBarManager.set_neutral();
-	let errorcode = 0;
 
 	// Set rack type
 	switch_rack_type(rack_type);
 
-	// Load data, != checks against null and undefined
-	if (data != null && rack_type != null) {
+	if (error_no == 0 || error_no < -3) {
 
-		// Set default status to success
-		statusBarManager.set_success();
-
-		if (rack_type === RackTypeEnum.TUBE) {
-
-			// Tube display/barcode
-
-			for (let x = 0; x < laser_tube_count; x++) {
-
-				// Position of data in the data array which are in pairs of 2
-				let current_data_count = (x * 2);
-
-				// Element reference for the tube display
-				let display_element = get_display_item(x + 1);
-
-				if (data[current_data_count] === '0') {
-
-					// 0 means barcode is valid
-
-					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('error', false);
-					display_element.classList.toggle('pass', true);
-
-					console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
-
-				} else {
-
-					// 1 means barcode is invalid
-
-					get_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('pass', false);
-					display_element.classList.toggle('error', true);
-
-					// Display fail in status bar
-					errorcode = -5;
-					statusBarManager.set_fail('FAIL - Correct error then rescan');
-					console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
-
-				}
-
-			}
-		} else if (rack_type === RackTypeEnum.TROUGH) {
-
-			// Trough display/barcode
-
-			for (let x = 0; x < laser_trough_count; x++) {
-
-				// Position of data in the data array which are in pairs of 2
-				let current_data_count = (x * 2);
-
-				// Element reference for the trough display
-				let display_element = get_trough_display_item(x + 1);
-
-				if (data[current_data_count] === '0') {
-
-					// 0 means barcode is valid
-
-					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('error', false);
-					display_element.classList.toggle('pass', true);
-
-					console.log(`Trough number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
-
-				} else {
-
-					// 1 means barcode is invalid
-
-					get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
-					display_element.classList.toggle('pass', false);
-					display_element.classList.toggle('error', true);
-
-					// Display fail in status bar
-					errorcode = -5;
-					statusBarManager.set_fail('FAIL - Correct error then rescan');
-
-					console.log(`Trough number: ${x + 1}\nStatus: FAIL`);
-
-				}
-
-			}
-
-		} else {
-
-			// Invalid rack type error handling
-
-			console.log(`Rack type is invalid, rack_type: ${rack_type}`);
-			statusBarManager.set_fail('FAIL - Invalid rack type');
-
+		// Set default status
+		if (error_no == 0){
+			statusBarManager.set_success();
 		}
-
+		else if (error_no == -4){
+			statusBarManager.set_fail('FAIL: Invalid Rack ID');
+		}
+		else {
+			statusBarManager.set_fail('FAIL: Correct error then rescan');
+		}
+		if (data != null && rack_type != null) {
+			if (rack_type === RackTypeEnum.TUBE) {
+	
+				// Tube display/barcode
+	
+				for (let x = 0; x < laser_tube_count; x++) {
+	
+					// Position of data in the data array which are in pairs of 2
+					let current_data_count = (x * 2);
+					// Element reference for the tube display
+					let display_element = get_display_item(x + 1);
+	
+					if (data[current_data_count] === '0') {
+	
+						// 0 means barcode is valid
+						get_barcode_row(x + 1).innerText = data[current_data_count + 1];
+						display_element.classList.toggle('error', false);
+						display_element.classList.toggle('pass', true);
+	
+						console.log(`Tube number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
+	
+					} else {
+	
+						// 1 means barcode is invalid
+						get_barcode_row(x + 1).innerText = data[current_data_count + 1];
+						display_element.classList.toggle('pass', false);
+						display_element.classList.toggle('error', true);
+	
+						// Display fail in status bar
+						console.log(`Tube number: ${x + 1}\nStatus: FAIL`);
+	
+					}
+	
+				}
+			} else if (rack_type === RackTypeEnum.TROUGH) {
+	
+				// Trough display/barcode
+				for (let x = 0; x < laser_trough_count; x++) {
+	
+					// Position of data in the data array which are in pairs of 2
+					let current_data_count = (x * 2);
+					// Element reference for the trough display
+					let display_element = get_trough_display_item(x + 1);
+	
+					if (data[current_data_count] === '0') {
+	
+						// 0 means barcode is valid
+	
+						get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
+						display_element.classList.toggle('error', false);
+						display_element.classList.toggle('pass', true);
+	
+						console.log(`Trough number: ${x + 1}\nStatus: PASS\nValue: ${data[current_data_count + 1]}`);
+	
+					} else {
+	
+						// 1 means barcode is invalid
+	
+						get_trough_barcode_row(x + 1).innerText = data[current_data_count + 1];
+						display_element.classList.toggle('pass', false);
+						display_element.classList.toggle('error', true);
+	
+						// Display fail in status bar
+						console.log(`Trough number: ${x + 1}\nStatus: FAIL`);
+	
+					}
+	
+				}
+	
+			} else {
+	
+				// Invalid rack type error handling
+				console.log(`Rack type is invalid, rack_type: ${rack_type}`);
+				//statusBarManager.set_fail('FAIL - Invalid rack type');
+	
+			}
+	
+		} else {
+	
+			// Error handling
+			if (rack_type != null) {
+	
+				// No data
+				console.log('No data received, nothing displayed');
+				//statusBarManager.set_fail('FAIL - No Vision data received');
+	
+			} else if (data != null) {
+	
+				// No rack type
+				console.log('No rack type received, nothing displayed');
+				//statusBarManager.set_fail('FAIL - Invalid rack type');
+	
+			} else {
+	
+				// No data and rack type
+	
+				console.log('No data and rack type received, nothing displayed');
+				//statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
+			}
+	
+		}
+	
+	} else if (error_no == -1) {
+		console.log('WO, PN, Rack ID exceeded retry');
+		statusBarManager.set_fail('FAIL: WO, PN, Rack ID exceeded retry');
 	} else {
-
-		// Error handling
-
-		if (rack_type != null) {
-
-			// No data
-
-			console.log('No data received, nothing displayed');
-			statusBarManager.set_fail('FAIL - No Vision data received');
-
-		} else if (data != null) {
-
-			// No rack type
-
-			console.log('No rack type received, nothing displayed');
-			statusBarManager.set_fail('FAIL - Invalid rack type');
-
-		} else {
-
-			// No data and rack type
-
-			console.log('No data and rack type received, nothing displayed');
-			statusBarManager.set_fail('FAIL: No Vision data and invalid rack type');
-		}
-
+		console.log('Error Reading 1D Barcode');
+		statusBarManager.set_fail('FAIL: Error Reading 1D Barcode');
+		// Load data, != checks against null and undefined
 	}
 
 }

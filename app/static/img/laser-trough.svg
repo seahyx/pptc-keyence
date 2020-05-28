@@ -26,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -66,7 +66,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="986"
+     inkscape:window-height="1001"
      id="namedview12"
      showgrid="false"
      showguides="true"
@@ -74,10 +74,10 @@
      inkscape:snap-to-guides="true"
      inkscape:snap-page="false"
      inkscape:zoom="5.6568543"
-     inkscape:cx="60.605019"
+     inkscape:cx="25.338069"
      inkscape:cy="59.221463"
-     inkscape:window-x="-11"
-     inkscape:window-y="-11"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="g6623">
     <sodipodi:guide
@@ -148,15 +148,61 @@
      transform="translate(0,-0.66667175)">
     <path
        style="opacity:1;fill:#f4f4f4;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 0.5 0.49804688 L 0.5 117.5 L 169.5 117.5 L 169.5 0.49804688 L 0.5 0.49804688 z M 59.402344 11.988281 L 76.634766 11.988281 L 76.634766 105.98828 L 59.402344 105.98828 L 59.402344 11.988281 z M 25.427734 12 L 42.660156 12 L 42.660156 106 L 25.427734 106 L 25.427734 12 z M 93.380859 12 L 110.61328 12 L 110.61328 106 L 93.380859 106 L 93.380859 12 z M 127.39844 12 L 144.63086 12 L 144.63086 106 L 127.39844 106 L 127.39844 12 z "
+       d="M 0.5,0.49804688 V 117.5 h 169 V 0.49804688 Z M 59.402344,11.988281 H 76.634766 V 105.98828 H 59.402344 Z M 25.427734,12 h 17.232422 v 94 H 25.427734 Z m 67.953125,0 h 17.232421 v 94 H 93.380859 Z m 34.017581,0 h 17.23242 v 94 h -17.23242 z"
        transform="translate(0,0.66667175)"
-       id="rect1482" />
+       id="rect1482"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="120.38493"
+       y="105.86917"
+       id="text30"
+       inkscape:label="text30"><tspan
+         sodipodi:role="line"
+         id="tspan28"
+         x="120.38493"
+         y="105.86917"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="85.984558"
+       y="106.00459"
+       id="text34"><tspan
+         sodipodi:role="line"
+         id="tspan32"
+         x="85.984558"
+         y="106.00459"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="51.539906"
+       y="106.00459"
+       id="text57"><tspan
+         sodipodi:role="line"
+         id="tspan55"
+         x="51.539906"
+         y="106.00459"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="17.147339"
+       y="105.84312"
+       id="text61"><tspan
+         sodipodi:role="line"
+         id="tspan59"
+         x="17.147339"
+         y="105.84312"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">4</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Rectangles"
-     style="display:inline;opacity:0.97000002"
+     style="display:inline;opacity:1"
      transform="translate(0,-0.66667175)"
      sodipodi:insensitive="true">
     <rect

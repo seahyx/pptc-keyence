@@ -1,5 +1,5 @@
 const btn_start          = document.querySelector('#btn-start');
-const laser_modal_select = document.querySelector('#td-laser-select');
+const laser_modal_select = document.querySelector('#laser-modal');
 const loading_modal      = document.querySelector('#loading-modal');
 const btn_select_cancel  = document.querySelector('#btn-select-cancel');
 const btn_select_confirm = document.querySelector('#btn-select-confirm');
